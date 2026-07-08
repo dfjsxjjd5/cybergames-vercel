@@ -1,1937 +1,4 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>CyberGames — Arcane Cyberpunk Catalog</title>
-
-  <style>
-    :root {
-      --bg: #030713;
-      --bg2: #071225;
-      --panel: rgba(10, 22, 42, 0.72);
-      --panel-strong: rgba(9, 18, 34, 0.88);
-      --card: rgba(13, 24, 42, 0.86);
-      --card2: rgba(18, 35, 58, 0.76);
-      --cyan: #2df7ff;
-      --cyan-soft: rgba(45, 247, 255, 0.18);
-      --violet: #b56bff;
-      --gold: #ffcc66;
-      --gold-soft: rgba(255, 204, 102, 0.16);
-      --pink: #ff4f9a;
-      --green: #57ffb7;
-      --text: #f5f8ff;
-      --muted: #a9b8d1;
-      --line: rgba(173, 212, 255, 0.16);
-      --radius: 24px;
-      --speed: 0.22s ease;
-      --serif: Georgia, "Times New Roman", serif;
-      --sans: Arial, Helvetica, sans-serif;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      min-height: 100vh;
-      font-family: var(--sans);
-      color: var(--text);
-      background:
-        radial-gradient(circle at 18% -8%, rgba(45, 247, 255, 0.24), transparent 34%),
-        radial-gradient(circle at 92% 4%, rgba(181, 107, 255, 0.24), transparent 36%),
-        radial-gradient(circle at 52% 28%, rgba(255, 204, 102, 0.1), transparent 35%),
-        linear-gradient(135deg, #02050d 0%, #071225 42%, #030713 100%);
-      overflow-x: hidden;
-    }
-
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      z-index: -2;
-      pointer-events: none;
-      background-image:
-        linear-gradient(rgba(255,255,255,.028) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,.028) 1px, transparent 1px);
-      background-size: 42px 42px;
-      mask-image: linear-gradient(to bottom, black, transparent 92%);
-    }
-
-    body::after {
-      content: "";
-      position: fixed;
-      inset: 0;
-      z-index: -1;
-      pointer-events: none;
-      background:
-        radial-gradient(circle at 8% 28%, rgba(45,247,255,.08), transparent 22%),
-        radial-gradient(circle at 90% 42%, rgba(255,204,102,.08), transparent 22%),
-        linear-gradient(to bottom, rgba(3,7,19,0.08), rgba(3,7,19,0.58));
-    }
-
-    body.modal-open {
-      overflow: hidden;
-    }
-
-    button,
-    input,
-    select {
-      font-family: inherit;
-    }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    .page {
-      width: min(1530px, 100%);
-      margin: 0 auto;
-      padding: 22px 28px 64px;
-    }
-
-    .header {
-      position: relative;
-      min-height: 460px;
-      display: grid;
-      align-content: start;
-      gap: 0;
-      margin-bottom: 22px;
-      overflow: hidden;
-      border: 1px solid rgba(45, 247, 255, 0.32);
-      border-radius: 34px;
-      background:
-        linear-gradient(to bottom, rgba(3, 7, 19, 0.1), rgba(3, 7, 19, 0.76)),
-        url("./assets/arcane-cyber-hero.png");
-      background-size: cover;
-      background-position: center top;
-      box-shadow:
-        0 30px 100px rgba(0, 0, 0, 0.46),
-        inset 0 0 0 1px rgba(255, 255, 255, 0.04),
-        0 0 44px rgba(45, 247, 255, 0.12);
-    }
-
-    .header::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(circle at 50% 30%, rgba(255,204,102,.12), transparent 22%),
-        linear-gradient(90deg, rgba(3,7,19,.92) 0%, rgba(3,7,19,.18) 42%, rgba(3,7,19,.62) 100%),
-        linear-gradient(to top, rgba(3,7,19,.9) 0%, transparent 48%);
-      pointer-events: none;
-    }
-
-    .header::after {
-      content: "✦ ✧ ✦ ✧ ✦ ✧ ✦";
-      position: absolute;
-      left: 18px;
-      top: 90px;
-      bottom: 32px;
-      width: 24px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      writing-mode: vertical-rl;
-      letter-spacing: 14px;
-      color: rgba(255, 204, 102, 0.62);
-      font-size: 12px;
-      pointer-events: none;
-    }
-
-    .topbar {
-      position: relative;
-      z-index: 2;
-      width: 100%;
-      display: grid;
-      grid-template-columns: auto 1fr auto;
-      align-items: center;
-      gap: 22px;
-      padding: 24px 28px 0;
-    }
-
-    .logo-wrap {
-      display: inline-flex;
-      align-items: center;
-      gap: 14px;
-    }
-
-    .sigil {
-      width: 42px;
-      height: 42px;
-      border: 1px solid rgba(45,247,255,.54);
-      transform: rotate(45deg);
-      border-radius: 12px;
-      position: relative;
-      box-shadow: 0 0 28px rgba(45,247,255,.22);
-      background: rgba(45,247,255,.05);
-    }
-
-    .sigil::before,
-    .sigil::after {
-      content: "";
-      position: absolute;
-      inset: 10px;
-      border: 1px solid rgba(255,204,102,.6);
-      border-radius: 8px;
-    }
-
-    .sigil::after {
-      inset: 17px;
-      background: var(--cyan);
-      box-shadow: 0 0 16px var(--cyan);
-      border-radius: 50%;
-    }
-
-    .logo {
-      font-size: clamp(30px, 3vw, 46px);
-      font-weight: 950;
-      letter-spacing: -1px;
-      text-shadow: 0 0 20px rgba(45, 247, 255, 0.52);
-      text-transform: none;
-    }
-
-    .logo span {
-      color: var(--cyan);
-    }
-
-    .nav {
-      justify-self: center;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.1);
-      background: rgba(5, 12, 24, 0.36);
-      backdrop-filter: blur(14px);
-    }
-
-    .nav a {
-      padding: 10px 14px;
-      border-radius: 999px;
-      color: #dce8ff;
-      font-size: 14px;
-      font-weight: 800;
-      opacity: 0.9;
-    }
-
-    .nav a.active,
-    .nav a:hover {
-      color: var(--cyan);
-      background: rgba(45, 247, 255, 0.1);
-      box-shadow: inset 0 0 0 1px rgba(45,247,255,.2);
-    }
-
-    .currency-switcher {
-      justify-self: end;
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      padding: 7px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.1);
-      background: rgba(5, 12, 24, 0.36);
-      backdrop-filter: blur(14px);
-      box-shadow: 0 16px 40px rgba(0,0,0,.18);
-    }
-
-    .currency-btn {
-      width: 48px;
-      height: 38px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 4px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.08);
-      background: rgba(255,255,255,.045);
-      color: #dce8ff;
-      cursor: pointer;
-      transition: transform var(--speed), border-color var(--speed), background var(--speed), box-shadow var(--speed);
-    }
-
-    .currency-btn:hover,
-    .currency-btn.active {
-      transform: translateY(-1px);
-      border-color: rgba(45,247,255,.55);
-      background: rgba(45,247,255,.11);
-      box-shadow: 0 0 20px rgba(45,247,255,.18), inset 0 0 0 1px rgba(45,247,255,.14);
-    }
-
-    .currency-btn.active {
-      color: var(--cyan);
-    }
-
-    .currency-flag {
-      font-size: 17px;
-      line-height: 1;
-      filter: drop-shadow(0 0 8px rgba(45,247,255,.22));
-    }
-
-    .currency-code {
-      font-size: 10px;
-      font-weight: 950;
-      letter-spacing: .35px;
-    }
-
-    .hero-copy {
-      position: relative;
-      z-index: 2;
-      align-self: end;
-      width: min(760px, 100%);
-      padding: 158px 34px 34px 52px;
-    }
-
-    .hero-copy h2 {
-      font-family: var(--serif);
-      font-size: clamp(34px, 4vw, 58px);
-      line-height: 1.05;
-      margin-bottom: 12px;
-      letter-spacing: -1px;
-      text-shadow: 0 0 26px rgba(0,0,0,.72);
-    }
-
-    .hero-copy h2 span {
-      color: var(--gold);
-      text-shadow: 0 0 18px rgba(255,204,102,.36);
-    }
-
-    .hero-copy p {
-      color: #d8e6ff;
-      font-size: clamp(16px, 1.5vw, 21px);
-      line-height: 1.55;
-      max-width: 620px;
-    }
-
-    .hero-badges {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 20px;
-    }
-
-    .hero-badge {
-      padding: 8px 12px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,204,102,.32);
-      background: rgba(255,204,102,.08);
-      color: #ffe1a3;
-      font-size: 13px;
-      font-weight: 900;
-    }
-
-    .toolbar {
-      position: relative;
-      z-index: 3;
-      width: min(1180px, calc(100% - 56px));
-      margin: -50px auto 0;
-      display: grid;
-      grid-template-columns: minmax(220px, 1fr) auto auto;
-      gap: 12px;
-      align-items: center;
-      padding: 12px;
-      border-radius: 22px;
-      border: 1px solid rgba(45,247,255,.2);
-      background: rgba(11, 22, 40, 0.68);
-      backdrop-filter: blur(18px);
-      box-shadow:
-        0 18px 56px rgba(0,0,0,.38),
-        inset 0 0 0 1px rgba(255,255,255,.05);
-    }
-
-    .search-input {
-      width: 100%;
-      min-height: 52px;
-      padding: 0 18px;
-      border-radius: 15px;
-      border: 1px solid rgba(173, 212, 255, 0.18);
-      outline: none;
-      background: rgba(3, 7, 19, 0.72);
-      color: var(--text);
-      font-size: 15px;
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,.03);
-      transition: var(--speed);
-    }
-
-    .search-input:focus {
-      border-color: var(--cyan);
-      box-shadow: 0 0 0 4px rgba(45,247,255,.11), 0 0 30px rgba(45,247,255,.22);
-      transform: translateY(-1px);
-    }
-
-    .counter,
-    .load-btn {
-      min-height: 52px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0 17px;
-      border-radius: 15px;
-      white-space: nowrap;
-      border: 1px solid rgba(173, 212, 255, 0.16);
-      background: rgba(255,255,255,.045);
-      color: var(--muted);
-      font-size: 14px;
-      font-weight: 900;
-    }
-
-    .counter strong {
-      margin-left: 6px;
-      color: var(--cyan);
-      font-size: 18px;
-    }
-
-    .load-btn {
-      cursor: pointer;
-      color: var(--text);
-      background: linear-gradient(135deg, rgba(45,247,255,.18), rgba(181,107,255,.1));
-      border-color: rgba(45,247,255,.34);
-      transition: var(--speed);
-    }
-
-    .load-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 0 28px rgba(45,247,255,.2);
-    }
-
-    .hint {
-      display: none;
-    }
-
-    .progress {
-      width: min(1180px, 100%);
-      height: 8px;
-      margin: 16px auto 18px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.08);
-      overflow: hidden;
-      display: none;
-    }
-
-    .progress.show {
-      display: block;
-    }
-
-    .progress-fill {
-      width: 0%;
-      height: 100%;
-      background: linear-gradient(90deg, var(--cyan), var(--violet), var(--gold));
-      transition: width .25s ease;
-    }
-
-    .filter-panel {
-      width: min(1180px, 100%);
-      margin: 16px auto 26px;
-      padding: 12px;
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 12px;
-      border-radius: 22px;
-      border: 1px solid rgba(173, 212, 255, 0.14);
-      background: rgba(11, 22, 40, 0.56);
-      backdrop-filter: blur(18px);
-      box-shadow: 0 16px 44px rgba(0, 0, 0, 0.26);
-    }
-
-    .filter-field {
-      display: grid;
-      gap: 7px;
-      color: #b7c6de;
-      font-size: 11px;
-      font-weight: 950;
-      text-transform: uppercase;
-      letter-spacing: .8px;
-    }
-
-    .filter-control {
-      min-height: 44px;
-      width: 100%;
-      padding: 0 13px;
-      border-radius: 14px;
-      border: 1px solid rgba(45, 247, 255, 0.2);
-      outline: none;
-      background: rgba(3, 7, 19, 0.72);
-      color: var(--text);
-      font-size: 14px;
-      font-weight: 800;
-    }
-
-    .filter-control:focus {
-      border-color: var(--cyan);
-      box-shadow: 0 0 0 3px rgba(45, 247, 255, 0.12);
-    }
-
-    .reset-btn {
-      min-height: 44px;
-      align-self: end;
-      border-radius: 14px;
-      border: 1px solid rgba(255, 204, 102, 0.34);
-      background: rgba(255, 204, 102, 0.09);
-      color: #ffe1a3;
-      font-weight: 950;
-      cursor: pointer;
-      transition: var(--speed);
-    }
-
-    .reset-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 0 24px rgba(255, 204, 102, 0.18);
-    }
-
-    .section-head {
-      width: min(1180px, 100%);
-      margin: 0 auto 16px;
-      display: flex;
-      align-items: end;
-      justify-content: space-between;
-      gap: 18px;
-    }
-
-    .section-title-main {
-      font-family: var(--serif);
-      font-size: clamp(24px, 2.4vw, 34px);
-      font-weight: 800;
-      letter-spacing: -0.3px;
-      color: #f7fbff;
-    }
-
-    .section-title-main::before {
-      content: "✧";
-      color: var(--cyan);
-      margin-right: 10px;
-      text-shadow: 0 0 16px rgba(45,247,255,.68);
-    }
-
-    .section-note {
-      color: var(--muted);
-      font-size: 14px;
-    }
-
-    .games-grid {
-      width: min(1180px, 100%);
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 18px;
-    }
-
-    .game-card {
-      position: relative;
-      width: 100%;
-      min-height: 100%;
-      padding: 1px;
-      border: 0;
-      border-radius: 22px;
-      background:
-        linear-gradient(135deg, rgba(45,247,255,.62), rgba(255,255,255,.06) 48%, rgba(181,107,255,.52));
-      cursor: pointer;
-      color: var(--text);
-      text-align: left;
-      box-shadow: 0 18px 46px rgba(0,0,0,.34);
-      overflow: hidden;
-      transition: transform var(--speed), filter var(--speed), box-shadow var(--speed);
-    }
-
-    .game-card:hover {
-      transform: translateY(-7px);
-      filter: brightness(1.06);
-      box-shadow: 0 28px 72px rgba(0,0,0,.52), 0 0 32px rgba(45,247,255,.18);
-    }
-
-    .game-card.hidden {
-      display: none;
-    }
-
-    .card-inner {
-      height: 100%;
-      border-radius: 21px;
-      background: rgba(9, 18, 34, 0.92);
-      overflow: hidden;
-      position: relative;
-    }
-
-    .poster-wrap {
-      position: relative;
-      aspect-ratio: 16 / 9;
-      background:
-        radial-gradient(circle at 50% 50%, rgba(45,247,255,.11), transparent 46%),
-        #060b16;
-      overflow: hidden;
-    }
-
-    .poster {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center;
-      display: block;
-      transition: transform var(--speed);
-      background: #060b16;
-    }
-
-    .game-card:hover .poster {
-      transform: scale(1.045);
-    }
-
-    .poster-wrap::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background:
-        linear-gradient(to top, rgba(9,18,34,.92) 0%, rgba(9,18,34,.14) 60%),
-        radial-gradient(circle at 92% 12%, rgba(255,204,102,.18), transparent 26%);
-    }
-
-    .status-pill {
-      display: none !important;
-    }
-
-    .free-badge {
-      position: absolute;
-      right: 12px;
-      top: 12px;
-      z-index: 2;
-      display: none;
-      padding: 8px 10px;
-      border-radius: 999px;
-      background: rgba(87,255,183,.12);
-      border: 1px solid rgba(87,255,183,.48);
-      color: var(--green);
-      font-size: 11px;
-      font-weight: 950;
-      backdrop-filter: blur(8px);
-    }
-
-    .free-badge.show {
-      display: block;
-    }
-
-    .card-content {
-      padding: 16px 16px 17px;
-    }
-
-    .card-title {
-      min-height: 44px;
-      margin-bottom: 10px;
-      font-size: 19px;
-      line-height: 1.18;
-      color: #fff;
-      letter-spacing: -0.15px;
-    }
-
-    .card-meta {
-      display: flex;
-      justify-content: space-between;
-      gap: 8px;
-      margin-bottom: 12px;
-      color: #a9b8d1;
-      font-size: 12px;
-    }
-
-    .card-description {
-      color: #b8c7de;
-      font-size: 14px;
-      line-height: 1.52;
-      display: -webkit-box;
-      -webkit-line-clamp: 3;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-
-    .tag-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 7px;
-      margin-top: 14px;
-    }
-
-    .tag {
-      padding: 6px 9px;
-      border-radius: 999px;
-      background: rgba(45,247,255,.09);
-      border: 1px solid rgba(45,247,255,.2);
-      color: var(--cyan);
-      font-size: 11px;
-      font-weight: 900;
-    }
-
-    .tag:first-child {
-      border-color: rgba(255,204,102,.26);
-      background: rgba(255,204,102,.09);
-      color: #ffe1a3;
-    }
-
-    .empty-state {
-      display: none;
-      width: min(1180px, 100%);
-      margin: 34px auto 0;
-      padding: 34px 24px;
-      border: 1px dashed rgba(255,204,102,.45);
-      border-radius: var(--radius);
-      background: rgba(255,204,102,.06);
-      text-align: center;
-      color: var(--muted);
-    }
-
-    .empty-state.show {
-      display: block;
-    }
-
-    .feature-strip {
-      width: min(1180px, 100%);
-      margin: 34px auto 0;
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 12px;
-      padding: 12px;
-      border-radius: 22px;
-      border: 1px solid rgba(173, 212, 255, 0.13);
-      background: rgba(11, 22, 40, 0.5);
-      backdrop-filter: blur(16px);
-    }
-
-    .feature-item {
-      display: flex;
-      gap: 14px;
-      align-items: center;
-      padding: 16px;
-      border-radius: 18px;
-      background: rgba(255,255,255,.035);
-      color: var(--muted);
-      line-height: 1.45;
-    }
-
-    .feature-icon {
-      width: 42px;
-      height: 42px;
-      display: grid;
-      place-items: center;
-      border-radius: 16px;
-      color: var(--cyan);
-      border: 1px solid rgba(45,247,255,.3);
-      background: rgba(45,247,255,.08);
-      font-size: 22px;
-      flex: 0 0 auto;
-    }
-
-    .feature-item strong {
-      display: block;
-      margin-bottom: 3px;
-      color: #f5f8ff;
-    }
-
-    .news-section {
-      width: min(1480px, 100%);
-      margin: 34px auto 0;
-    }
-
-    .news-section .section-head {
-      width: 100%;
-      margin-bottom: 14px;
-    }
-
-    .news-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 14px;
-    }
-
-    .news-card {
-      min-height: 170px;
-      padding: 20px;
-      border-radius: 22px;
-      border: 1px solid rgba(173, 212, 255, 0.14);
-      background:
-        radial-gradient(circle at top right, rgba(45,247,255,.12), transparent 38%),
-        linear-gradient(145deg, rgba(11,22,40,.68), rgba(13,24,42,.46));
-      box-shadow: 0 20px 58px rgba(0,0,0,.28), inset 0 0 0 1px rgba(255,255,255,.035);
-      backdrop-filter: blur(16px);
-    }
-
-    .news-date {
-      display: inline-flex;
-      margin-bottom: 12px;
-      padding: 6px 9px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,204,102,.28);
-      background: rgba(255,204,102,.08);
-      color: #ffe1a3;
-      font-size: 11px;
-      font-weight: 950;
-      text-transform: uppercase;
-      letter-spacing: .5px;
-    }
-
-    .news-card h3 {
-      margin-bottom: 8px;
-      color: #fff;
-      font-size: 18px;
-      line-height: 1.25;
-    }
-
-    .news-card p {
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.58;
-    }
-
-    @media (max-width: 760px) {
-      .news-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .modal {
-      position: fixed;
-      inset: 0;
-      z-index: 100;
-      display: none;
-      padding: 20px;
-      background: rgba(0,0,0,.72);
-      backdrop-filter: blur(12px);
-      overflow-y: auto;
-    }
-
-    .modal.show {
-      display: block;
-    }
-
-    .modal-dialog {
-      width: min(1160px, 100%);
-      margin: 24px auto;
-      padding: 1px;
-      border-radius: 30px;
-      background: linear-gradient(135deg, rgba(45,247,255,.68), rgba(255,255,255,.06), rgba(255,204,102,.44), rgba(181,107,255,.52));
-      box-shadow: 0 30px 90px rgba(0,0,0,.72), 0 0 34px rgba(45,247,255,.18);
-    }
-
-    .modal-content {
-      position: relative;
-      border-radius: 29px;
-      overflow: hidden;
-      background:
-        radial-gradient(circle at top left, rgba(45,247,255,.12), transparent 32%),
-        radial-gradient(circle at top right, rgba(255,204,102,.09), transparent 32%),
-        #07101f;
-    }
-
-    .modal-close {
-      position: absolute;
-      right: 18px;
-      top: 18px;
-      z-index: 5;
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(5,12,24,.78);
-      color: var(--text);
-      font-size: 26px;
-      cursor: pointer;
-      transition: var(--speed);
-    }
-
-    .modal-close:hover {
-      color: var(--gold);
-      border-color: var(--gold);
-      box-shadow: 0 0 24px rgba(255,204,102,.22);
-    }
-
-    .modal-hero {
-      min-height: 340px;
-      display: grid;
-      grid-template-columns: 300px 1fr;
-      gap: 28px;
-      padding: 34px;
-      background:
-        linear-gradient(to top, #07101f 0%, rgba(7,16,31,.78) 58%, rgba(7,16,31,.42)),
-        var(--hero-image);
-      background-size: cover;
-      background-position: center;
-    }
-
-    .modal-poster {
-      width: 100%;
-      max-width: 300px;
-      aspect-ratio: 3 / 4;
-      object-fit: cover;
-      border-radius: 24px;
-      border: 1px solid rgba(45,247,255,.32);
-      background: #090b14;
-      box-shadow: 0 22px 60px rgba(0,0,0,.62);
-    }
-
-    .modal-main-info {
-      align-self: end;
-      padding-right: 54px;
-    }
-
-    .modal-title {
-      margin-bottom: 14px;
-      font-size: clamp(34px, 5vw, 62px);
-      line-height: 1;
-      letter-spacing: -1px;
-      text-shadow: 0 0 18px rgba(45,247,255,.36), 0 0 26px rgba(0,0,0,.6);
-    }
-
-    .modal-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 18px;
-    }
-
-    .meta-pill {
-      padding: 8px 11px;
-      border-radius: 999px;
-      background: rgba(5,12,24,.76);
-      border: 1px solid rgba(255,255,255,.12);
-      font-size: 13px;
-      font-weight: 800;
-      backdrop-filter: blur(8px);
-    }
-
-    .meta-pill.cyan {
-      color: var(--cyan);
-      border-color: rgba(45,247,255,.38);
-    }
-
-    .meta-pill.magenta {
-      color: var(--gold);
-      border-color: rgba(255,204,102,.38);
-    }
-
-    .meta-pill.green {
-      color: var(--green);
-      border-color: rgba(87,255,183,.38);
-    }
-
-    .modal-description {
-      max-width: 760px;
-      color: #d8e6ff;
-      line-height: 1.7;
-      font-size: 16px;
-    }
-
-    .modal-body {
-      padding: 0 34px 34px;
-    }
-
-    .section {
-      margin-top: 32px;
-    }
-
-    .section-title {
-      margin-bottom: 16px;
-      font-family: var(--serif);
-      font-size: 26px;
-      text-transform: none;
-      letter-spacing: 0;
-    }
-
-    .section-title span {
-      color: var(--cyan);
-    }
-
-    .screens-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 14px;
-    }
-
-    .screen-card {
-      min-height: 160px;
-      border-radius: 18px;
-      overflow: hidden;
-      background: rgba(255,255,255,.04);
-      border: 1px solid rgba(255,255,255,.1);
-    }
-
-    .screen-card img {
-      width: 100%;
-      height: 100%;
-      min-height: 160px;
-      object-fit: cover;
-      display: block;
-    }
-
-    .message-card {
-      min-height: 160px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      text-align: center;
-      line-height: 1.5;
-      color: var(--muted);
-      background: linear-gradient(135deg, rgba(45,247,255,.08), rgba(255,204,102,.08)), rgba(255,255,255,.04);
-    }
-
-    .stores-layout {
-      display: grid;
-      grid-template-columns: 1.05fr 1fr;
-      gap: 18px;
-      align-items: start;
-    }
-
-    .price-box,
-    .store-box {
-      border-radius: 22px;
-      border: 1px solid rgba(255,255,255,.1);
-      background: rgba(255,255,255,.045);
-      box-shadow: 0 14px 38px rgba(0,0,0,.28);
-      overflow: hidden;
-    }
-
-    .box-header {
-      padding: 16px 18px;
-      border-bottom: 1px solid rgba(255,255,255,.09);
-      background: rgba(0,0,0,.18);
-      font-weight: 900;
-    }
-
-    .box-header small {
-      display: block;
-      margin-top: 6px;
-      color: var(--muted);
-      font-weight: 400;
-      line-height: 1.5;
-    }
-
-    .price-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 12px;
-      padding: 16px;
-    }
-
-    .price-item {
-      padding: 14px;
-      border-radius: 16px;
-      background: rgba(5,12,24,.48);
-      border: 1px solid rgba(45,247,255,.13);
-    }
-
-    .price-currency {
-      display: block;
-      margin-bottom: 7px;
-      color: var(--muted);
-      font-size: 12px;
-      font-weight: 900;
-      text-transform: uppercase;
-      letter-spacing: .8px;
-    }
-
-    .price-value {
-      color: var(--cyan);
-      font-size: 20px;
-      font-weight: 950;
-    }
-
-    .price-value.free {
-      color: var(--green);
-    }
-
-    .live-status {
-      padding: 0 16px 16px;
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.5;
-    }
-
-    .store-links {
-      display: grid;
-      gap: 12px;
-      padding: 16px;
-    }
-
-    .store-link {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 14px;
-      padding: 14px 16px;
-      border-radius: 16px;
-      background: rgba(5,12,24,.48);
-      border: 1px solid rgba(255,255,255,.1);
-      transition: var(--speed);
-    }
-
-    .store-link:hover {
-      border-color: var(--cyan);
-      box-shadow: 0 0 28px rgba(45,247,255,.22);
-      transform: translateY(-2px);
-    }
-
-    .store-name {
-      font-weight: 900;
-    }
-
-    .store-note {
-      display: block;
-      margin-top: 4px;
-      color: var(--muted);
-      font-size: 12px;
-      font-weight: 400;
-    }
-
-    .arrow {
-      color: var(--gold);
-      font-size: 20px;
-      font-weight: 950;
-    }
-
-    @media (max-width: 1180px) {
-      .topbar {
-        grid-template-columns: 1fr auto;
-      }
-
-      .nav {
-        display: none;
-      }
-
-      .games-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-
-      .feature-strip {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    @media (max-width: 1024px) {
-      .modal-hero {
-        grid-template-columns: 240px 1fr;
-      }
-
-      .stores-layout {
-        grid-template-columns: 1fr;
-      }
-
-      .filter-panel {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-    }
-
-    @media (max-width: 760px) {
-      .page {
-        padding: 14px 12px 42px;
-      }
-
-      .header {
-        min-height: 520px;
-        border-radius: 26px;
-      }
-
-      .topbar {
-        grid-template-columns: 1fr;
-        padding: 18px;
-      }
-
-      .logo {
-        font-size: 32px;
-      }
-
-      .hero-copy {
-        padding: 210px 22px 24px;
-      }
-
-      .toolbar {
-        width: 100%;
-        margin: 14px auto 0;
-        grid-template-columns: 1fr;
-      }
-
-      .filter-panel {
-        grid-template-columns: 1fr;
-      }
-
-      .counter,
-      .load-btn {
-        justify-self: stretch;
-      }
-
-      .section-head {
-        display: block;
-      }
-
-      .section-note {
-        margin-top: 6px;
-      }
-
-      .games-grid {
-        grid-template-columns: 1fr;
-        gap: 15px;
-      }
-
-      .card-title {
-        min-height: auto;
-      }
-
-      .modal {
-        padding: 10px;
-      }
-
-      .modal-dialog {
-        margin: 12px auto;
-      }
-
-      .modal-hero {
-        grid-template-columns: 1fr;
-        padding: 22px;
-      }
-
-      .modal-main-info {
-        padding-right: 0;
-      }
-
-      .modal-poster {
-        max-width: 230px;
-      }
-
-      .modal-body {
-        padding: 0 18px 22px;
-      }
-
-      .screens-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .price-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-  
-
-    /* Arcane anime cyberpunk redesign patch */
-    .topbar {
-      padding: 24px 30px 0;
-    }
-
-    .topbar::before {
-      content: "";
-      position: absolute;
-      left: 18px;
-      right: 18px;
-      top: 14px;
-      height: 72px;
-      z-index: -1;
-      border: 1px solid rgba(173, 212, 255, 0.12);
-      border-radius: 26px;
-      background: linear-gradient(90deg, rgba(5, 12, 24, 0.56), rgba(5, 12, 24, 0.24));
-      backdrop-filter: blur(14px);
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,.03), 0 0 34px rgba(45,247,255,.08);
-    }
-
-    .nav a {
-      position: relative;
-    }
-
-    .nav a.active::after,
-    .nav a:hover::after {
-      content: "";
-      position: absolute;
-      left: 16px;
-      right: 16px;
-      bottom: 3px;
-      height: 2px;
-      border-radius: 999px;
-      background: var(--cyan);
-      box-shadow: 0 0 14px var(--cyan);
-    }
-
-    .filter-panel {
-      width: min(1480px, 100%);
-      margin: -48px auto 14px;
-      grid-template-columns: minmax(240px, 1.4fr) repeat(4, minmax(140px, 1fr)) auto;
-      align-items: end;
-      position: relative;
-      z-index: 5;
-      border-color: rgba(45,247,255,.22);
-      background: linear-gradient(135deg, rgba(11,22,40,.76), rgba(15,27,50,.52));
-      box-shadow: 0 22px 70px rgba(0,0,0,.42), inset 0 0 0 1px rgba(255,255,255,.045);
-    }
-
-    .search-field .search-input {
-      min-height: 44px;
-      border-radius: 14px;
-      padding: 0 14px;
-      font-weight: 800;
-    }
-
-    .filter-control,
-    .search-input {
-      transition: transform var(--speed), border-color var(--speed), box-shadow var(--speed), background var(--speed);
-    }
-
-    .filter-control:hover,
-    .search-input:hover {
-      border-color: rgba(45,247,255,.48);
-      box-shadow: 0 0 22px rgba(45,247,255,.12);
-    }
-
-    .catalog-actions {
-      width: min(1480px, 100%);
-      margin: 0 auto 16px;
-      display: flex;
-      justify-content: flex-end;
-      gap: 12px;
-      align-items: center;
-    }
-
-    .progress {
-      width: min(1480px, 100%);
-      margin-top: 0;
-    }
-
-    .section-head,
-    .feature-strip,
-    .news-section,
-    .empty-state {
-      width: min(1480px, 100%);
-    }
-
-    .catalog-shell {
-      width: min(1480px, 100%);
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(380px, 430px);
-      gap: 24px;
-      align-items: start;
-    }
-
-    .games-grid {
-      width: 100%;
-      margin: 0;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-
-    .game-card.selected {
-      box-shadow: 0 28px 76px rgba(0,0,0,.58), 0 0 42px rgba(45,247,255,.26);
-      filter: brightness(1.06);
-    }
-
-    .store-mini {
-      position: absolute;
-      z-index: 3;
-      display: grid;
-      place-items: center;
-      min-width: 34px;
-      height: 34px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.18);
-      background: rgba(5,12,24,.58);
-      color: #eaf3ff;
-      backdrop-filter: blur(10px);
-      box-shadow: 0 0 18px rgba(0,0,0,.28);
-      transition: var(--speed);
-    }
-
-    .store-mini {
-      right: 12px;
-      bottom: 12px;
-      padding: 0 10px;
-      color: var(--cyan);
-      font-size: 11px;
-      font-weight: 950;
-      letter-spacing: .5px;
-      text-transform: uppercase;
-    }
-
-    .card-content {
-      position: relative;
-      min-height: 190px;
-    }
-
-    .card-bottom {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-      margin-top: 14px;
-    }
-
-    .card-price {
-      color: var(--cyan);
-      font-size: 17px;
-      font-weight: 950;
-      text-shadow: 0 0 14px rgba(45,247,255,.22);
-    }
-
-    .store-badge {
-      padding: 6px 9px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,204,102,.28);
-      background: rgba(255,204,102,.08);
-      color: #ffe1a3;
-      font-size: 11px;
-      font-weight: 950;
-      white-space: nowrap;
-    }
-
-    .detail-panel {
-      position: sticky;
-      top: 18px;
-      min-height: 640px;
-      padding: 1px;
-      border-radius: 28px;
-      background: linear-gradient(155deg, rgba(45,247,255,.62), rgba(255,255,255,.07) 38%, rgba(255,204,102,.35) 68%, rgba(181,107,255,.52));
-      box-shadow: 0 28px 86px rgba(0,0,0,.5), 0 0 40px rgba(45,247,255,.16);
-      overflow: hidden;
-    }
-
-    .detail-panel-inner,
-    .detail-empty {
-      min-height: 638px;
-      border-radius: 27px;
-      background:
-        radial-gradient(circle at top left, rgba(45,247,255,.14), transparent 32%),
-        radial-gradient(circle at top right, rgba(255,204,102,.1), transparent 28%),
-        rgba(7, 16, 31, .94);
-      backdrop-filter: blur(18px);
-      overflow: hidden;
-    }
-
-    .detail-empty {
-      display: grid;
-      place-items: center;
-      align-content: center;
-      gap: 12px;
-      padding: 32px;
-      text-align: center;
-      color: var(--muted);
-    }
-
-    .detail-empty strong {
-      color: var(--text);
-      font-size: 22px;
-    }
-
-    .detail-empty-icon {
-      width: 62px;
-      height: 62px;
-      display: grid;
-      place-items: center;
-      border-radius: 22px;
-      color: var(--cyan);
-      border: 1px solid rgba(45,247,255,.35);
-      background: rgba(45,247,255,.08);
-      font-size: 30px;
-      box-shadow: 0 0 28px rgba(45,247,255,.16);
-    }
-
-    .detail-visual {
-      position: relative;
-      min-height: 246px;
-      padding: 22px;
-      display: flex;
-      align-items: flex-end;
-      background:
-        linear-gradient(to top, rgba(7,16,31,1) 0%, rgba(7,16,31,.38) 62%, rgba(7,16,31,.14)),
-        var(--detail-image);
-      background-size: cover;
-      background-position: center;
-    }
-
-    .detail-visual::after {
-      content: "";
-      position: absolute;
-      inset: 14px;
-      border-radius: 20px;
-      pointer-events: none;
-      border: 1px solid rgba(255,204,102,.18);
-      box-shadow: inset 0 0 28px rgba(45,247,255,.08);
-    }
-
-    .detail-recommend {
-      position: absolute;
-      left: 22px;
-      top: 22px;
-      z-index: 2;
-      padding: 8px 11px;
-      border-radius: 999px;
-      color: #ffe1a3;
-      background: rgba(255,204,102,.13);
-      border: 1px solid rgba(255,204,102,.38);
-      font-size: 11px;
-      font-weight: 950;
-      text-transform: uppercase;
-      letter-spacing: .5px;
-      box-shadow: 0 0 22px rgba(255,204,102,.16);
-    }
-
-    .detail-content {
-      padding: 22px;
-    }
-
-    .detail-title {
-      margin-bottom: 10px;
-      font-family: var(--serif);
-      font-size: 33px;
-      line-height: 1.05;
-      letter-spacing: -.4px;
-      color: #fff;
-    }
-
-    .detail-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 7px;
-      margin-bottom: 14px;
-    }
-
-    .detail-description {
-      color: #c8d6ef;
-      font-size: 14px;
-      line-height: 1.65;
-      display: -webkit-box;
-      -webkit-line-clamp: 4;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-
-    .detail-thumbs {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 8px;
-      margin: 18px 0;
-    }
-
-    .detail-thumbs img,
-    .detail-thumb-placeholder {
-      width: 100%;
-      aspect-ratio: 16 / 9;
-      object-fit: cover;
-      border-radius: 12px;
-      border: 1px solid rgba(255,255,255,.1);
-      background: rgba(255,255,255,.05);
-    }
-
-    .detail-thumb-placeholder {
-      display: grid;
-      place-items: center;
-      color: var(--muted);
-      font-size: 11px;
-      text-align: center;
-      padding: 8px;
-    }
-
-    .detail-price-row {
-      display: flex;
-      align-items: baseline;
-      gap: 12px;
-      margin: 18px 0 14px;
-    }
-
-    .detail-price {
-      font-size: 28px;
-      font-weight: 950;
-      color: #f8fbff;
-      text-shadow: 0 0 18px rgba(45,247,255,.24);
-    }
-
-    .detail-old-price {
-      color: #77849b;
-      text-decoration: line-through;
-      font-weight: 800;
-    }
-
-    .detail-discount {
-      padding: 6px 9px;
-      border-radius: 999px;
-      background: rgba(87,255,183,.12);
-      border: 1px solid rgba(87,255,183,.34);
-      color: var(--green);
-      font-size: 12px;
-      font-weight: 950;
-    }
-
-    .detail-actions {
-      display: grid;
-      gap: 10px;
-      margin-bottom: 18px;
-    }
-
-    .buy-button {
-      min-height: 48px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      border-radius: 14px;
-      font-weight: 950;
-      transition: var(--speed);
-    }
-
-    .buy-button {
-      color: #02101c;
-      background: linear-gradient(135deg, var(--cyan), #58b8ff);
-      box-shadow: 0 0 26px rgba(45,247,255,.28);
-    }
-
-    .buy-button:hover {
-      transform: translateY(-2px);
-    }
-
-    .detail-features {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 9px;
-    }
-
-    .detail-feature {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 9px 10px;
-      border-radius: 13px;
-      border: 1px solid rgba(255,255,255,.09);
-      background: rgba(255,255,255,.045);
-      color: #b9c8de;
-      font-size: 12px;
-      line-height: 1.35;
-    }
-
-    .detail-feature.active {
-      border-color: rgba(45,247,255,.22);
-      color: #eaf7ff;
-      background: rgba(45,247,255,.07);
-    }
-
-    .feature-dot {
-      width: 8px;
-      height: 8px;
-      flex: 0 0 auto;
-      border-radius: 999px;
-      background: rgba(173,212,255,.32);
-      box-shadow: 0 0 10px rgba(173,212,255,.1);
-    }
-
-    .detail-feature.active .feature-dot {
-      background: var(--cyan);
-      box-shadow: 0 0 12px var(--cyan);
-    }
-
-    .modal-features {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-
-    @media (max-width: 1380px) {
-      .catalog-shell {
-        grid-template-columns: minmax(0, 1fr) minmax(360px, 400px);
-      }
-
-      .games-grid {
-        gap: 15px;
-      }
-    }
-
-    @media (max-width: 1180px) {
-      .topbar {
-        grid-template-columns: auto 1fr auto;
-      }
-
-      .nav {
-        display: flex;
-      }
-
-      .filter-panel {
-        width: min(1180px, 100%);
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        margin-top: -36px;
-      }
-
-      .catalog-actions,
-      .catalog-shell,
-      .section-head,
-      .feature-strip,
-      .news-section,
-      .empty-state {
-        width: min(1180px, 100%);
-      }
-
-      .catalog-shell {
-        display: block;
-      }
-
-      .detail-panel {
-        display: none;
-      }
-
-      .games-grid {
-        width: 100%;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-    }
-
-    @media (max-width: 760px) {
-      .topbar::before {
-        display: none;
-      }
-
-      .topbar {
-        grid-template-columns: 1fr;
-      }
-
-      .nav {
-        display: flex;
-        justify-self: stretch;
-        justify-content: center;
-        overflow-x: auto;
-      }
-
-      .currency-switcher {
-        justify-self: stretch;
-        justify-content: center;
-        overflow-x: auto;
-      }
-
-      .currency-btn {
-        min-width: 48px;
-      }
-
-      .filter-panel {
-        grid-template-columns: 1fr;
-        margin-top: 14px;
-      }
-
-      .catalog-actions {
-        display: grid;
-        grid-template-columns: 1fr;
-      }
-
-      .games-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .modal-features {
-        grid-template-columns: 1fr;
-      }
-    }
-
-  </style>
-</head>
-
-<body>
-  <main class="page">
-    <header class="header">
-      <div class="topbar">
-        <div class="logo-wrap">
-          <span class="sigil" aria-hidden="true"></span>
-          <h1 class="logo">Cyber<span>Games</span></h1>
-        </div>
-
-        <nav class="nav" aria-label="Основная навигация">
-          <a class="nav-link active" href="#catalog" data-nav="catalog">Каталог</a>
-          <a class="nav-link" href="#catalog" data-nav="deals">Скидки</a>
-          <a class="nav-link" href="#news" data-nav="news">Новости</a>
-        </nav>
-
-        <div class="currency-switcher" id="currencySwitcher" aria-label="Валюта цен">
-          <button class="currency-btn" type="button" data-currency="RUB" title="Показывать цены в рублях" aria-label="Рубли">
-            <span class="currency-flag" aria-hidden="true">🇷🇺</span><span class="currency-code">RUB</span>
-          </button>
-          <button class="currency-btn" type="button" data-currency="USD" title="Показывать цены в долларах" aria-label="Доллары">
-            <span class="currency-flag" aria-hidden="true">🇺🇸</span><span class="currency-code">USD</span>
-          </button>
-          <button class="currency-btn" type="button" data-currency="KZT" title="Показывать цены в тенге" aria-label="Тенге">
-            <span class="currency-flag" aria-hidden="true">🇰🇿</span><span class="currency-code">KZT</span>
-          </button>
-          <button class="currency-btn" type="button" data-currency="UAH" title="Показывать цены в гривнах" aria-label="Гривны">
-            <span class="currency-flag" aria-hidden="true">🇺🇦</span><span class="currency-code">UAH</span>
-          </button>
-        </div>
-      </div>
-
-      <div class="hero-copy">
-        <h2>Киберпанк. Технологии. <span>Магия.</span></h2>
-        <p>Каталог игр для всех миров.</p>
-        <div class="hero-badges">
-          <span class="hero-badge">Steam + Epic</span>
-          <span class="hero-badge">Скидки и цены</span>
-          <span class="hero-badge">Жанры и категории</span>
-        </div>
-      </div>
-    </header>
-
-    <section class="filter-panel" aria-label="Фильтры каталога">
-      <label class="filter-field search-field">
-        Поиск игр
-        <input class="search-input" id="searchInput" type="search" placeholder="Название, жанр, издатель..." autocomplete="off" />
-      </label>
-
-      <label class="filter-field">
-        Жанры
-        <select class="filter-control" id="genreFilter">
-          <option value="all">Все жанры</option>
-        </select>
-      </label>
-
-      <label class="filter-field">
-        Платформа
-        <select class="filter-control" id="sourceFilter">
-          <option value="all">Steam и Epic</option>
-          <option value="steam">Steam</option>
-          <option value="epic">Epic Games</option>
-          <option value="steam+epic">Steam + Epic</option>
-        </select>
-      </label>
-
-      <label class="filter-field">
-        Цена
-        <select class="filter-control" id="priceFilter">
-          <option value="all">Любая цена</option>
-          <option value="free">Бесплатные</option>
-          <option value="under-5">До $5</option>
-          <option value="under-10">До $10</option>
-          <option value="under-30">До $30</option>
-          <option value="sale">Со скидкой</option>
-        </select>
-      </label>
-
-      <label class="filter-field">
-        Особенности
-        <select class="filter-control" id="featuresFilter">
-          <option value="all">Все особенности</option>
-          <option value="single">Одиночная игра</option>
-          <option value="achievements">Достижения</option>
-          <option value="cloud">Облачные сохранения</option>
-          <option value="controller">Контроллер</option>
-          <option value="family">Семейный доступ</option>
-        </select>
-      </label>
-
-      <button class="reset-btn" id="resetFiltersBtn" type="button">Сбросить</button>
-    </section>
-
-    <div class="catalog-actions">
-      <div class="counter">Найдено: <strong id="counterValue">0</strong></div>
-      <button class="load-btn" id="loadAllBtn" type="button">Загрузить каталог</button>
-    </div>
-
-    <div class="progress" id="progress">
-      <div class="progress-fill" id="progressFill"></div>
-    </div>
-
-    <div class="section-head" id="catalog">
-      <h2 class="section-title-main">Популярные игры</h2>
-      <p class="section-note">Карточки обновляются по мере загрузки данных из магазинов.</p>
-    </div>
-
-    <div class="catalog-shell">
-      <section class="games-grid" id="gamesGrid"></section>
-
-      <aside class="detail-panel" id="detailPanel" aria-label="Выбранная игра">
-        <div class="detail-empty">
-          <span class="detail-empty-icon">✦</span>
-          <strong>Выберите игру</strong>
-          <p>Справа появится премиальная карточка с ценой, магазином и особенностями.</p>
-        </div>
-      </aside>
-    </div>
-
-    <div class="empty-state" id="emptyState">
-      <strong>Игры с таким названием не найдены</strong>
-      <span>Попробуйте другое название или серию.</span>
-    </div>
-
-    <section class="feature-strip" aria-label="Преимущества каталога">
-      <div class="feature-item">
-        <span class="feature-icon">✦</span>
-        <span><strong>Надёжные магазины</strong>Показываем игры с проверяемыми карточками Steam или Epic.</span>
-      </div>
-      <div class="feature-item">
-        <span class="feature-icon">⌁</span>
-        <span><strong>Безопасные покупки</strong>Переходы ведут на официальные страницы магазинов.</span>
-      </div>
-      <div class="feature-item">
-        <span class="feature-icon">%</span>
-        <span><strong>Лучшие цены</strong>Сравнение регионов и статуса бесплатности.</span>
-      </div>
-    </section>
-
-    <section class="news-section" id="news" aria-label="Новости CyberGames">
-      <div class="section-head">
-        <h2 class="section-title-main">Новости</h2>
-        <p class="section-note">Короткие обновления каталога и интерфейса.</p>
-      </div>
-      <div class="news-grid">
-        <article class="news-card">
-          <span class="news-date">Update</span>
-          <h3>Скидки теперь открываются как фильтр</h3>
-          <p>Вкладка «Скидки» сразу показывает игры, где Steam или Epic отдали цену со снижением.</p>
-        </article>
-        <article class="news-card">
-          <span class="news-date">Catalog</span>
-          <h3>Каталог без пустых карточек</h3>
-          <p>Игры без изображения, цены или проверяемой страницы магазина остаются вне основной выдачи.</p>
-        </article>
-        <article class="news-card">
-          <span class="news-date">UX</span>
-          <h3>Фокус на покупке без лишнего шума</h3>
-          <p>Быстрые действия в шапке убраны, чтобы интерфейс был чище и быстрее.</p>
-        </article>
-      </div>
-    </section>
-  </main>
-
-  <div class="modal" id="gameModal" aria-hidden="true">
-    <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-      <div class="modal-content">
-        <button class="modal-close" id="modalClose" type="button" aria-label="Закрыть окно">×</button>
-
-        <div class="modal-hero" id="modalHero">
-          <img class="modal-poster" id="modalPoster" src="" alt="" />
-          <div class="modal-main-info">
-            <h2 class="modal-title" id="modalTitle"></h2>
-            <div class="modal-meta" id="modalMeta"></div>
-            <p class="modal-description" id="modalDescription"></p>
-          </div>
-        </div>
-
-        <div class="modal-body">
-          <section class="section">
-            <h3 class="section-title"><span>01.</span> Галерея</h3>
-            <div class="screens-grid" id="screensGrid"></div>
-          </section>
-
-          <section class="section">
-            <h3 class="section-title"><span>02.</span> Магазины и цены</h3>
-            <div class="stores-layout">
-              <div class="price-box">
-                <div class="box-header">
-                  Цены магазинов
-                  <small>USD, RUB, KZT и UAH. Если игра бесплатная — будет указано «Бесплатно».</small>
-                </div>
-                <div class="price-grid" id="priceGrid"></div>
-                <p class="live-status" id="liveStatus"></p>
-              </div>
-
-              <div class="store-box">
-                <div class="box-header">
-                  Магазины
-                  <small>Steam и Epic — официальные страницы или поиск по названию.</small>
-                </div>
-                <div class="store-links" id="storeLinks"></div>
-              </div>
-            </div>
-          </section>
-
-          <section class="section">
-            <h3 class="section-title"><span>03.</span> Особенности</h3>
-            <div class="detail-features modal-features" id="modalFeatures"></div>
-          </section>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <script>
     const games = [
       {
             "id": 1,
@@ -3420,15 +1487,15 @@
       }
 ];
     const currencies = [
-      { code: "RUB", label: "Рубли", flag: "🇷🇺" },
-      { code: "USD", label: "Доллары", flag: "🇺🇸" },
-      { code: "KZT", label: "Тенге", flag: "🇰🇿" },
-      { code: "UAH", label: "Гривны", flag: "🇺🇦" }
+      { code: "USD", label: "Доллары" },
+      { code: "RUB", label: "Рубли" },
+      { code: "KZT", label: "Тенге" },
+      { code: "UAH", label: "Гривны" }
     ];
 
-    const CURRENCY_STORAGE_KEY = "cybergames-selected-currency-v1";
     const CACHE_KEY = "cybergames-vercel-cache-v7-arcane-premium";
     const CACHE_TTL = 1000 * 60 * 60 * 6;
+    const WISHLIST_KEY = "cybergames-wishlist-v1";
     const FEATURED_ORDER = [
       "Cyberpunk 2077",
       "Ghostrunner",
@@ -3470,90 +1537,9 @@
     const storeLinks = document.getElementById("storeLinks");
     const modalFeatures = document.getElementById("modalFeatures");
     const detailPanel = document.getElementById("detailPanel");
-    const navLinks = Array.from(document.querySelectorAll(".nav-link"));
-    const currencyButtons = Array.from(document.querySelectorAll(".currency-btn"));
-    const catalogTitle = document.querySelector("#catalog .section-title-main");
-    const catalogNote = document.querySelector("#catalog .section-note");
-    const newsSection = document.getElementById("news");
 
     let currentModalId = null;
     let currentDetailId = null;
-    let selectedCurrency = loadSelectedCurrency();
-
-    function loadSelectedCurrency() {
-      try {
-        const saved = localStorage.getItem(CURRENCY_STORAGE_KEY);
-        return currencies.some((currency) => currency.code === saved) ? saved : "RUB";
-      } catch {
-        return "RUB";
-      }
-    }
-
-    function saveSelectedCurrency(code) {
-      try {
-        localStorage.setItem(CURRENCY_STORAGE_KEY, code);
-      } catch {
-        // localStorage может быть недоступен в приватном режиме — просто продолжаем без сохранения.
-      }
-    }
-
-    function currencyInfo(code = selectedCurrency) {
-      return currencies.find((currency) => currency.code === code) || currencies[0];
-    }
-
-    function priceUnavailable(price) {
-      if (!price) return true;
-      const label = String(price.label || "").trim();
-      return Boolean(price.unavailable) || !label || label === "Уточнить" || label === "Недоступно";
-    }
-
-    function pickCurrencyPrice(prices) {
-      if (!prices) return null;
-
-      const selected = prices[selectedCurrency];
-      if (selected && selected.free) return { item: selected, code: selectedCurrency, fallback: false };
-      if (!priceUnavailable(selected)) return { item: selected, code: selectedCurrency, fallback: false };
-
-      const usd = prices.USD;
-      if (usd && usd.free) return { item: usd, code: "USD", fallback: selectedCurrency !== "USD" };
-      if (!priceUnavailable(usd)) return { item: usd, code: "USD", fallback: selectedCurrency !== "USD" };
-
-      const available = Object.entries(prices).find(([, price]) => price && (price.free || !priceUnavailable(price)));
-      if (available) return { item: available[1], code: available[0], fallback: available[0] !== selectedCurrency };
-
-      return selected ? { item: selected, code: selectedCurrency, fallback: false } : null;
-    }
-
-    function updateCurrencyButtons() {
-      currencyButtons.forEach((button) => {
-        button.classList.toggle("active", button.dataset.currency === selectedCurrency);
-        button.setAttribute("aria-pressed", String(button.dataset.currency === selectedCurrency));
-      });
-    }
-
-    function refreshVisiblePrices() {
-      games.forEach((game) => {
-        if (getCard(game)) updateCard(game);
-      });
-
-      if (currentDetailId) {
-        const game = games.find((item) => item.id === currentDetailId);
-        if (game) renderDetailPanel(game);
-      }
-
-      if (currentModalId) {
-        const game = games.find((item) => item.id === currentModalId);
-        if (game) renderModal(game);
-      }
-    }
-
-    function setCurrency(code) {
-      if (!currencies.some((currency) => currency.code === code) || selectedCurrency === code) return;
-      selectedCurrency = code;
-      saveSelectedCurrency(code);
-      updateCurrencyButtons();
-      refreshVisiblePrices();
-    }
 
     function normalize(value) {
       return String(value || "")
@@ -3824,6 +1810,47 @@
     }
 
 
+    function getWishlist() {
+      try {
+        return new Set(JSON.parse(localStorage.getItem(WISHLIST_KEY) || "[]"));
+      } catch {
+        return new Set();
+      }
+    }
+
+    function writeWishlist(set) {
+      try {
+        localStorage.setItem(WISHLIST_KEY, JSON.stringify([...set]));
+      } catch {
+        // не критично
+      }
+    }
+
+    function isWishlisted(id) {
+      return getWishlist().has(String(id));
+    }
+
+    function toggleWishlist(id) {
+      const wishlist = getWishlist();
+      const key = String(id);
+      if (wishlist.has(key)) wishlist.delete(key);
+      else wishlist.add(key);
+      writeWishlist(wishlist);
+      updateFavoriteIcons();
+      if (currentDetailId === id) renderDetailPanel(games.find((item) => item.id === id));
+    }
+
+    function updateFavoriteIcons() {
+      document.querySelectorAll(".game-card").forEach((card) => {
+        const chip = card.querySelector(".favorite-chip");
+        if (!chip) return;
+        const active = isWishlisted(Number(card.dataset.id));
+        chip.classList.toggle("active", active);
+        chip.textContent = active ? "♥" : "♡";
+        chip.setAttribute("aria-label", active ? "Убрать из избранного" : "Добавить в избранное");
+      });
+    }
+
     function catalogCandidates() {
       const orderMap = new Map(FEATURED_ORDER.map((title, index) => [normalize(title), index]));
       return games
@@ -3855,31 +1882,25 @@
         };
       }
 
-      for (const [key, label, prices] of providerEntries(game)) {
-        const picked = pickCurrencyPrice(prices);
-        const preferred = picked?.item;
-        if (!preferred || priceUnavailable(preferred)) continue;
-
-        const fallbackText = picked.fallback ? ` · ${picked.code}` : "";
-        return {
-          label: preferred.free ? "Бесплатно" : `${preferred.label || "Уточнить"}${fallbackText}`,
-          oldLabel: preferred.originalLabel || preferred.original_price || "",
-          discount: Number(preferred.discount) || 0,
-          provider: label,
-          key,
-          currency: picked.code,
-          fallback: picked.fallback
-        };
-      }
-
       if (gameIsFree(game)) {
         const source = providerEntries(game).find(([, , prices]) => Object.values(prices || {}).some((price) => price && price.free));
         return { label: "Бесплатно", oldLabel: "", discount: 0, provider: source?.[1] || providerLabel(game.data) };
       }
 
+      for (const [key, label, prices] of providerEntries(game)) {
+        const preferred = prices.USD || Object.values(prices || {}).find((price) => price && !price.unavailable);
+        if (!preferred || preferred.unavailable || preferred.label === "Уточнить" || preferred.label === "Недоступно") continue;
+        return {
+          label: preferred.label || "Уточнить",
+          oldLabel: preferred.originalLabel || preferred.original_price || "",
+          discount: Number(preferred.discount) || 0,
+          provider: label,
+          key
+        };
+      }
+
       return { label: "Цена уточняется", oldLabel: "", discount: 0, provider: providerLabel(game.data) };
     }
-
 
     function bestStoreLink(game) {
       const data = game?.data || {};
@@ -4014,6 +2035,7 @@
           <div class="card-inner">
             <div class="poster-wrap">
               <img class="poster" src="${initialCardImage(game)}" alt="Обложка ${escapeAttr(game.title)}">
+              <span class="favorite-chip" role="button" aria-label="Добавить в избранное">♡</span>
               <span class="store-mini">Steam</span>
               <span class="status-pill">Ожидает</span>
               <span class="free-badge">Бесплатно</span>
@@ -4037,7 +2059,12 @@
           </div>
         `;
 
-        card.addEventListener("click", () => {
+        card.addEventListener("click", (event) => {
+          if (event.target.closest(".favorite-chip")) {
+            event.stopPropagation();
+            toggleWishlist(game.id);
+            return;
+          }
           selectGame(game.id);
         });
 
@@ -4046,6 +2073,7 @@
 
       gamesGrid.appendChild(fragment);
       updateCounter(catalog.length);
+      updateFavoriteIcons();
       observeCards();
 
       const featured = games.find((game) => normalize(game.title) === normalize("Cyberpunk 2077") && getCard(game));
@@ -4142,6 +2170,7 @@
       }
 
       if (currentDetailId === game.id) renderDetailPanel(game);
+      updateFavoriteIcons();
     }
 
     function updateCounter(count) {
@@ -4227,6 +2256,7 @@
         ? screenshots.map((url, index) => `<img src="${escapeAttr(url)}" alt="Скриншот ${index + 1} из игры ${escapeAttr(title)}">`).join("")
         : `<span class="detail-thumb-placeholder">Скриншоты загрузятся после API</span><span class="detail-thumb-placeholder">Steam / Epic</span><span class="detail-thumb-placeholder">Без фейков</span>`;
       const genre = gameTags(data)[0] || "Cyberpunk";
+      const wished = isWishlisted(game.id);
       const description = data.description || game.error || "Данные загружаются через Vercel API. Если Steam/Epic не найдут игру, карточка будет скрыта из основного каталога.";
 
       detailPanel.innerHTML = `
@@ -4250,11 +2280,15 @@
             </div>
             <div class="detail-actions">
               <a class="buy-button" href="${escapeAttr(store.url)}" target="_blank" rel="noopener noreferrer">🛒 Купить в ${escapeHtml(store.name)}</a>
+              <button class="wishlist-button ${wished ? "active" : ""}" type="button" id="detailWishlistBtn">${wished ? "♥ В списке желаний" : "♡ В список желаний"}</button>
             </div>
             <div class="detail-features">${detailFeaturesHtml(data)}</div>
           </div>
         </div>
       `;
+
+      const wishlistButton = detailPanel.querySelector("#detailWishlistBtn");
+      if (wishlistButton) wishlistButton.addEventListener("click", () => toggleWishlist(game.id));
     }
 
     async function openDetailPanel(id) {
@@ -4293,55 +2327,49 @@
 
     function renderPrices(game) {
       const rawPrices = game.data && game.data.prices ? game.data.prices : {};
-      const providerRows = [];
-      const selected = currencyInfo();
+      const providerEntries = [];
 
-      if (rawPrices.steam) providerRows.push(["steam", "Steam", rawPrices.steam]);
-      if (rawPrices.epic) providerRows.push(["epic", "Epic", rawPrices.epic]);
+      if (rawPrices.steam) providerEntries.push(["steam", "Steam", rawPrices.steam]);
+      if (rawPrices.epic) providerEntries.push(["epic", "Epic", rawPrices.epic]);
 
-      if (!providerRows.length && rawPrices.USD) {
-        providerRows.push(["steam", "Steam", rawPrices]);
+      if (!providerEntries.length && rawPrices.USD) {
+        providerEntries.push(["steam", "Steam", rawPrices]);
       }
 
-      if (!providerRows.length) {
-        priceGrid.innerHTML = `
+      if (!providerEntries.length) {
+        priceGrid.innerHTML = currencies.map((currency) => `
           <div class="price-item">
-            <span class="price-currency">${selected.flag} ${selected.label} / ${selected.code}</span>
+            <span class="price-currency">${currency.label} / ${currency.code}</span>
             <span class="price-value">Нет данных</span>
           </div>
-        `;
+        `).join("");
 
         liveStatus.textContent = "Точной цены нет: Steam/Epic не отдали карточку или игра отсутствует в этих магазинах.";
         return;
       }
 
-      priceGrid.innerHTML = providerRows.map(([key, providerName, prices]) => {
-        const picked = pickCurrencyPrice(prices);
-        const item = picked?.item || { label: "Уточнить", unavailable: true };
-        const shownCurrency = currencyInfo(picked?.code || selectedCurrency);
-        const discount = item.discount ? ` · скидка ${item.discount}%` : "";
-        const fallback = picked?.fallback ? ` · показано в ${shownCurrency.code}` : "";
-        const value = item.free ? "Бесплатно" : (item.label || "Уточнить");
+      priceGrid.innerHTML = providerEntries.map(([key, providerName, prices]) => {
+        return currencies.map((currency) => {
+          const item = prices[currency.code] || { label: "Уточнить" };
+          const discount = item.discount ? ` · скидка ${item.discount}%` : "";
 
-        return `
-          <div class="price-item">
-            <span class="price-currency">${providerName} · ${shownCurrency.flag} ${shownCurrency.label} / ${shownCurrency.code}${discount}${fallback}</span>
-            <span class="price-value ${item.free ? "free" : ""}">${value}</span>
-          </div>
-        `;
+          return `
+            <div class="price-item">
+              <span class="price-currency">${providerName} ${currency.label} / ${currency.code}${discount}</span>
+              <span class="price-value ${item.free ? "free" : ""}">${item.free ? "Бесплатно" : item.label}</span>
+            </div>
+          `;
+        }).join("");
       }).join("");
 
       if (game.data && game.data.isFree) {
         liveStatus.textContent = "Один из магазинов помечает игру как бесплатную.";
-      } else if (providerRows.some(([, , prices]) => pickCurrencyPrice(prices)?.fallback)) {
-        liveStatus.textContent = `Для ${selected.label.toLowerCase()} цена есть не у всех магазинов, поэтому сайт показывает ближайшую доступную валюту.`;
       } else if (game.status === "done") {
-        liveStatus.textContent = `Цены показаны в валюте: ${selected.flag} ${selected.label}. Steam и Epic могут отличаться по регионам, скидкам и доступности.`;
+        liveStatus.textContent = "Цены загружены через Vercel API. Steam и Epic могут отличаться по регионам, скидкам и доступности.";
       } else {
         liveStatus.textContent = "Точной цены нет, потому что магазин не отдал карточку.";
       }
     }
-
 
     function renderStores(game) {
       const title = game.data?.title || game.title;
@@ -4451,84 +2479,19 @@
       setTimeout(() => progress.classList.remove("show"), 1200);
     }
 
-    function setActiveNav(target) {
-      navLinks.forEach((link) => {
-        link.classList.toggle("active", link.dataset.nav === target);
-      });
-    }
-
-    function setCatalogHeading(title, note) {
-      if (catalogTitle) catalogTitle.textContent = title;
-      if (catalogNote) catalogNote.textContent = note;
-    }
-
-    function setEmptyMessage(title, note) {
-      const strong = emptyState.querySelector("strong");
-      const span = emptyState.querySelector("span");
-      if (strong) strong.textContent = title;
-      if (span) span.textContent = note;
-    }
-
-    function scrollToBlock(target) {
-      if (!target) return;
-      target.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-
-    function resetCatalogView() {
-      searchInput.value = "";
-      sourceFilter.value = "all";
-      genreFilter.value = "all";
-      priceFilter.value = "all";
-      featuresFilter.value = "all";
-      setActiveNav("catalog");
-      setCatalogHeading("Популярные игры", "Карточки обновляются по мере загрузки данных из магазинов.");
-      setEmptyMessage("Игры с таким названием не найдены", "Попробуйте другое название или серию.");
-      filterGames();
-    }
-
-    function showDealsView() {
-      priceFilter.value = "sale";
-      setActiveNav("deals");
-      setCatalogHeading("Игры со скидкой", "Показываем карточки, где Steam или Epic отдали активную скидку. Если пусто — нажмите «Загрузить каталог».");
-      setEmptyMessage("Скидки пока не найдены", "Загрузите каталог или проверьте позже: скидки зависят от ответа Steam/Epic.");
-      filterGames();
-    }
-
-    updateCurrencyButtons();
-    currencyButtons.forEach((button) => {
-      button.addEventListener("click", () => setCurrency(button.dataset.currency));
-    });
-
-    navLinks.forEach((link) => {
-      link.addEventListener("click", (event) => {
-        event.preventDefault();
-        const target = link.dataset.nav;
-
-        if (target === "catalog") {
-          resetCatalogView();
-          scrollToBlock(document.getElementById("catalog"));
-          return;
-        }
-
-        if (target === "deals") {
-          showDealsView();
-          scrollToBlock(document.getElementById("catalog"));
-          return;
-        }
-
-        if (target === "news") {
-          setActiveNav("news");
-          scrollToBlock(newsSection);
-        }
-      });
-    });
-
     searchInput.addEventListener("input", filterGames);
     sourceFilter.addEventListener("change", filterGames);
     genreFilter.addEventListener("change", filterGames);
     priceFilter.addEventListener("change", filterGames);
     featuresFilter.addEventListener("change", filterGames);
-    resetFiltersBtn.addEventListener("click", resetCatalogView);
+    resetFiltersBtn.addEventListener("click", () => {
+      searchInput.value = "";
+      sourceFilter.value = "all";
+      genreFilter.value = "all";
+      priceFilter.value = "all";
+      featuresFilter.value = "all";
+      filterGames();
+    });
     loadAllBtn.addEventListener("click", loadAll);
     modalClose.addEventListener("click", closeModal);
     modal.addEventListener("click", (event) => {
@@ -4547,6 +2510,4 @@
     });
 
     renderCards();
-  </script>
-</body>
-</html>
+  
