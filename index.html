@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>CyberGames — каталог киберпанк-игр</title>
+  <title>CyberGames — Steam + Epic каталог киберпанк-игр</title>
 
   <style>
     :root {
@@ -199,9 +199,68 @@
       transition: width .25s ease;
     }
 
+
+    .filter-panel {
+      width: min(1180px, 100%);
+      margin: 0 auto 26px;
+      padding: 16px;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      border-radius: 20px;
+      border: 1px solid rgba(0, 243, 255, 0.22);
+      background: rgba(255, 255, 255, 0.045);
+      box-shadow: 0 16px 44px rgba(0, 0, 0, 0.24);
+    }
+
+    .filter-field {
+      display: grid;
+      gap: 7px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: .6px;
+    }
+
+    .filter-control {
+      min-height: 44px;
+      width: 100%;
+      padding: 0 13px;
+      border-radius: 14px;
+      border: 1px solid rgba(0, 243, 255, 0.24);
+      outline: none;
+      background: rgba(5, 5, 9, 0.74);
+      color: var(--text);
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .filter-control:focus {
+      border-color: var(--cyan);
+      box-shadow: 0 0 0 3px rgba(0, 243, 255, 0.12);
+    }
+
+    .reset-btn {
+      min-height: 44px;
+      align-self: end;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 0, 85, 0.38);
+      background: rgba(255, 0, 85, 0.09);
+      color: var(--text);
+      font-weight: 950;
+      cursor: pointer;
+      transition: var(--speed);
+    }
+
+    .reset-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 24px rgba(255, 0, 85, 0.2);
+    }
+
     .games-grid {
       display: grid;
-      grid-template-columns: repeat(5, minmax(0, 1fr));
+      grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 20px;
     }
 
@@ -240,7 +299,7 @@
 
     .poster-wrap {
       position: relative;
-      aspect-ratio: 3 / 4;
+      aspect-ratio: 16 / 9;
       background: #090b14;
       overflow: hidden;
     }
@@ -248,8 +307,10 @@
     .poster {
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      object-fit: contain;
+      object-position: center;
       display: block;
+      background: #050509;
       transition: transform var(--speed);
     }
 
@@ -659,7 +720,7 @@
     }
 
     @media (max-width: 1280px) {
-      .games-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+      .games-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     }
 
     @media (max-width: 1024px) {
@@ -671,6 +732,7 @@
     @media (max-width: 760px) {
       .page { padding: 24px 14px 46px; }
       .toolbar { grid-template-columns: 1fr; }
+      .filter-panel { grid-template-columns: 1fr; }
       .counter, .load-btn { justify-self: center; }
       .games-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 15px; }
       .card-title { font-size: 16px; min-height: auto; }
@@ -698,7 +760,7 @@
         <h1 class="logo">Cyber<span>Games</span></h1>
         <p class="subtitle">
           Публичный каталог киберпанк-игр для Vercel: фронтенд обращается к своему API,
-          а API подтягивает обложки, скриншоты, описания, цены и статус бесплатности из Steam.
+          а API подтягивает обложки, скриншоты, описания, жанры, категории, цены и статус бесплатности из Steam и Epic Games Store.
         </p>
       </div>
 
@@ -711,12 +773,47 @@
 
     <p class="hint">
       <strong>Важно:</strong> сайт работает на публикации через Vercel, потому что запросы в Steam идут через
-      <b>/api/steam</b>. Для игр вне Steam сайт честно покажет, что данных нет, а не поставит левую обложку.
+      <b>/api/steam</b>. Главные карточки показывают широкие изображения без кривого кропа; фильтры работают по источнику, жанру/категории и цене.
     </p>
 
     <div class="progress" id="progress">
       <div class="progress-fill" id="progressFill"></div>
     </div>
+
+    <section class="filter-panel" aria-label="Фильтры каталога">
+      <label class="filter-field">
+        Источник
+        <select class="filter-control" id="sourceFilter">
+          <option value="all">Все источники</option>
+          <option value="steam">Steam</option>
+          <option value="epic">Epic Games Store</option>
+          <option value="steam+epic">Steam + Epic</option>
+          <option value="no-data">Нет данных</option>
+        </select>
+      </label>
+
+      <label class="filter-field">
+        Жанр / категория
+        <select class="filter-control" id="genreFilter">
+          <option value="all">Все жанры</option>
+        </select>
+      </label>
+
+      <label class="filter-field">
+        Цена
+        <select class="filter-control" id="priceFilter">
+          <option value="all">Любая цена</option>
+          <option value="free">Бесплатные</option>
+          <option value="under-5">До $5</option>
+          <option value="under-10">До $10</option>
+          <option value="under-30">До $30</option>
+          <option value="sale">Со скидкой</option>
+          <option value="unavailable">Цена недоступна</option>
+        </select>
+      </label>
+
+      <button class="reset-btn" id="resetFiltersBtn" type="button">Сбросить фильтры</button>
+    </section>
 
     <section class="games-grid" id="gamesGrid"></section>
 
@@ -2267,7 +2364,7 @@
       { code: "UAH", label: "Гривны" }
     ];
 
-    const CACHE_KEY = "cybergames-vercel-cache-v1";
+    const CACHE_KEY = "cybergames-vercel-cache-v3-filters";
     const CACHE_TTL = 1000 * 60 * 60 * 6;
 
     const gamesGrid = document.getElementById("gamesGrid");
@@ -2277,6 +2374,10 @@
     const loadAllBtn = document.getElementById("loadAllBtn");
     const progress = document.getElementById("progress");
     const progressFill = document.getElementById("progressFill");
+    const sourceFilter = document.getElementById("sourceFilter");
+    const genreFilter = document.getElementById("genreFilter");
+    const priceFilter = document.getElementById("priceFilter");
+    const resetFiltersBtn = document.getElementById("resetFiltersBtn");
 
     const modal = document.getElementById("gameModal");
     const modalClose = document.getElementById("modalClose");
@@ -2388,9 +2489,10 @@
 
         if (!response.ok || !data.ok) {
           game.status = "failed";
-          game.error = data.reason || data.error || "Steam не нашёл данные";
+          game.error = data.reason || data.error || "Steam/Epic не нашли данные";
           game.data = data;
           updateCard(game);
+          filterGames();
           return data;
         }
 
@@ -2401,33 +2503,201 @@
         game.status = "failed";
         game.error = error.message || "Ошибка API";
         updateCard(game);
+        filterGames();
         return null;
       }
     }
+
+
+    function uniqueList(values) {
+      const seen = new Set();
+      const result = [];
+
+      values
+        .filter(Boolean)
+        .map((item) => String(item).trim())
+        .filter(Boolean)
+        .forEach((item) => {
+          const key = normalize(item);
+          if (!key || seen.has(key)) return;
+          seen.add(key);
+          result.push(item);
+        });
+
+      return result;
+    }
+
+    function gameTags(data) {
+      if (!data) return [];
+      return uniqueList([
+        ...(Array.isArray(data.genres) ? data.genres : []),
+        ...(Array.isArray(data.categories) ? data.categories : [])
+      ]);
+    }
+
+    function populateGenreFilter() {
+      const selected = genreFilter.value || "all";
+      const tags = uniqueList(games.flatMap((game) => game.data ? gameTags(game.data) : []))
+        .sort((a, b) => a.localeCompare(b, "ru"));
+
+      genreFilter.innerHTML = `<option value="all">Все жанры</option>` + tags
+        .map((tag) => `<option value="${normalize(tag)}">${tag}</option>`)
+        .join("");
+
+      if ([...genreFilter.options].some((option) => option.value === selected)) {
+        genreFilter.value = selected;
+      }
+    }
+
+    function getProvider(data) {
+      return data && data.provider ? data.provider : "none";
+    }
+
+    function parsePriceNumber(label) {
+      if (!label) return null;
+
+      const text = String(label).replace(/\s/g, "").replace(",", ".");
+      const match = text.match(/(\d+(?:\.\d+)?)/);
+
+      if (!match) return null;
+      const value = Number(match[1]);
+
+      return Number.isFinite(value) ? value : null;
+    }
+
+    function getPriceEntries(game) {
+      const prices = game.data && game.data.prices ? game.data.prices : {};
+      const entries = [];
+
+      if (prices.steam) entries.push(prices.steam);
+      if (prices.epic) entries.push(prices.epic);
+      if (!entries.length && prices.USD) entries.push(prices);
+
+      return entries;
+    }
+
+    function getUsdPrices(game) {
+      return getPriceEntries(game)
+        .map((entry) => entry.USD)
+        .filter(Boolean);
+    }
+
+    function gameIsFree(game) {
+      if (game.data && game.data.isFree) return true;
+      return getUsdPrices(game).some((price) => price.free || String(price.label || "").toLowerCase().includes("free") || String(price.label || "").toLowerCase().includes("бесплат"));
+    }
+
+    function gameHasDiscount(game) {
+      return getPriceEntries(game).some((entry) => {
+        return Object.values(entry || {}).some((price) => Number(price && price.discount) > 0);
+      });
+    }
+
+    function gameMinUsd(game) {
+      if (gameIsFree(game)) return 0;
+
+      const numbers = getUsdPrices(game)
+        .filter((price) => price && !price.unavailable)
+        .map((price) => parsePriceNumber(price.label))
+        .filter((value) => Number.isFinite(value));
+
+      return numbers.length ? Math.min(...numbers) : null;
+    }
+
+    function sourceMatches(game, value) {
+      if (value === "all") return true;
+
+      const provider = getProvider(game.data);
+
+      if (value === "no-data") {
+        return game.status === "failed" || provider === "none";
+      }
+
+      if (!game.data) return false;
+
+      if (value === "steam") return provider === "steam" || provider === "steam+epic";
+      if (value === "epic") return provider === "epic" || provider === "steam+epic";
+      if (value === "steam+epic") return provider === "steam+epic";
+
+      return true;
+    }
+
+    function genreMatches(game, value) {
+      if (value === "all") return true;
+      if (!game.data) return false;
+
+      return gameTags(game.data).some((tag) => normalize(tag) === value);
+    }
+
+    function priceMatches(game, value) {
+      if (value === "all") return true;
+
+      if (value === "unavailable") {
+        if (game.status === "failed") return true;
+        const prices = getUsdPrices(game);
+        return game.data && (!prices.length || prices.every((price) => price.unavailable || price.label === "Уточнить" || price.label === "Недоступно"));
+      }
+
+      if (!game.data) return false;
+
+      if (value === "free") return gameIsFree(game);
+      if (value === "sale") return gameHasDiscount(game);
+
+      const minUsd = gameMinUsd(game);
+      if (!Number.isFinite(minUsd)) return false;
+
+      if (value === "under-5") return minUsd <= 5;
+      if (value === "under-10") return minUsd <= 10;
+      if (value === "under-30") return minUsd <= 30;
+
+      return true;
+    }
+
 
     function applyGameData(game, data) {
       game.status = "done";
       game.data = data;
       game.resolvedTitle = data.title || game.title;
-      game.searchText = normalize(`${game.title} ${data.title} ${data.description || ""} ${(data.genres || []).join(" ")}`);
+      game.searchText = normalize(`${game.title} ${data.title} ${data.description || ""} ${(data.genres || []).join(" ")} ${(data.categories || []).join(" ")}`);
       updateCard(game);
+      populateGenreFilter();
+      filterGames();
+    }
+
+    function initialCardImage(game) {
+      if (game.appId) {
+        return `https://cdn.akamai.steamstatic.com/steam/apps/${game.appId}/header.jpg`;
+      }
+
+      return createPlaceholder(game.title, true);
     }
 
     function cardImage(game) {
-      if (game.data && game.data.cover) return game.data.cover;
+      if (game.data && game.data.cardImage) return game.data.cardImage;
       if (game.data && game.data.header) return game.data.header;
-      return createPlaceholder(game.title);
+      if (game.data && game.data.cover) return game.data.cover;
+      return initialCardImage(game);
     }
 
     function heroImage(game) {
       if (game.data && game.data.hero) return game.data.hero;
       if (game.data && game.data.header) return game.data.header;
+      if (game.data && game.data.cardImage) return game.data.cardImage;
       return createPlaceholder(game.title, true);
     }
 
     function posterImage(game) {
       if (game.data && game.data.portrait) return game.data.portrait;
+      if (game.data && game.data.cover) return game.data.cover;
       return cardImage(game);
+    }
+
+    function providerLabel(data) {
+      if (!data) return "Vercel API";
+      if (data.provider === "steam+epic") return "Steam + Epic";
+      if (data.provider === "epic") return "Epic OK";
+      if (data.provider === "steam") return "Steam OK";
+      return "API OK";
     }
 
     function renderCards() {
@@ -2446,7 +2716,7 @@
         card.innerHTML = `
           <div class="card-inner">
             <div class="poster-wrap">
-              <img class="poster" src="${createPlaceholder(game.title)}" alt="Обложка ${game.title}">
+              <img class="poster" src="${initialCardImage(game)}" alt="Обложка ${game.title}">
               <span class="status-pill">Ожидает</span>
               <span class="free-badge">Бесплатно</span>
             </div>
@@ -2456,7 +2726,7 @@
                 <span class="release">—</span>
                 <span class="type">Steam lookup</span>
               </div>
-              <p class="card-description">Данные загрузятся через Vercel API: обложка, скриншоты, описание, цены и статус бесплатности.</p>
+              <p class="card-description">Данные загрузятся через Vercel API: обложка, скриншоты, описание, цены и статус бесплатности из Steam/Epic.</p>
               <div class="tag-row">
                 <span class="tag">Cyberpunk</span>
                 <span class="tag">Vercel API</span>
@@ -2502,12 +2772,12 @@
         poster.src = createPlaceholder(game.title);
         title.textContent = game.title;
         release.textContent = "—";
-        type.textContent = "нет Steam data";
-        desc.textContent = game.error || "Steam не нашёл данные. Фейковую обложку не ставлю.";
+        type.textContent = "нет Steam/Epic data";
+        desc.textContent = game.error || "Steam/Epic не нашли данные. Фейковую обложку не ставлю.";
         status.textContent = "Нет данных";
         status.className = "status-pill fail";
         freeBadge.classList.remove("show");
-        tagRow.innerHTML = `<span class="tag">Поиск по магазинам</span><span class="tag">Нет Steam data</span>`;
+        tagRow.innerHTML = `<span class="tag">Поиск по магазинам</span><span class="tag">Нет Steam/Epic data</span>`;
       }
 
       if (game.status === "done" && game.data) {
@@ -2522,14 +2792,14 @@
         release.textContent = data.releaseDate || "—";
         type.textContent = data.type || "game";
         desc.textContent = data.description || "Описание не найдено.";
-        status.textContent = "Steam OK";
+        status.textContent = providerLabel(data);
         status.className = "status-pill ok";
 
         if (data.isFree) freeBadge.classList.add("show");
         else freeBadge.classList.remove("show");
 
-        const tags = (data.genres || []).slice(0, 3).map((tag) => `<span class="tag">${tag}</span>`).join("");
-        tagRow.innerHTML = `${data.isFree ? '<span class="tag">Бесплатно</span>' : '<span class="tag">Steam</span>'}${tags}`;
+        const tags = gameTags(data).slice(0, 4).map((tag) => `<span class="tag">${tag}</span>`).join("");
+        tagRow.innerHTML = `${data.isFree ? '<span class="tag">Бесплатно</span>' : ""}<span class="tag">${providerLabel(data)}</span>${tags}`;
       }
     }
 
@@ -2539,11 +2809,24 @@
 
     function filterGames() {
       const query = normalize(searchInput.value);
+      const sourceValue = sourceFilter.value;
+      const genreValue = genreFilter.value;
+      const priceValue = priceFilter.value;
+
       let visible = 0;
 
       document.querySelectorAll(".game-card").forEach((card) => {
-        const match = card.dataset.search.includes(query);
+        const id = Number(card.dataset.id);
+        const game = games.find((item) => item.id === id);
+
+        const textMatch = card.dataset.search.includes(query);
+        const sourceMatch = game ? sourceMatches(game, sourceValue) : true;
+        const genreMatch = game ? genreMatches(game, genreValue) : true;
+        const priceMatch = game ? priceMatches(game, priceValue) : true;
+
+        const match = textMatch && sourceMatch && genreMatch && priceMatch;
         card.classList.toggle("hidden", !match);
+
         if (match) visible++;
       });
 
@@ -2589,26 +2872,48 @@
     }
 
     function renderPrices(game) {
-      const prices = game.data && game.data.prices ? game.data.prices : {};
+      const rawPrices = game.data && game.data.prices ? game.data.prices : {};
+      const providerEntries = [];
 
-      priceGrid.innerHTML = currencies.map((currency) => {
-        const item = prices[currency.code] || { label: game.status === "done" ? "Уточнить" : "Нет данных" };
-        const discount = item.discount ? ` · скидка ${item.discount}%` : "";
+      if (rawPrices.steam) providerEntries.push(["steam", "Steam", rawPrices.steam]);
+      if (rawPrices.epic) providerEntries.push(["epic", "Epic", rawPrices.epic]);
 
-        return `
+      if (!providerEntries.length && rawPrices.USD) {
+        providerEntries.push(["steam", "Steam", rawPrices]);
+      }
+
+      if (!providerEntries.length) {
+        priceGrid.innerHTML = currencies.map((currency) => `
           <div class="price-item">
-            <span class="price-currency">Steam ${currency.label} / ${currency.code}${discount}</span>
-            <span class="price-value ${item.free ? "free" : ""}">${item.free ? "Бесплатно" : item.label}</span>
+            <span class="price-currency">${currency.label} / ${currency.code}</span>
+            <span class="price-value">Нет данных</span>
           </div>
-        `;
+        `).join("");
+
+        liveStatus.textContent = "Точной цены нет: Steam/Epic не отдали карточку или игра отсутствует в этих магазинах.";
+        return;
+      }
+
+      priceGrid.innerHTML = providerEntries.map(([key, providerName, prices]) => {
+        return currencies.map((currency) => {
+          const item = prices[currency.code] || { label: "Уточнить" };
+          const discount = item.discount ? ` · скидка ${item.discount}%` : "";
+
+          return `
+            <div class="price-item">
+              <span class="price-currency">${providerName} ${currency.label} / ${currency.code}${discount}</span>
+              <span class="price-value ${item.free ? "free" : ""}">${item.free ? "Бесплатно" : item.label}</span>
+            </div>
+          `;
+        }).join("");
       }).join("");
 
       if (game.data && game.data.isFree) {
-        liveStatus.textContent = "Steam помечает игру как бесплатную.";
+        liveStatus.textContent = "Один из магазинов помечает игру как бесплатную.";
       } else if (game.status === "done") {
-        liveStatus.textContent = "Цены загружены через Vercel API. Скидки и доступность могут меняться.";
+        liveStatus.textContent = "Цены загружены через Vercel API. Steam и Epic могут отличаться по регионам, скидкам и доступности.";
       } else {
-        liveStatus.textContent = "Точной цены нет, потому что Steam не отдал карточку.";
+        liveStatus.textContent = "Точной цены нет, потому что магазин не отдал карточку.";
       }
     }
 
@@ -2620,10 +2925,13 @@
         epic: `https://store.epicgames.com/ru/browse?q=${encodeURIComponent(title)}&sortBy=relevancy&sortDir=DESC&count=40`
       };
 
+      const hasSteamDirect = Boolean(game.data?.sources?.steam?.url || game.data?.appId);
+      const hasEpicDirect = Boolean(game.data?.sources?.epic?.url);
+
       const links = [
-        { name: "Steam", note: game.data?.appId ? "Прямая страница Steam" : "Поиск в Steam", url: stores.steam },
-        { name: "GOG", note: "Поиск по названию", url: stores.gog },
-        { name: "Epic Games Store", note: "Поиск по названию", url: stores.epic }
+        { name: "Steam", note: hasSteamDirect ? "Прямая страница Steam" : "Поиск в Steam", url: stores.steam },
+        { name: "Epic Games Store", note: hasEpicDirect ? "Прямая страница Epic" : "Поиск в Epic", url: stores.epic },
+        { name: "GOG", note: "Поиск по названию", url: stores.gog }
       ];
 
       storeLinks.innerHTML = links.map((link) => `
@@ -2652,13 +2960,13 @@
       modalTitle.textContent = title;
       modalDescription.textContent = data.description || game.error || "Данные загружаются или недоступны.";
 
-      const genres = Array.isArray(data.genres) && data.genres.length
-        ? data.genres.map((genre) => `<span class="meta-pill">${genre}</span>`).join("")
+      const genres = gameTags(data).length
+        ? gameTags(data).slice(0, 12).map((genre) => `<span class="meta-pill">${genre}</span>`).join("")
         : '<span class="meta-pill">Cyberpunk</span>';
 
       modalMeta.innerHTML = `
         <span class="meta-pill cyan">${data.releaseDate || "—"}</span>
-        <span class="meta-pill magenta">${data.type || "Steam lookup"}</span>
+        <span class="meta-pill magenta">${providerLabel(data)}</span>
         ${data.isFree ? '<span class="meta-pill green">Бесплатно</span>' : ""}
         ${genres}
       `;
@@ -2718,6 +3026,16 @@
     }
 
     searchInput.addEventListener("input", filterGames);
+    sourceFilter.addEventListener("change", filterGames);
+    genreFilter.addEventListener("change", filterGames);
+    priceFilter.addEventListener("change", filterGames);
+    resetFiltersBtn.addEventListener("click", () => {
+      searchInput.value = "";
+      sourceFilter.value = "all";
+      genreFilter.value = "all";
+      priceFilter.value = "all";
+      filterGames();
+    });
     loadAllBtn.addEventListener("click", loadAll);
     modalClose.addEventListener("click", closeModal);
     modal.addEventListener("click", (event) => {
