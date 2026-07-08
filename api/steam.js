@@ -190,7 +190,9 @@ function normalizeSteamGame(originalTitle, appId, details, prices) {
     genres,
     categories,
     prices,
-    storeUrl: `https://store.steampowered.com/app/${appId}/`
+    storeUrl: `https://store.steampowered.com/app/${appId}/`,
+    developer: Array.isArray(details.developers) ? details.developers.join(", ") : "",
+    publisher: Array.isArray(details.publishers) ? details.publishers.join(", ") : ""
   };
 }
 
@@ -560,8 +562,7 @@ function mergeGames(originalTitle, steamGame, epicGame, appId) {
     prices,
     stores: {
       steam: steamGame?.storeUrl || `https://store.steampowered.com/search/?term=${encodeURIComponent(originalTitle)}`,
-      epic: epicGame?.storeUrl || `https://store.epicgames.com/ru/browse?q=${encodeURIComponent(originalTitle)}&sortBy=relevancy&sortDir=DESC&count=40`,
-      gog: `https://www.gog.com/en/games?query=${encodeURIComponent(primary.title || originalTitle)}`
+      epic: epicGame?.storeUrl || `https://store.epicgames.com/ru/browse?q=${encodeURIComponent(originalTitle)}&sortBy=relevancy&sortDir=DESC&count=40`
     }
   };
 }

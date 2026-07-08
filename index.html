@@ -1116,6 +1116,538 @@
         grid-template-columns: 1fr;
       }
     }
+  
+
+    /* Arcane anime cyberpunk redesign patch */
+    .topbar {
+      padding: 24px 30px 0;
+    }
+
+    .topbar::before {
+      content: "";
+      position: absolute;
+      left: 18px;
+      right: 18px;
+      top: 14px;
+      height: 72px;
+      z-index: -1;
+      border: 1px solid rgba(173, 212, 255, 0.12);
+      border-radius: 26px;
+      background: linear-gradient(90deg, rgba(5, 12, 24, 0.56), rgba(5, 12, 24, 0.24));
+      backdrop-filter: blur(14px);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.03), 0 0 34px rgba(45,247,255,.08);
+    }
+
+    .nav a {
+      position: relative;
+    }
+
+    .nav a.active::after,
+    .nav a:hover::after {
+      content: "";
+      position: absolute;
+      left: 16px;
+      right: 16px;
+      bottom: 3px;
+      height: 2px;
+      border-radius: 999px;
+      background: var(--cyan);
+      box-shadow: 0 0 14px var(--cyan);
+    }
+
+    .filter-panel {
+      width: min(1480px, 100%);
+      margin: -48px auto 14px;
+      grid-template-columns: minmax(240px, 1.4fr) repeat(4, minmax(140px, 1fr)) auto;
+      align-items: end;
+      position: relative;
+      z-index: 5;
+      border-color: rgba(45,247,255,.22);
+      background: linear-gradient(135deg, rgba(11,22,40,.76), rgba(15,27,50,.52));
+      box-shadow: 0 22px 70px rgba(0,0,0,.42), inset 0 0 0 1px rgba(255,255,255,.045);
+    }
+
+    .search-field .search-input {
+      min-height: 44px;
+      border-radius: 14px;
+      padding: 0 14px;
+      font-weight: 800;
+    }
+
+    .filter-control,
+    .search-input {
+      transition: transform var(--speed), border-color var(--speed), box-shadow var(--speed), background var(--speed);
+    }
+
+    .filter-control:hover,
+    .search-input:hover {
+      border-color: rgba(45,247,255,.48);
+      box-shadow: 0 0 22px rgba(45,247,255,.12);
+    }
+
+    .catalog-actions {
+      width: min(1480px, 100%);
+      margin: 0 auto 16px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .progress {
+      width: min(1480px, 100%);
+      margin-top: 0;
+    }
+
+    .section-head,
+    .feature-strip,
+    .empty-state {
+      width: min(1480px, 100%);
+    }
+
+    .catalog-shell {
+      width: min(1480px, 100%);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(380px, 430px);
+      gap: 24px;
+      align-items: start;
+    }
+
+    .games-grid {
+      width: 100%;
+      margin: 0;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .game-card.selected {
+      box-shadow: 0 28px 76px rgba(0,0,0,.58), 0 0 42px rgba(45,247,255,.26);
+      filter: brightness(1.06);
+    }
+
+    .favorite-chip,
+    .store-mini {
+      position: absolute;
+      z-index: 3;
+      display: grid;
+      place-items: center;
+      min-width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.18);
+      background: rgba(5,12,24,.58);
+      color: #eaf3ff;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 0 18px rgba(0,0,0,.28);
+      transition: var(--speed);
+    }
+
+    .favorite-chip {
+      right: 12px;
+      top: 12px;
+      padding: 0 9px;
+      font-size: 19px;
+    }
+
+    .favorite-chip.active {
+      color: var(--pink);
+      border-color: rgba(255,79,154,.5);
+      background: rgba(255,79,154,.12);
+      box-shadow: 0 0 24px rgba(255,79,154,.18);
+    }
+
+    .store-mini {
+      right: 12px;
+      bottom: 12px;
+      padding: 0 10px;
+      color: var(--cyan);
+      font-size: 11px;
+      font-weight: 950;
+      letter-spacing: .5px;
+      text-transform: uppercase;
+    }
+
+    .favorite-chip:hover {
+      transform: scale(1.08);
+      border-color: var(--cyan);
+      color: var(--cyan);
+    }
+
+    .card-content {
+      position: relative;
+      min-height: 190px;
+    }
+
+    .card-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .card-price {
+      color: var(--cyan);
+      font-size: 17px;
+      font-weight: 950;
+      text-shadow: 0 0 14px rgba(45,247,255,.22);
+    }
+
+    .store-badge {
+      padding: 6px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,204,102,.28);
+      background: rgba(255,204,102,.08);
+      color: #ffe1a3;
+      font-size: 11px;
+      font-weight: 950;
+      white-space: nowrap;
+    }
+
+    .detail-panel {
+      position: sticky;
+      top: 18px;
+      min-height: 640px;
+      padding: 1px;
+      border-radius: 28px;
+      background: linear-gradient(155deg, rgba(45,247,255,.62), rgba(255,255,255,.07) 38%, rgba(255,204,102,.35) 68%, rgba(181,107,255,.52));
+      box-shadow: 0 28px 86px rgba(0,0,0,.5), 0 0 40px rgba(45,247,255,.16);
+      overflow: hidden;
+    }
+
+    .detail-panel-inner,
+    .detail-empty {
+      min-height: 638px;
+      border-radius: 27px;
+      background:
+        radial-gradient(circle at top left, rgba(45,247,255,.14), transparent 32%),
+        radial-gradient(circle at top right, rgba(255,204,102,.1), transparent 28%),
+        rgba(7, 16, 31, .94);
+      backdrop-filter: blur(18px);
+      overflow: hidden;
+    }
+
+    .detail-empty {
+      display: grid;
+      place-items: center;
+      align-content: center;
+      gap: 12px;
+      padding: 32px;
+      text-align: center;
+      color: var(--muted);
+    }
+
+    .detail-empty strong {
+      color: var(--text);
+      font-size: 22px;
+    }
+
+    .detail-empty-icon {
+      width: 62px;
+      height: 62px;
+      display: grid;
+      place-items: center;
+      border-radius: 22px;
+      color: var(--cyan);
+      border: 1px solid rgba(45,247,255,.35);
+      background: rgba(45,247,255,.08);
+      font-size: 30px;
+      box-shadow: 0 0 28px rgba(45,247,255,.16);
+    }
+
+    .detail-visual {
+      position: relative;
+      min-height: 246px;
+      padding: 22px;
+      display: flex;
+      align-items: flex-end;
+      background:
+        linear-gradient(to top, rgba(7,16,31,1) 0%, rgba(7,16,31,.38) 62%, rgba(7,16,31,.14)),
+        var(--detail-image);
+      background-size: cover;
+      background-position: center;
+    }
+
+    .detail-visual::after {
+      content: "";
+      position: absolute;
+      inset: 14px;
+      border-radius: 20px;
+      pointer-events: none;
+      border: 1px solid rgba(255,204,102,.18);
+      box-shadow: inset 0 0 28px rgba(45,247,255,.08);
+    }
+
+    .detail-recommend {
+      position: absolute;
+      left: 22px;
+      top: 22px;
+      z-index: 2;
+      padding: 8px 11px;
+      border-radius: 999px;
+      color: #ffe1a3;
+      background: rgba(255,204,102,.13);
+      border: 1px solid rgba(255,204,102,.38);
+      font-size: 11px;
+      font-weight: 950;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      box-shadow: 0 0 22px rgba(255,204,102,.16);
+    }
+
+    .detail-content {
+      padding: 22px;
+    }
+
+    .detail-title {
+      margin-bottom: 10px;
+      font-family: var(--serif);
+      font-size: 33px;
+      line-height: 1.05;
+      letter-spacing: -.4px;
+      color: #fff;
+    }
+
+    .detail-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-bottom: 14px;
+    }
+
+    .detail-description {
+      color: #c8d6ef;
+      font-size: 14px;
+      line-height: 1.65;
+      display: -webkit-box;
+      -webkit-line-clamp: 4;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .detail-thumbs {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      margin: 18px 0;
+    }
+
+    .detail-thumbs img,
+    .detail-thumb-placeholder {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.1);
+      background: rgba(255,255,255,.05);
+    }
+
+    .detail-thumb-placeholder {
+      display: grid;
+      place-items: center;
+      color: var(--muted);
+      font-size: 11px;
+      text-align: center;
+      padding: 8px;
+    }
+
+    .detail-price-row {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      margin: 18px 0 14px;
+    }
+
+    .detail-price {
+      font-size: 28px;
+      font-weight: 950;
+      color: #f8fbff;
+      text-shadow: 0 0 18px rgba(45,247,255,.24);
+    }
+
+    .detail-old-price {
+      color: #77849b;
+      text-decoration: line-through;
+      font-weight: 800;
+    }
+
+    .detail-discount {
+      padding: 6px 9px;
+      border-radius: 999px;
+      background: rgba(87,255,183,.12);
+      border: 1px solid rgba(87,255,183,.34);
+      color: var(--green);
+      font-size: 12px;
+      font-weight: 950;
+    }
+
+    .detail-actions {
+      display: grid;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .buy-button,
+    .wishlist-button {
+      min-height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      border-radius: 14px;
+      font-weight: 950;
+      transition: var(--speed);
+    }
+
+    .buy-button {
+      color: #02101c;
+      background: linear-gradient(135deg, var(--cyan), #58b8ff);
+      box-shadow: 0 0 26px rgba(45,247,255,.28);
+    }
+
+    .buy-button:hover,
+    .wishlist-button:hover {
+      transform: translateY(-2px);
+    }
+
+    .wishlist-button {
+      border: 1px solid rgba(45,247,255,.26);
+      background: rgba(5,12,24,.48);
+      color: var(--cyan);
+      cursor: pointer;
+    }
+
+    .wishlist-button.active {
+      border-color: rgba(255,79,154,.48);
+      color: #ff9bc5;
+      background: rgba(255,79,154,.1);
+    }
+
+    .detail-features {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 9px;
+    }
+
+    .detail-feature {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 10px;
+      border-radius: 13px;
+      border: 1px solid rgba(255,255,255,.09);
+      background: rgba(255,255,255,.045);
+      color: #b9c8de;
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    .detail-feature.active {
+      border-color: rgba(45,247,255,.22);
+      color: #eaf7ff;
+      background: rgba(45,247,255,.07);
+    }
+
+    .feature-dot {
+      width: 8px;
+      height: 8px;
+      flex: 0 0 auto;
+      border-radius: 999px;
+      background: rgba(173,212,255,.32);
+      box-shadow: 0 0 10px rgba(173,212,255,.1);
+    }
+
+    .detail-feature.active .feature-dot {
+      background: var(--cyan);
+      box-shadow: 0 0 12px var(--cyan);
+    }
+
+    .modal-features {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    @media (max-width: 1380px) {
+      .catalog-shell {
+        grid-template-columns: minmax(0, 1fr) minmax(360px, 400px);
+      }
+
+      .games-grid {
+        gap: 15px;
+      }
+    }
+
+    @media (max-width: 1180px) {
+      .topbar {
+        grid-template-columns: auto 1fr auto;
+      }
+
+      .nav {
+        display: flex;
+      }
+
+      .filter-panel {
+        width: min(1180px, 100%);
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        margin-top: -36px;
+      }
+
+      .catalog-actions,
+      .catalog-shell,
+      .section-head,
+      .feature-strip,
+      .empty-state {
+        width: min(1180px, 100%);
+      }
+
+      .catalog-shell {
+        display: block;
+      }
+
+      .detail-panel {
+        display: none;
+      }
+
+      .games-grid {
+        width: 100%;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 760px) {
+      .topbar::before {
+        display: none;
+      }
+
+      .topbar {
+        grid-template-columns: 1fr;
+      }
+
+      .nav {
+        display: flex;
+        justify-self: stretch;
+        justify-content: center;
+        overflow-x: auto;
+      }
+
+      .filter-panel {
+        grid-template-columns: 1fr;
+        margin-top: 14px;
+      }
+
+      .catalog-actions {
+        display: grid;
+        grid-template-columns: 1fr;
+      }
+
+      .games-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .modal-features {
+        grid-template-columns: 1fr;
+      }
+    }
+
   </style>
 </head>
 
@@ -1130,22 +1662,20 @@
 
         <nav class="nav" aria-label="Основная навигация">
           <a class="active" href="#catalog">Каталог</a>
-          <a href="#stores">Магазины</a>
           <a href="#deals">Скидки</a>
           <a href="#news">Новости</a>
-          <a href="#community">Сообщество</a>
         </nav>
 
-        <div class="top-actions" aria-hidden="true">
-          <span class="icon-btn">♡</span>
-          <span class="icon-btn">⌘</span>
-          <span class="icon-btn">☾</span>
+        <div class="top-actions" aria-label="Быстрые действия">
+          <span class="icon-btn" title="Избранное">♡</span>
+          <span class="icon-btn" title="Покупки">🛒</span>
+          <span class="icon-btn" title="Профиль">☻</span>
         </div>
       </div>
 
       <div class="hero-copy">
         <h2>Киберпанк. Технологии. <span>Магия.</span></h2>
-        <p>Каталог игр для всех миров: неоновые города, цифровые корпорации и немного арканного вайба.</p>
+        <p>Каталог игр для всех миров.</p>
         <div class="hero-badges">
           <span class="hero-badge">Steam + Epic</span>
           <span class="hero-badge">Скидки и цены</span>
@@ -1154,31 +1684,26 @@
       </div>
     </header>
 
-    <div class="toolbar">
-      <input class="search-input" id="searchInput" type="search" placeholder="Поиск игр, жанров, издателей..." autocomplete="off" />
-      <div class="counter">Найдено: <strong id="counterValue">0</strong></div>
-      <button class="load-btn" id="loadAllBtn" type="button">Загрузить каталог</button>
-    </div>
-
-    <div class="progress" id="progress">
-      <div class="progress-fill" id="progressFill"></div>
-    </div>
-
     <section class="filter-panel" aria-label="Фильтры каталога">
+      <label class="filter-field search-field">
+        Поиск игр
+        <input class="search-input" id="searchInput" type="search" placeholder="Название, жанр, издатель..." autocomplete="off" />
+      </label>
+
       <label class="filter-field">
-        Источник
-        <select class="filter-control" id="sourceFilter">
-          <option value="all">Все источники</option>
-          <option value="steam">Steam</option>
-          <option value="epic">Epic Games Store</option>
-          <option value="steam+epic">Steam + Epic</option>
+        Жанры
+        <select class="filter-control" id="genreFilter">
+          <option value="all">Все жанры</option>
         </select>
       </label>
 
       <label class="filter-field">
-        Жанр / категория
-        <select class="filter-control" id="genreFilter">
-          <option value="all">Все жанры</option>
+        Платформа
+        <select class="filter-control" id="sourceFilter">
+          <option value="all">Steam и Epic</option>
+          <option value="steam">Steam</option>
+          <option value="epic">Epic Games</option>
+          <option value="steam+epic">Steam + Epic</option>
         </select>
       </label>
 
@@ -1191,19 +1716,49 @@
           <option value="under-10">До $10</option>
           <option value="under-30">До $30</option>
           <option value="sale">Со скидкой</option>
-          <option value="unavailable">Цена недоступна</option>
+        </select>
+      </label>
+
+      <label class="filter-field">
+        Особенности
+        <select class="filter-control" id="featuresFilter">
+          <option value="all">Все особенности</option>
+          <option value="single">Одиночная игра</option>
+          <option value="achievements">Достижения</option>
+          <option value="cloud">Облачные сохранения</option>
+          <option value="controller">Контроллер</option>
+          <option value="family">Семейный доступ</option>
         </select>
       </label>
 
       <button class="reset-btn" id="resetFiltersBtn" type="button">Сбросить</button>
     </section>
 
+    <div class="catalog-actions">
+      <div class="counter">Найдено: <strong id="counterValue">0</strong></div>
+      <button class="load-btn" id="loadAllBtn" type="button">Загрузить каталог</button>
+    </div>
+
+    <div class="progress" id="progress">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+
     <div class="section-head" id="catalog">
       <h2 class="section-title-main">Популярные игры</h2>
       <p class="section-note">Карточки обновляются по мере загрузки данных из магазинов.</p>
     </div>
 
-    <section class="games-grid" id="gamesGrid"></section>
+    <div class="catalog-shell">
+      <section class="games-grid" id="gamesGrid"></section>
+
+      <aside class="detail-panel" id="detailPanel" aria-label="Выбранная игра">
+        <div class="detail-empty">
+          <span class="detail-empty-icon">✦</span>
+          <strong>Выберите игру</strong>
+          <p>Справа появится премиальная карточка с ценой, магазином и особенностями.</p>
+        </div>
+      </aside>
+    </div>
 
     <div class="empty-state" id="emptyState">
       <strong>Игры с таким названием не найдены</strong>
@@ -1213,11 +1768,11 @@
     <section class="feature-strip" aria-label="Преимущества каталога">
       <div class="feature-item">
         <span class="feature-icon">✦</span>
-        <span><strong>Надёжные магазины</strong>Steam, Epic и быстрый поиск по GOG.</span>
+        <span><strong>Надёжные магазины</strong>Показываем игры с проверяемыми карточками Steam или Epic.</span>
       </div>
       <div class="feature-item">
         <span class="feature-icon">⌁</span>
-        <span><strong>Умные фильтры</strong>Жанры, категории, цены и скидки.</span>
+        <span><strong>Безопасные покупки</strong>Переходы ведут на официальные страницы магазинов.</span>
       </div>
       <div class="feature-item">
         <span class="feature-icon">%</span>
@@ -1261,11 +1816,16 @@
               <div class="store-box">
                 <div class="box-header">
                   Магазины
-                  <small>Steam — прямая карточка, GOG и Epic — поиск по названию.</small>
+                  <small>Steam и Epic — официальные страницы или поиск по названию.</small>
                 </div>
                 <div class="store-links" id="storeLinks"></div>
               </div>
             </div>
+          </section>
+
+          <section class="section">
+            <h3 class="section-title"><span>03.</span> Особенности</h3>
+            <div class="detail-features modal-features" id="modalFeatures"></div>
           </section>
         </div>
       </div>
@@ -2767,8 +3327,23 @@
       { code: "UAH", label: "Гривны" }
     ];
 
-    const CACHE_KEY = "cybergames-vercel-cache-v6-arcane-style";
+    const CACHE_KEY = "cybergames-vercel-cache-v7-arcane-premium";
     const CACHE_TTL = 1000 * 60 * 60 * 6;
+    const WISHLIST_KEY = "cybergames-wishlist-v1";
+    const FEATURED_ORDER = [
+      "Cyberpunk 2077",
+      "Ghostrunner",
+      "Deus Ex: Mankind Divided",
+      "Watch Dogs 2",
+      "Stray",
+      "The Ascent",
+      "Cloudpunk",
+      "Observer: System Redux",
+      "Ruiner",
+      "Katana ZERO",
+      "Citizen Sleeper",
+      "Blade Runner"
+    ];
 
     const gamesGrid = document.getElementById("gamesGrid");
     const searchInput = document.getElementById("searchInput");
@@ -2780,6 +3355,7 @@
     const sourceFilter = document.getElementById("sourceFilter");
     const genreFilter = document.getElementById("genreFilter");
     const priceFilter = document.getElementById("priceFilter");
+    const featuresFilter = document.getElementById("featuresFilter");
     const resetFiltersBtn = document.getElementById("resetFiltersBtn");
 
     const modal = document.getElementById("gameModal");
@@ -2793,8 +3369,11 @@
     const priceGrid = document.getElementById("priceGrid");
     const liveStatus = document.getElementById("liveStatus");
     const storeLinks = document.getElementById("storeLinks");
+    const modalFeatures = document.getElementById("modalFeatures");
+    const detailPanel = document.getElementById("detailPanel");
 
     let currentModalId = null;
+    let currentDetailId = null;
 
     function normalize(value) {
       return String(value || "")
@@ -2804,6 +3383,19 @@
         .replace(/[^a-zа-яё0-9]+/gi, " ")
         .replace(/\s+/g, " ")
         .trim();
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function escapeAttr(value) {
+      return escapeHtml(value).replace(/`/g, "&#096;");
     }
 
     function createPlaceholder(title, wide = false) {
@@ -3052,6 +3644,167 @@
     }
 
 
+    function getWishlist() {
+      try {
+        return new Set(JSON.parse(localStorage.getItem(WISHLIST_KEY) || "[]"));
+      } catch {
+        return new Set();
+      }
+    }
+
+    function writeWishlist(set) {
+      try {
+        localStorage.setItem(WISHLIST_KEY, JSON.stringify([...set]));
+      } catch {
+        // не критично
+      }
+    }
+
+    function isWishlisted(id) {
+      return getWishlist().has(String(id));
+    }
+
+    function toggleWishlist(id) {
+      const wishlist = getWishlist();
+      const key = String(id);
+      if (wishlist.has(key)) wishlist.delete(key);
+      else wishlist.add(key);
+      writeWishlist(wishlist);
+      updateFavoriteIcons();
+      if (currentDetailId === id) renderDetailPanel(games.find((item) => item.id === id));
+    }
+
+    function updateFavoriteIcons() {
+      document.querySelectorAll(".game-card").forEach((card) => {
+        const chip = card.querySelector(".favorite-chip");
+        if (!chip) return;
+        const active = isWishlisted(Number(card.dataset.id));
+        chip.classList.toggle("active", active);
+        chip.textContent = active ? "♥" : "♡";
+        chip.setAttribute("aria-label", active ? "Убрать из избранного" : "Добавить в избранное");
+      });
+    }
+
+    function catalogCandidates() {
+      const orderMap = new Map(FEATURED_ORDER.map((title, index) => [normalize(title), index]));
+      return games
+        .filter((game) => Boolean(game.appId) && !game.removed)
+        .sort((a, b) => {
+          const aOrder = orderMap.has(normalize(a.title)) ? orderMap.get(normalize(a.title)) : 9999;
+          const bOrder = orderMap.has(normalize(b.title)) ? orderMap.get(normalize(b.title)) : 9999;
+          if (aOrder !== bOrder) return aOrder - bOrder;
+          return a.title.localeCompare(b.title, "ru");
+        });
+    }
+
+    function providerEntries(game) {
+      const raw = game.data && game.data.prices ? game.data.prices : {};
+      const entries = [];
+      if (raw.steam) entries.push(["steam", "Steam", raw.steam]);
+      if (raw.epic) entries.push(["epic", "Epic", raw.epic]);
+      if (!entries.length && raw.USD) entries.push([game.data?.provider || "steam", providerLabel(game.data), raw]);
+      return entries;
+    }
+
+    function bestPriceInfo(game) {
+      if (!game || !game.data) {
+        return {
+          label: game?.appId ? "Цена загружается" : "Проверка магазина",
+          oldLabel: "",
+          discount: 0,
+          provider: game?.appId ? "Steam" : "Steam/Epic"
+        };
+      }
+
+      if (gameIsFree(game)) {
+        const source = providerEntries(game).find(([, , prices]) => Object.values(prices || {}).some((price) => price && price.free));
+        return { label: "Бесплатно", oldLabel: "", discount: 0, provider: source?.[1] || providerLabel(game.data) };
+      }
+
+      for (const [key, label, prices] of providerEntries(game)) {
+        const preferred = prices.USD || Object.values(prices || {}).find((price) => price && !price.unavailable);
+        if (!preferred || preferred.unavailable || preferred.label === "Уточнить" || preferred.label === "Недоступно") continue;
+        return {
+          label: preferred.label || "Уточнить",
+          oldLabel: preferred.originalLabel || preferred.original_price || "",
+          discount: Number(preferred.discount) || 0,
+          provider: label,
+          key
+        };
+      }
+
+      return { label: "Цена уточняется", oldLabel: "", discount: 0, provider: providerLabel(game.data) };
+    }
+
+    function bestStoreLink(game) {
+      const data = game?.data || {};
+      const title = data.title || game?.title || "Cyberpunk";
+      if (data.sources?.steam?.url || data.appId || game?.appId) {
+        const appId = data.sources?.steam?.appId || data.appId || game.appId;
+        return {
+          name: "Steam",
+          url: data.sources?.steam?.url || data.stores?.steam || `https://store.steampowered.com/app/${appId}/`
+        };
+      }
+      if (data.sources?.epic?.url || data.stores?.epic) {
+        return { name: "Epic", url: data.sources?.epic?.url || data.stores.epic };
+      }
+      return {
+        name: "Steam",
+        url: `https://store.steampowered.com/search/?term=${encodeURIComponent(title)}`
+      };
+    }
+
+    function categoryText(data) {
+      return normalize(`${(data?.genres || []).join(" ")} ${(data?.categories || []).join(" ")}`);
+    }
+
+    function hasGameFeature(data, value) {
+      const text = categoryText(data);
+      if (!data) return false;
+      if (value === "single") return text.includes("single player") || text.includes("singleplayer") || text.includes("одиноч");
+      if (value === "achievements") return text.includes("achievements") || text.includes("достижен");
+      if (value === "cloud") return text.includes("cloud") || text.includes("облач");
+      if (value === "controller") return text.includes("controller") || text.includes("контроллер");
+      if (value === "family") return text.includes("family") || text.includes("семейн");
+      return true;
+    }
+
+    function featureMatches(game, value) {
+      if (value === "all") return true;
+      if (!game.data) return false;
+      return hasGameFeature(game.data, value);
+    }
+
+    function detailFeaturesHtml(data) {
+      const items = [
+        ["single", "Одиночная игра"],
+        ["achievements", "Достижения Steam"],
+        ["cloud", "Облачные сохранения"],
+        ["controller", "Контроллер"],
+        ["family", "Семейный доступ"],
+        ["steamdeck", "Steam Deck"]
+      ];
+      const text = categoryText(data);
+      return items.map(([key, label]) => {
+        const active = key === "steamdeck"
+          ? (text.includes("steam deck") || text.includes("deck"))
+          : hasGameFeature(data, key);
+        return `<span class="detail-feature ${active ? "active" : ""}"><span class="feature-dot"></span>${label}</span>`;
+      }).join("");
+    }
+
+    function gameYear(data) {
+      const match = String(data?.releaseDate || "").match(/(19|20)\d{2}/);
+      return match ? match[0] : "—";
+    }
+
+    function gameDeveloper(data) {
+      if (!data) return "—";
+      return data.developer || data.publisher || data.developers || data.publishers || "Разработчик не указан";
+    }
+
+
     function applyGameData(game, data) {
       game.status = "done";
       game.data = data;
@@ -3100,9 +3853,10 @@
 
     function renderCards() {
       const fragment = document.createDocumentFragment();
+      const catalog = catalogCandidates();
 
-      games.forEach((game) => {
-        game.status = "idle";
+      catalog.forEach((game) => {
+        game.status = game.status || "idle";
         game.searchText = normalize(game.title);
 
         const card = document.createElement("button");
@@ -3114,32 +3868,51 @@
         card.innerHTML = `
           <div class="card-inner">
             <div class="poster-wrap">
-              <img class="poster" src="${initialCardImage(game)}" alt="Обложка ${game.title}">
+              <img class="poster" src="${initialCardImage(game)}" alt="Обложка ${escapeAttr(game.title)}">
+              <span class="favorite-chip" role="button" aria-label="Добавить в избранное">♡</span>
+              <span class="store-mini">Steam</span>
               <span class="status-pill">Ожидает</span>
               <span class="free-badge">Бесплатно</span>
             </div>
             <div class="card-content">
-              <h2 class="card-title">${game.title}</h2>
+              <h2 class="card-title">${escapeHtml(game.title)}</h2>
               <div class="card-meta">
                 <span class="release">—</span>
                 <span class="type">Steam lookup</span>
               </div>
-              <p class="card-description">Данные загрузятся через Vercel API: обложка, скриншоты, описание, цены и статус бесплатности из Steam/Epic.</p>
+              <p class="card-description">Карточка проверяется через Steam/Epic API: обложка, скриншоты, описание, цены и доступность.</p>
               <div class="tag-row">
                 <span class="tag">Cyberpunk</span>
-                <span class="tag">Vercel API</span>
+                <span class="tag">Steam/Epic</span>
+              </div>
+              <div class="card-bottom">
+                <span class="card-price">Цена загружается</span>
+                <span class="store-badge">Steam</span>
               </div>
             </div>
           </div>
         `;
 
-        card.addEventListener("click", () => openModal(game.id));
+        card.addEventListener("click", (event) => {
+          if (event.target.closest(".favorite-chip")) {
+            event.stopPropagation();
+            toggleWishlist(game.id);
+            return;
+          }
+          selectGame(game.id);
+        });
+
         fragment.appendChild(card);
       });
 
       gamesGrid.appendChild(fragment);
-      updateCounter(games.length);
+      updateCounter(catalog.length);
+      updateFavoriteIcons();
       observeCards();
+
+      const featured = games.find((game) => normalize(game.title) === normalize("Cyberpunk 2077") && getCard(game));
+      const first = featured || catalog[0];
+      if (first && isDetailPanelMode()) openDetailPanel(first.id);
     }
 
     function getCard(game) {
@@ -3154,6 +3927,13 @@
 
       if (currentModalId === game.id) {
         closeModal();
+      }
+
+      if (currentDetailId === game.id) {
+        currentDetailId = null;
+        const next = catalogCandidates().find((item) => getCard(item));
+        if (next) openDetailPanel(next.id);
+        else renderDetailEmpty();
       }
 
       populateGenreFilter();
@@ -3174,10 +3954,14 @@
       const status = card.querySelector(".status-pill");
       const freeBadge = card.querySelector(".free-badge");
       const tagRow = card.querySelector(".tag-row");
+      const price = card.querySelector(".card-price");
+      const storeBadge = card.querySelector(".store-badge");
+      const storeMini = card.querySelector(".store-mini");
 
       if (game.status === "loading") {
         status.textContent = "Загрузка...";
         status.className = "status-pill";
+        if (price) price.textContent = "Цена загружается";
       }
 
       if (game.status === "failed") {
@@ -3185,15 +3969,17 @@
         title.textContent = game.title;
         release.textContent = "—";
         type.textContent = "нет Steam/Epic data";
-        desc.textContent = game.error || "Steam/Epic не нашли данные. Фейковую обложку не ставлю.";
+        desc.textContent = game.error || "Steam/Epic не нашли данные. Карточка будет скрыта из каталога.";
         status.textContent = "Нет данных";
         status.className = "status-pill fail";
         freeBadge.classList.remove("show");
-        tagRow.innerHTML = `<span class="tag">Поиск по магазинам</span><span class="tag">Нет Steam/Epic data</span>`;
+        tagRow.innerHTML = `<span class="tag">Скрыто</span><span class="tag">Нет Steam/Epic data</span>`;
+        if (price) price.textContent = "Нет цены";
       }
 
       if (game.status === "done" && game.data) {
         const data = game.data;
+        const priceInfo = bestPriceInfo(game);
         poster.src = cardImage(game);
         poster.onerror = () => {
           poster.onerror = null;
@@ -3210,9 +3996,15 @@
         if (data.isFree) freeBadge.classList.add("show");
         else freeBadge.classList.remove("show");
 
-        const tags = gameTags(data).slice(0, 4).map((tag) => `<span class="tag">${tag}</span>`).join("");
-        tagRow.innerHTML = `${data.isFree ? '<span class="tag">Бесплатно</span>' : ""}<span class="tag">${providerLabel(data)}</span>${tags}`;
+        const tags = gameTags(data).slice(0, 3).map((tag) => `<span class="tag">${escapeHtml(tag)}</span>`).join("");
+        tagRow.innerHTML = `${data.isFree ? '<span class="tag">Бесплатно</span>' : ""}<span class="tag">${escapeHtml(providerLabel(data))}</span>${tags}`;
+        if (price) price.textContent = priceInfo.label;
+        if (storeBadge) storeBadge.textContent = priceInfo.provider;
+        if (storeMini) storeMini.textContent = priceInfo.provider.replace("Steam + Epic", "S+E").replace("Epic OK", "Epic").replace("Steam OK", "Steam");
       }
+
+      if (currentDetailId === game.id) renderDetailPanel(game);
+      updateFavoriteIcons();
     }
 
     function updateCounter(count) {
@@ -3224,6 +4016,7 @@
       const sourceValue = sourceFilter.value;
       const genreValue = genreFilter.value;
       const priceValue = priceFilter.value;
+      const featureValue = featuresFilter.value;
 
       let visible = 0;
 
@@ -3236,8 +4029,9 @@
         const sourceMatch = game ? sourceMatches(game, sourceValue) : true;
         const genreMatch = game ? genreMatches(game, genreValue) : true;
         const priceMatch = game ? priceMatches(game, priceValue) : true;
+        const featureMatch = game ? featureMatches(game, featureValue) : true;
 
-        const match = activeMatch && textMatch && sourceMatch && genreMatch && priceMatch;
+        const match = activeMatch && textMatch && sourceMatch && genreMatch && priceMatch && featureMatch;
         card.classList.toggle("hidden", !match);
 
         if (match) visible++;
@@ -3263,6 +4057,87 @@
       });
 
       document.querySelectorAll(".game-card").forEach((card) => observer.observe(card));
+    }
+
+    function isDetailPanelMode() {
+      return window.matchMedia("(min-width: 1181px)").matches;
+    }
+
+    function selectGame(id) {
+      if (isDetailPanelMode()) openDetailPanel(id);
+      else openModal(id);
+    }
+
+    function renderDetailEmpty() {
+      if (!detailPanel) return;
+      detailPanel.innerHTML = `
+        <div class="detail-empty">
+          <span class="detail-empty-icon">✦</span>
+          <strong>Нет доступных карточек</strong>
+          <p>Игры без подтверждённого Steam/Epic магазина скрыты, чтобы каталог не превращался в кладбище плейсхолдеров.</p>
+        </div>
+      `;
+    }
+
+    function renderDetailPanel(game) {
+      if (!detailPanel || !game) return;
+      const data = game.data || {};
+      const title = data.title || game.title;
+      const priceInfo = bestPriceInfo(game);
+      const store = bestStoreLink(game);
+      const screenshots = data.screenshots && data.screenshots.length ? data.screenshots.slice(0, 3) : [];
+      const thumbs = screenshots.length
+        ? screenshots.map((url, index) => `<img src="${escapeAttr(url)}" alt="Скриншот ${index + 1} из игры ${escapeAttr(title)}">`).join("")
+        : `<span class="detail-thumb-placeholder">Скриншоты загрузятся после API</span><span class="detail-thumb-placeholder">Steam / Epic</span><span class="detail-thumb-placeholder">Без фейков</span>`;
+      const genre = gameTags(data)[0] || "Cyberpunk";
+      const wished = isWishlisted(game.id);
+      const description = data.description || game.error || "Данные загружаются через Vercel API. Если Steam/Epic не найдут игру, карточка будет скрыта из основного каталога.";
+
+      detailPanel.innerHTML = `
+        <div class="detail-panel-inner">
+          <div class="detail-visual" style="--detail-image: url('${escapeAttr(heroImage(game))}')">
+            <span class="detail-recommend">✦ Рекомендовано</span>
+          </div>
+          <div class="detail-content">
+            <h3 class="detail-title">${escapeHtml(title)}</h3>
+            <div class="detail-meta">
+              <span class="meta-pill cyan">${escapeHtml(gameDeveloper(data))}</span>
+              <span class="meta-pill">${escapeHtml(gameYear(data))}</span>
+              <span class="meta-pill magenta">${escapeHtml(genre)}</span>
+            </div>
+            <p class="detail-description">${escapeHtml(description)}</p>
+            <div class="detail-thumbs">${thumbs}</div>
+            <div class="detail-price-row">
+              <span class="detail-price">${escapeHtml(priceInfo.label)}</span>
+              ${priceInfo.oldLabel ? `<span class="detail-old-price">${escapeHtml(priceInfo.oldLabel)}</span>` : ""}
+              ${priceInfo.discount ? `<span class="detail-discount">-${priceInfo.discount}%</span>` : ""}
+            </div>
+            <div class="detail-actions">
+              <a class="buy-button" href="${escapeAttr(store.url)}" target="_blank" rel="noopener noreferrer">🛒 Купить в ${escapeHtml(store.name)}</a>
+              <button class="wishlist-button ${wished ? "active" : ""}" type="button" id="detailWishlistBtn">${wished ? "♥ В списке желаний" : "♡ В список желаний"}</button>
+            </div>
+            <div class="detail-features">${detailFeaturesHtml(data)}</div>
+          </div>
+        </div>
+      `;
+
+      const wishlistButton = detailPanel.querySelector("#detailWishlistBtn");
+      if (wishlistButton) wishlistButton.addEventListener("click", () => toggleWishlist(game.id));
+    }
+
+    async function openDetailPanel(id) {
+      const game = games.find((item) => item.id === id);
+      if (!game || !getCard(game)) return;
+
+      currentDetailId = id;
+      document.querySelectorAll(".game-card").forEach((card) => {
+        card.classList.toggle("selected", Number(card.dataset.id) === id);
+      });
+      renderDetailPanel(game);
+
+      await fetchGame(game);
+
+      if (currentDetailId === id && !game.removed) renderDetailPanel(game);
     }
 
     function renderScreens(game) {
@@ -3334,7 +4209,6 @@
       const title = game.data?.title || game.title;
       const stores = game.data?.stores || {
         steam: `https://store.steampowered.com/search/?term=${encodeURIComponent(title)}`,
-        gog: `https://www.gog.com/en/games?query=${encodeURIComponent(title)}`,
         epic: `https://store.epicgames.com/ru/browse?q=${encodeURIComponent(title)}&sortBy=relevancy&sortDir=DESC&count=40`
       };
 
@@ -3343,8 +4217,7 @@
 
       const links = [
         { name: "Steam", note: hasSteamDirect ? "Прямая страница Steam" : "Поиск в Steam", url: stores.steam },
-        { name: "Epic Games Store", note: hasEpicDirect ? "Прямая страница Epic" : "Поиск в Epic", url: stores.epic },
-        { name: "GOG", note: "Поиск по названию", url: stores.gog }
+        { name: "Epic Games Store", note: hasEpicDirect ? "Прямая страница Epic" : "Поиск в Epic", url: stores.epic }
       ];
 
       storeLinks.innerHTML = links.map((link) => `
@@ -3387,6 +4260,7 @@
       renderScreens(game);
       renderPrices(game);
       renderStores(game);
+      if (modalFeatures) modalFeatures.innerHTML = detailFeaturesHtml(data);
     }
 
     async function openModal(id) {
@@ -3419,7 +4293,7 @@
       progressFill.style.width = "0%";
 
       let done = 0;
-      const queue = games.filter((game) => !game.removed);
+      const queue = catalogCandidates().filter((game) => getCard(game));
       const totalQueue = queue.length;
       const workers = 4;
 
@@ -3443,11 +4317,13 @@
     sourceFilter.addEventListener("change", filterGames);
     genreFilter.addEventListener("change", filterGames);
     priceFilter.addEventListener("change", filterGames);
+    featuresFilter.addEventListener("change", filterGames);
     resetFiltersBtn.addEventListener("click", () => {
       searchInput.value = "";
       sourceFilter.value = "all";
       genreFilter.value = "all";
       priceFilter.value = "all";
+      featuresFilter.value = "all";
       filterGames();
     });
     loadAllBtn.addEventListener("click", loadAll);
@@ -3458,6 +4334,13 @@
 
     document.addEventListener("keydown", (event) => {
       if (event.key === "Escape" && modal.classList.contains("show")) closeModal();
+    });
+
+    window.addEventListener("resize", () => {
+      if (isDetailPanelMode() && !currentDetailId) {
+        const selected = catalogCandidates().find((game) => getCard(game));
+        if (selected) openDetailPanel(selected.id);
+      }
     });
 
     renderCards();
