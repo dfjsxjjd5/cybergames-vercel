@@ -1,0 +1,2778 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>CyberGames — Steam + Epic каталог киберпанк-игр</title>
+
+  <style>
+    :root {
+      --bg: #050509;
+      --card: #0d0f1a;
+      --card2: #151827;
+      --cyan: #00f3ff;
+      --magenta: #ff0055;
+      --yellow: #ffe600;
+      --green: #00ff8a;
+      --text: #f4f7ff;
+      --muted: #9ba3b8;
+      --radius: 22px;
+      --speed: 0.22s ease;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 10% 0%, rgba(0, 243, 255, 0.22), transparent 32%),
+        radial-gradient(circle at 90% 0%, rgba(255, 0, 85, 0.18), transparent 34%),
+        linear-gradient(135deg, #050509, #0b0d18 52%, #050509);
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+      background-size: 44px 44px;
+      mask-image: linear-gradient(to bottom, black, transparent 88%);
+    }
+
+    body.modal-open {
+      overflow: hidden;
+    }
+
+    button,
+    input {
+      font-family: inherit;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .page {
+      width: min(1540px, 100%);
+      margin: 0 auto;
+      padding: 32px 22px 70px;
+    }
+
+    .header {
+      display: grid;
+      gap: 22px;
+      place-items: center;
+      text-align: center;
+      margin-bottom: 26px;
+    }
+
+    .logo {
+      font-size: clamp(34px, 5vw, 68px);
+      font-weight: 950;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      text-shadow: 0 0 18px rgba(0,243,255,.7), 0 0 30px rgba(255,0,85,.36);
+    }
+
+    .logo span {
+      color: var(--cyan);
+    }
+
+    .subtitle {
+      max-width: 980px;
+      color: var(--muted);
+      line-height: 1.65;
+      font-size: 16px;
+    }
+
+    .toolbar {
+      width: min(1080px, 100%);
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .search-input {
+      width: 100%;
+      min-height: 62px;
+      padding: 0 22px;
+      border-radius: 999px;
+      border: 1px solid rgba(0,243,255,.42);
+      outline: none;
+      background: rgba(8,10,20,.9);
+      color: var(--text);
+      font-size: 18px;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.04), 0 0 24px rgba(0,243,255,.12);
+      transition: var(--speed);
+    }
+
+    .search-input:focus {
+      border-color: var(--cyan);
+      box-shadow: 0 0 0 4px rgba(0,243,255,.13), 0 0 35px rgba(0,243,255,.42);
+      transform: translateY(-1px);
+    }
+
+    .counter,
+    .load-btn {
+      min-height: 52px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 17px;
+      border-radius: 999px;
+      white-space: nowrap;
+      border: 1px solid rgba(255,0,85,.42);
+      background: rgba(255,0,85,.08);
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .counter strong {
+      margin-left: 6px;
+      color: var(--cyan);
+      font-size: 18px;
+    }
+
+    .load-btn {
+      cursor: pointer;
+      color: var(--text);
+      background: rgba(0,243,255,.08);
+      border-color: rgba(0,243,255,.36);
+      font-weight: 900;
+      transition: var(--speed);
+    }
+
+    .load-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 26px rgba(0,243,255,.2);
+    }
+
+    .hint {
+      max-width: 1100px;
+      margin: 0 auto 18px;
+      padding: 14px 18px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,230,0,.28);
+      background: rgba(255,230,0,.055);
+      color: var(--muted);
+      line-height: 1.55;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    .hint strong {
+      color: var(--yellow);
+    }
+
+    .progress {
+      width: min(1080px, 100%);
+      height: 8px;
+      margin: 0 auto 26px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.08);
+      overflow: hidden;
+      display: none;
+    }
+
+    .progress.show {
+      display: block;
+    }
+
+    .progress-fill {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, var(--cyan), var(--magenta));
+      transition: width .25s ease;
+    }
+
+    .games-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    .game-card {
+      position: relative;
+      width: 100%;
+      min-height: 100%;
+      padding: 1px;
+      border: 0;
+      border-radius: var(--radius);
+      background: linear-gradient(135deg, var(--cyan), rgba(255,255,255,.04), var(--magenta));
+      cursor: pointer;
+      color: var(--text);
+      text-align: left;
+      box-shadow: 0 18px 50px rgba(0,0,0,.42);
+      overflow: hidden;
+      transition: transform var(--speed), filter var(--speed), box-shadow var(--speed);
+    }
+
+    .game-card:hover {
+      transform: translateY(-7px) scale(1.015);
+      filter: brightness(1.08);
+      box-shadow: 0 22px 66px rgba(0,0,0,.58), 0 0 28px rgba(0,243,255,.2), 0 0 34px rgba(255,0,85,.14);
+    }
+
+    .game-card.hidden {
+      display: none;
+    }
+
+    .card-inner {
+      height: 100%;
+      border-radius: calc(var(--radius) - 1px);
+      background: linear-gradient(180deg, var(--card2), var(--card));
+      overflow: hidden;
+    }
+
+    .poster-wrap {
+      position: relative;
+      aspect-ratio: 16 / 9;
+      background: #090b14;
+      overflow: hidden;
+    }
+
+    .poster {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform var(--speed);
+    }
+
+    .game-card:hover .poster {
+      transform: scale(1.05);
+    }
+
+    .poster-wrap::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(5,5,9,.86), transparent 58%);
+    }
+
+    .status-pill,
+    .free-badge {
+      position: absolute;
+      top: 12px;
+      z-index: 2;
+      max-width: calc(100% - 24px);
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: rgba(5,5,9,.78);
+      border: 1px solid rgba(0,243,255,.45);
+      color: var(--cyan);
+      font-size: 11px;
+      font-weight: 900;
+      backdrop-filter: blur(8px);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .status-pill {
+      left: 12px;
+    }
+
+    .status-pill.ok {
+      color: var(--green);
+      border-color: rgba(0,255,138,.45);
+    }
+
+    .status-pill.fail {
+      color: var(--yellow);
+      border-color: rgba(255,230,0,.45);
+    }
+
+    .free-badge {
+      right: 12px;
+      color: var(--green);
+      border-color: rgba(0,255,138,.48);
+      background: rgba(0,255,138,.12);
+      display: none;
+    }
+
+    .free-badge.show {
+      display: block;
+    }
+
+    .card-content {
+      padding: 16px;
+    }
+
+    .card-title {
+      min-height: 48px;
+      margin-bottom: 10px;
+      font-size: 18px;
+      line-height: 1.25;
+    }
+
+    .card-meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 12px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .card-description {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.48;
+    }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-top: 14px;
+    }
+
+    .tag {
+      padding: 6px 8px;
+      border-radius: 999px;
+      background: rgba(0,243,255,.08);
+      border: 1px solid rgba(0,243,255,.18);
+      color: var(--cyan);
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .empty-state {
+      display: none;
+      margin-top: 34px;
+      padding: 34px 24px;
+      border: 1px dashed rgba(255,0,85,.55);
+      border-radius: var(--radius);
+      background: rgba(255,0,85,.06);
+      text-align: center;
+      color: var(--muted);
+    }
+
+    .empty-state.show {
+      display: block;
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: none;
+      padding: 20px;
+      background: rgba(0,0,0,.74);
+      backdrop-filter: blur(10px);
+      overflow-y: auto;
+    }
+
+    .modal.show {
+      display: block;
+    }
+
+    .modal-dialog {
+      width: min(1160px, 100%);
+      margin: 24px auto;
+      padding: 1px;
+      border-radius: 28px;
+      background: linear-gradient(135deg, var(--cyan), rgba(255,255,255,.06), var(--magenta));
+      box-shadow: 0 30px 90px rgba(0,0,0,.72), 0 0 34px rgba(0,243,255,.18);
+    }
+
+    .modal-content {
+      position: relative;
+      border-radius: 27px;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at top left, rgba(0,243,255,.12), transparent 32%),
+        radial-gradient(circle at top right, rgba(255,0,85,.1), transparent 32%),
+        #080a14;
+    }
+
+    .modal-close {
+      position: absolute;
+      right: 18px;
+      top: 18px;
+      z-index: 5;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(5,5,9,.78);
+      color: var(--text);
+      font-size: 26px;
+      cursor: pointer;
+    }
+
+    .modal-hero {
+      min-height: 320px;
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 26px;
+      padding: 34px;
+      background:
+        linear-gradient(to top, #080a14 0%, rgba(8,10,20,.78) 58%, rgba(8,10,20,.46)),
+        var(--hero-image);
+      background-size: cover;
+      background-position: center;
+    }
+
+    .modal-poster {
+      width: 100%;
+      max-width: 320px;
+      aspect-ratio: 3 / 4;
+      object-fit: cover;
+      border-radius: 22px;
+      border: 1px solid rgba(0,243,255,.35);
+      background: #090b14;
+      box-shadow: 0 22px 60px rgba(0,0,0,.62);
+    }
+
+    .modal-main-info {
+      align-self: end;
+      padding-right: 54px;
+    }
+
+    .modal-title {
+      margin-bottom: 14px;
+      font-size: clamp(30px, 5vw, 58px);
+      line-height: 1;
+      text-shadow: 0 0 18px rgba(0,243,255,.48), 0 0 26px rgba(255,0,85,.22);
+    }
+
+    .modal-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .meta-pill {
+      padding: 8px 11px;
+      border-radius: 999px;
+      background: rgba(5,5,9,.76);
+      border: 1px solid rgba(255,255,255,.12);
+      font-size: 13px;
+      font-weight: 800;
+      backdrop-filter: blur(8px);
+    }
+
+    .meta-pill.cyan {
+      color: var(--cyan);
+      border-color: rgba(0,243,255,.38);
+    }
+
+    .meta-pill.magenta {
+      color: var(--magenta);
+      border-color: rgba(255,0,85,.38);
+    }
+
+    .meta-pill.green {
+      color: var(--green);
+      border-color: rgba(0,255,138,.38);
+    }
+
+    .modal-description {
+      max-width: 760px;
+      color: #d8deef;
+      line-height: 1.7;
+      font-size: 16px;
+    }
+
+    .modal-body {
+      padding: 0 34px 34px;
+    }
+
+    .section {
+      margin-top: 32px;
+    }
+
+    .section-title {
+      margin-bottom: 16px;
+      font-size: 24px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .section-title span {
+      color: var(--cyan);
+    }
+
+    .screens-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .screen-card {
+      min-height: 160px;
+      border-radius: 18px;
+      overflow: hidden;
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.1);
+    }
+
+    .screen-card img {
+      width: 100%;
+      height: 100%;
+      min-height: 160px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .message-card {
+      min-height: 160px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      text-align: center;
+      line-height: 1.5;
+      color: var(--muted);
+      background: linear-gradient(135deg, rgba(0,243,255,.08), rgba(255,0,85,.08)), rgba(255,255,255,.04);
+    }
+
+    .stores-layout {
+      display: grid;
+      grid-template-columns: 1.05fr 1fr;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .price-box,
+    .store-box {
+      border-radius: 22px;
+      border: 1px solid rgba(255,255,255,.1);
+      background: rgba(255,255,255,.045);
+      box-shadow: 0 14px 38px rgba(0,0,0,.28);
+      overflow: hidden;
+    }
+
+    .box-header {
+      padding: 16px 18px;
+      border-bottom: 1px solid rgba(255,255,255,.09);
+      background: rgba(0,0,0,.18);
+      font-weight: 900;
+    }
+
+    .box-header small {
+      display: block;
+      margin-top: 6px;
+      color: var(--muted);
+      font-weight: 400;
+      line-height: 1.5;
+    }
+
+    .price-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      padding: 16px;
+    }
+
+    .price-item {
+      padding: 14px;
+      border-radius: 16px;
+      background: rgba(5,5,9,.42);
+      border: 1px solid rgba(0,243,255,.13);
+    }
+
+    .price-currency {
+      display: block;
+      margin-bottom: 7px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+    }
+
+    .price-value {
+      color: var(--cyan);
+      font-size: 20px;
+      font-weight: 950;
+    }
+
+    .price-value.free {
+      color: var(--green);
+    }
+
+    .live-status {
+      padding: 0 16px 16px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .store-links {
+      display: grid;
+      gap: 12px;
+      padding: 16px;
+    }
+
+    .store-link {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 16px;
+      border-radius: 16px;
+      background: rgba(5,5,9,.42);
+      border: 1px solid rgba(255,255,255,.1);
+      transition: var(--speed);
+    }
+
+    .store-link:hover {
+      border-color: var(--cyan);
+      box-shadow: 0 0 28px rgba(0,243,255,.22);
+      transform: translateY(-2px);
+    }
+
+    .store-name {
+      font-weight: 900;
+    }
+
+    .store-note {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 400;
+    }
+
+    .arrow {
+      color: var(--magenta);
+      font-size: 20px;
+      font-weight: 950;
+    }
+
+    @media (max-width: 1280px) {
+      .games-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 1024px) {
+      .games-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .modal-hero { grid-template-columns: 240px 1fr; }
+      .stores-layout { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 760px) {
+      .page { padding: 24px 14px 46px; }
+      .toolbar { grid-template-columns: 1fr; }
+      .counter, .load-btn { justify-self: center; }
+      .games-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 15px; }
+      .card-title { font-size: 16px; min-height: auto; }
+      .card-description { display: none; }
+      .modal { padding: 10px; }
+      .modal-dialog { margin: 12px auto; }
+      .modal-hero { grid-template-columns: 1fr; padding: 22px; }
+      .modal-main-info { padding-right: 0; }
+      .modal-poster { max-width: 230px; }
+      .modal-body { padding: 0 18px 22px; }
+      .screens-grid { grid-template-columns: 1fr; }
+      .price-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 460px) {
+      .games-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="page">
+    <header class="header">
+      <div>
+        <h1 class="logo">Cyber<span>Games</span></h1>
+        <p class="subtitle">
+          Публичный каталог киберпанк-игр для Vercel: фронтенд обращается к своему API,
+          а API подтягивает обложки, скриншоты, описания, цены и статус бесплатности из Steam и Epic Games Store.
+        </p>
+      </div>
+
+      <div class="toolbar">
+        <input class="search-input" id="searchInput" type="search" placeholder="Введите название игры..." autocomplete="off" />
+        <div class="counter">Найдено: <strong id="counterValue">0</strong></div>
+        <button class="load-btn" id="loadAllBtn" type="button">Загрузить все</button>
+      </div>
+    </header>
+
+    <p class="hint">
+      <strong>Важно:</strong> сайт работает на публикации через Vercel, потому что запросы в Steam идут через
+      <b>/api/steam</b>. Сначала используются Steam-данные, а если Steam не помог — подключается Epic Games Store. Левые обложки не подставляются.
+    </p>
+
+    <div class="progress" id="progress">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+
+    <section class="games-grid" id="gamesGrid"></section>
+
+    <div class="empty-state" id="emptyState">
+      <strong>Игры с таким названием не найдены</strong>
+      <span>Попробуйте другое название или серию.</span>
+    </div>
+  </main>
+
+  <div class="modal" id="gameModal" aria-hidden="true">
+    <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-content">
+        <button class="modal-close" id="modalClose" type="button" aria-label="Закрыть окно">×</button>
+
+        <div class="modal-hero" id="modalHero">
+          <img class="modal-poster" id="modalPoster" src="" alt="" />
+          <div class="modal-main-info">
+            <h2 class="modal-title" id="modalTitle"></h2>
+            <div class="modal-meta" id="modalMeta"></div>
+            <p class="modal-description" id="modalDescription"></p>
+          </div>
+        </div>
+
+        <div class="modal-body">
+          <section class="section">
+            <h3 class="section-title"><span>01.</span> Скриншоты</h3>
+            <div class="screens-grid" id="screensGrid"></div>
+          </section>
+
+          <section class="section">
+            <h3 class="section-title"><span>02.</span> Где купить и цены</h3>
+            <div class="stores-layout">
+              <div class="price-box">
+                <div class="box-header">
+                  Цены Steam
+                  <small>USD, RUB, KZT и UAH. Если игра бесплатная — будет указано «Бесплатно».</small>
+                </div>
+                <div class="price-grid" id="priceGrid"></div>
+                <p class="live-status" id="liveStatus"></p>
+              </div>
+
+              <div class="store-box">
+                <div class="box-header">
+                  Магазины
+                  <small>Steam — прямая карточка, GOG и Epic — поиск по названию.</small>
+                </div>
+                <div class="store-links" id="storeLinks"></div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const games = [
+      {
+            "id": 1,
+            "title": ".45 Parabellum Bloodhound",
+            "appId": null
+      },
+      {
+            "id": 2,
+            "title": "868-HACK",
+            "appId": null
+      },
+      {
+            "id": 3,
+            "title": "2064: Read Only Memories",
+            "appId": 330820
+      },
+      {
+            "id": 4,
+            "title": "Ace Combat 3: Electrosphere",
+            "appId": null
+      },
+      {
+            "id": 5,
+            "title": "Adrenix",
+            "appId": null
+      },
+      {
+            "id": 6,
+            "title": "AdvertCity",
+            "appId": null
+      },
+      {
+            "id": 7,
+            "title": "Æon Flux",
+            "appId": null
+      },
+      {
+            "id": 8,
+            "title": "Akira",
+            "appId": null
+      },
+      {
+            "id": 9,
+            "title": "Anachronox",
+            "appId": null
+      },
+      {
+            "id": 10,
+            "title": "Angel Devoid: Face of the Enemy",
+            "appId": null
+      },
+      {
+            "id": 11,
+            "title": "AquaNox",
+            "appId": null
+      },
+      {
+            "id": 12,
+            "title": "Artery Gear: Fusion",
+            "appId": null
+      },
+      {
+            "id": 13,
+            "title": "The Ascent",
+            "appId": 979690
+      },
+      {
+            "id": 14,
+            "title": "Astral Chain",
+            "appId": null
+      },
+      {
+            "id": 15,
+            "title": "B.A.T.",
+            "appId": null
+      },
+      {
+            "id": 16,
+            "title": "B.A.T. II – The Koshan Conspiracy",
+            "appId": null
+      },
+      {
+            "id": 17,
+            "title": "Baldr Sky",
+            "appId": null
+      },
+      {
+            "id": 18,
+            "title": "Batman Beyond: Return of the Joker",
+            "appId": null
+      },
+      {
+            "id": 19,
+            "title": "Beam Breakers",
+            "appId": null
+      },
+      {
+            "id": 20,
+            "title": "Beneath a Steel Sky",
+            "appId": null
+      },
+      {
+            "id": 21,
+            "title": "Beyond a Steel Sky",
+            "appId": 1146310
+      },
+      {
+            "id": 22,
+            "title": "Binary Domain",
+            "appId": 203750
+      },
+      {
+            "id": 23,
+            "title": "BioForge",
+            "appId": null
+      },
+      {
+            "id": 24,
+            "title": "Black ICE\\White Noise",
+            "appId": null
+      },
+      {
+            "id": 25,
+            "title": "Blacklight: Retribution",
+            "appId": null
+      },
+      {
+            "id": 26,
+            "title": "Blacklight: Tango Down",
+            "appId": null
+      },
+      {
+            "id": 27,
+            "title": "Blade Chimera",
+            "appId": null
+      },
+      {
+            "id": 28,
+            "title": "Blade Runner",
+            "appId": 1678420
+      },
+      {
+            "id": 29,
+            "title": "Blazing Chrome",
+            "appId": null
+      },
+      {
+            "id": 30,
+            "title": "Blood II: The Chosen",
+            "appId": null
+      },
+      {
+            "id": 31,
+            "title": "BloodNet",
+            "appId": null
+      },
+      {
+            "id": 32,
+            "title": "Bomb Rush Cyberfunk",
+            "appId": 1353230
+      },
+      {
+            "id": 33,
+            "title": "Bomberman: Act Zero",
+            "appId": null
+      },
+      {
+            "id": 34,
+            "title": "The Bouncer",
+            "appId": null
+      },
+      {
+            "id": 35,
+            "title": "BROK the InvestiGator",
+            "appId": null
+      },
+      {
+            "id": 36,
+            "title": "Burn Cycle",
+            "appId": null
+      },
+      {
+            "id": 37,
+            "title": "Call of Duty: Advanced Warfare",
+            "appId": 209650
+      },
+      {
+            "id": 38,
+            "title": "Call of Duty: Black Ops III",
+            "appId": 311210
+      },
+      {
+            "id": 39,
+            "title": "Chaos Overlords",
+            "appId": null
+      },
+      {
+            "id": 40,
+            "title": "Chaser",
+            "appId": null
+      },
+      {
+            "id": 41,
+            "title": "Chinatown Detective Agency",
+            "appId": 1172190
+      },
+      {
+            "id": 42,
+            "title": "Circuit’s Edge",
+            "appId": null
+      },
+      {
+            "id": 43,
+            "title": "Citizen Sleeper",
+            "appId": 1578650
+      },
+      {
+            "id": 44,
+            "title": "Citizen Sleeper 2: Starward Vector",
+            "appId": null
+      },
+      {
+            "id": 45,
+            "title": "Cloudpunk",
+            "appId": 746850
+      },
+      {
+            "id": 46,
+            "title": "Conglomerate 451",
+            "appId": 1022710
+      },
+      {
+            "id": 47,
+            "title": "Contra: Rogue Corps",
+            "appId": null
+      },
+      {
+            "id": 48,
+            "title": "Cops 2170: The Power of Law",
+            "appId": null
+      },
+      {
+            "id": 49,
+            "title": "Core Decay",
+            "appId": null
+      },
+      {
+            "id": 50,
+            "title": "Corporation",
+            "appId": null
+      },
+      {
+            "id": 51,
+            "title": "Crash ’N Burn",
+            "appId": null
+      },
+      {
+            "id": 52,
+            "title": "The Creed",
+            "appId": null
+      },
+      {
+            "id": 53,
+            "title": "Crime Cities",
+            "appId": null
+      },
+      {
+            "id": 54,
+            "title": "Cruelty Squad",
+            "appId": 1388770
+      },
+      {
+            "id": 55,
+            "title": "Cy Girls",
+            "appId": null
+      },
+      {
+            "id": 56,
+            "title": "Cyber Knights: Flashpoint",
+            "appId": null
+      },
+      {
+            "id": 57,
+            "title": "Cyber-Lip",
+            "appId": null
+      },
+      {
+            "id": 58,
+            "title": "Cyberbykes: Shadow Racer VR",
+            "appId": null
+      },
+      {
+            "id": 59,
+            "title": "Cyberia",
+            "appId": null
+      },
+      {
+            "id": 60,
+            "title": "CyberJudas",
+            "appId": null
+      },
+      {
+            "id": 61,
+            "title": "CyberMage: Darklight Awakening",
+            "appId": null
+      },
+      {
+            "id": 62,
+            "title": "Cyberpunk 2077",
+            "appId": 1091500
+      },
+      {
+            "id": 63,
+            "title": "Cyberpunk 2077: Phantom Liberty",
+            "appId": 2138330
+      },
+      {
+            "id": 64,
+            "title": "Cypher",
+            "appId": null
+      },
+      {
+            "id": 65,
+            "title": "Cytus",
+            "appId": null
+      },
+      {
+            "id": 66,
+            "title": "D/Generation",
+            "appId": null
+      },
+      {
+            "id": 67,
+            "title": "Daikatana",
+            "appId": null
+      },
+      {
+            "id": 68,
+            "title": "Dead as Disco",
+            "appId": null
+      },
+      {
+            "id": 69,
+            "title": "Delta V",
+            "appId": null
+      },
+      {
+            "id": 70,
+            "title": "Denjin Makai",
+            "appId": null
+      },
+      {
+            "id": 71,
+            "title": "Deus Ex",
+            "appId": 6910
+      },
+      {
+            "id": 72,
+            "title": "Deus Ex: Human Revolution",
+            "appId": 238010
+      },
+      {
+            "id": 73,
+            "title": "Deus Ex: Human Revolution – The Missing Link",
+            "appId": 201280
+      },
+      {
+            "id": 74,
+            "title": "Deus Ex: Invisible War",
+            "appId": 6920
+      },
+      {
+            "id": 75,
+            "title": "Deus Ex: Mankind Divided",
+            "appId": 337000
+      },
+      {
+            "id": 76,
+            "title": "Deus Ex: The Fall",
+            "appId": 258180
+      },
+      {
+            "id": 77,
+            "title": "Devil Summoner 2: Raidou Kuzunoha vs. King Abaddon",
+            "appId": null
+      },
+      {
+            "id": 78,
+            "title": "Devil Summoner: Soul Hackers",
+            "appId": null
+      },
+      {
+            "id": 79,
+            "title": "Dex",
+            "appId": 269650
+      },
+      {
+            "id": 80,
+            "title": "Digital Devil Story: Megami Tensei",
+            "appId": null
+      },
+      {
+            "id": 81,
+            "title": "Digital Devil Story: Megami Tensei II",
+            "appId": null
+      },
+      {
+            "id": 82,
+            "title": "Dohna Dohna: Let’s Do Bad Things Together",
+            "appId": null
+      },
+      {
+            "id": 83,
+            "title": "Dreamfall Chapters",
+            "appId": 237850
+      },
+      {
+            "id": 84,
+            "title": "Dreamfall: The Longest Journey",
+            "appId": 6300
+      },
+      {
+            "id": 85,
+            "title": "DreamWeb",
+            "appId": null
+      },
+      {
+            "id": 86,
+            "title": "Drowned God",
+            "appId": null
+      },
+      {
+            "id": 87,
+            "title": "Dry Drowning",
+            "appId": null
+      },
+      {
+            "id": 88,
+            "title": "Due Process",
+            "appId": null
+      },
+      {
+            "id": 89,
+            "title": "Dystopia",
+            "appId": 17580
+      },
+      {
+            "id": 90,
+            "title": "Dystopika",
+            "appId": null
+      },
+      {
+            "id": 91,
+            "title": "E.Y.E.: Divine Cybermancy",
+            "appId": 91700
+      },
+      {
+            "id": 92,
+            "title": "Electrocop",
+            "appId": null
+      },
+      {
+            "id": 93,
+            "title": "Encodya",
+            "appId": 1137450
+      },
+      {
+            "id": 94,
+            "title": "Exapunks",
+            "appId": 716490
+      },
+      {
+            "id": 95,
+            "title": "Extase",
+            "appId": null
+      },
+      {
+            "id": 96,
+            "title": "Far Cry 3: Blood Dragon",
+            "appId": 233270
+      },
+      {
+            "id": 97,
+            "title": "Fear Effect",
+            "appId": null
+      },
+      {
+            "id": 98,
+            "title": "Fear Effect 2: Retro Helix",
+            "appId": null
+      },
+      {
+            "id": 99,
+            "title": "Final Fantasy VII",
+            "appId": 39140
+      },
+      {
+            "id": 100,
+            "title": "Final Fantasy VII Remake",
+            "appId": 1462040
+      },
+      {
+            "id": 101,
+            "title": "Flashback",
+            "appId": 961620
+      },
+      {
+            "id": 102,
+            "title": "Flashback 2",
+            "appId": null
+      },
+      {
+            "id": 103,
+            "title": "Frozen Synapse",
+            "appId": 98200
+      },
+      {
+            "id": 104,
+            "title": "Frozen Synapse 2",
+            "appId": 445020
+      },
+      {
+            "id": 105,
+            "title": "Future Cop: LAPD",
+            "appId": null
+      },
+      {
+            "id": 106,
+            "title": "G String",
+            "appId": 1224600
+      },
+      {
+            "id": 107,
+            "title": "G-Police",
+            "appId": null
+      },
+      {
+            "id": 108,
+            "title": "Galaxy Fight: Universal Warriors",
+            "appId": null
+      },
+      {
+            "id": 109,
+            "title": "Galerians",
+            "appId": null
+      },
+      {
+            "id": 110,
+            "title": "Galerians: Ash",
+            "appId": null
+      },
+      {
+            "id": 111,
+            "title": "Gamedec",
+            "appId": 917720
+      },
+      {
+            "id": 112,
+            "title": "Gemini Rue",
+            "appId": 80310
+      },
+      {
+            "id": 113,
+            "title": "Ghost 1.0",
+            "appId": null
+      },
+      {
+            "id": 114,
+            "title": "Ghost in the Shell",
+            "appId": null
+      },
+      {
+            "id": 115,
+            "title": "Ghostrunner",
+            "appId": 1139900
+      },
+      {
+            "id": 116,
+            "title": "Ghostrunner 2",
+            "appId": 2144740
+      },
+      {
+            "id": 117,
+            "title": "Giga Wrecker",
+            "appId": null
+      },
+      {
+            "id": 118,
+            "title": "Gori: Cuddly Carnage",
+            "appId": 1299690
+      },
+      {
+            "id": 119,
+            "title": "Gunlok",
+            "appId": null
+      },
+      {
+            "id": 120,
+            "title": "Hacker",
+            "appId": null
+      },
+      {
+            "id": 121,
+            "title": "Hagane: The Final Conflict",
+            "appId": null
+      },
+      {
+            "id": 122,
+            "title": "Hammerfist",
+            "appId": null
+      },
+      {
+            "id": 123,
+            "title": "Hard Reset",
+            "appId": 98400
+      },
+      {
+            "id": 124,
+            "title": "Hardcoded",
+            "appId": null
+      },
+      {
+            "id": 125,
+            "title": "Hardwar",
+            "appId": null
+      },
+      {
+            "id": 126,
+            "title": "Headhunter",
+            "appId": null
+      },
+      {
+            "id": 127,
+            "title": "Headhunter Redemption",
+            "appId": null
+      },
+      {
+            "id": 128,
+            "title": "Heavy Metal: Geomatrix",
+            "appId": null
+      },
+      {
+            "id": 129,
+            "title": "Hell: A Cyberpunk Thriller",
+            "appId": null
+      },
+      {
+            "id": 130,
+            "title": "Hired Guns",
+            "appId": null
+      },
+      {
+            "id": 131,
+            "title": "Huntdown",
+            "appId": 598550
+      },
+      {
+            "id": 132,
+            "title": "Hyde Run",
+            "appId": null
+      },
+      {
+            "id": 133,
+            "title": "Hyper Scape",
+            "appId": null
+      },
+      {
+            "id": 134,
+            "title": "I Have No Mouth, and I Must Scream",
+            "appId": 245390
+      },
+      {
+            "id": 135,
+            "title": "Illusion City",
+            "appId": null
+      },
+      {
+            "id": 136,
+            "title": "Immercenary",
+            "appId": null
+      },
+      {
+            "id": 137,
+            "title": "Implosion: Never Lose Hope",
+            "appId": null
+      },
+      {
+            "id": 138,
+            "title": "Interphase",
+            "appId": null
+      },
+      {
+            "id": 139,
+            "title": "Invisible, Inc.",
+            "appId": 243970
+      },
+      {
+            "id": 140,
+            "title": "Ion Fury",
+            "appId": 562860
+      },
+      {
+            "id": 141,
+            "title": "Jack Move",
+            "appId": 1099640
+      },
+      {
+            "id": 142,
+            "title": "James Cameron’s Dark Angel",
+            "appId": null
+      },
+      {
+            "id": 143,
+            "title": "Johnny Mnemonic",
+            "appId": null
+      },
+      {
+            "id": 144,
+            "title": "Judge Dredd",
+            "appId": null
+      },
+      {
+            "id": 145,
+            "title": "Judge Dredd: Dredd vs. Death",
+            "appId": null
+      },
+      {
+            "id": 146,
+            "title": "Kabuki: Quantum Fighter",
+            "appId": null
+      },
+      {
+            "id": 147,
+            "title": "Katana ZERO",
+            "appId": 460950
+      },
+      {
+            "id": 148,
+            "title": "Kikokugai: The Cyber Slayer",
+            "appId": null
+      },
+      {
+            "id": 149,
+            "title": "Kinetica",
+            "appId": null
+      },
+      {
+            "id": 150,
+            "title": "The Last Night",
+            "appId": null
+      },
+      {
+            "id": 151,
+            "title": "The Legend of Bishin",
+            "appId": null
+      },
+      {
+            "id": 152,
+            "title": "Leviathan: The Last Day of the Decade",
+            "appId": null
+      },
+      {
+            "id": 153,
+            "title": "Liberated",
+            "appId": 875310
+      },
+      {
+            "id": 154,
+            "title": "Liberation: Captive 2",
+            "appId": null
+      },
+      {
+            "id": 155,
+            "title": "Lifeforce Tenka",
+            "appId": null
+      },
+      {
+            "id": 156,
+            "title": "Love Shore",
+            "appId": 1410330
+      },
+      {
+            "id": 157,
+            "title": "Magrunner: Dark Pulse",
+            "appId": 209630
+      },
+      {
+            "id": 158,
+            "title": "Mars: War Logs",
+            "appId": 232750
+      },
+      {
+            "id": 159,
+            "title": "Mean Streets",
+            "appId": null
+      },
+      {
+            "id": 160,
+            "title": "Meat Puppet",
+            "appId": null
+      },
+      {
+            "id": 161,
+            "title": "Megami Tensei",
+            "appId": null
+      },
+      {
+            "id": 162,
+            "title": "MegaRace",
+            "appId": null
+      },
+      {
+            "id": 163,
+            "title": "Messiah",
+            "appId": null
+      },
+      {
+            "id": 164,
+            "title": "Metal Eden",
+            "appId": null
+      },
+      {
+            "id": 165,
+            "title": "Metal Gear",
+            "appId": null
+      },
+      {
+            "id": 166,
+            "title": "Metal Gear Rising: Revengeance",
+            "appId": null
+      },
+      {
+            "id": 167,
+            "title": "Metal Gear Solid 2: Sons of Liberty",
+            "appId": null
+      },
+      {
+            "id": 168,
+            "title": "Metal Gear Solid 4: Guns of the Patriots",
+            "appId": null
+      },
+      {
+            "id": 169,
+            "title": "Metal Stoker",
+            "appId": null
+      },
+      {
+            "id": 170,
+            "title": "MindJack",
+            "appId": null
+      },
+      {
+            "id": 171,
+            "title": "MTV: Club Dead",
+            "appId": null
+      },
+      {
+            "id": 172,
+            "title": "Mullet MadJack",
+            "appId": 2111190
+      },
+      {
+            "id": 173,
+            "title": "N1RV Ann-A",
+            "appId": null
+      },
+      {
+            "id": 174,
+            "title": "Neckbreak",
+            "appId": null
+      },
+      {
+            "id": 175,
+            "title": "Neo Cab",
+            "appId": 794540
+      },
+      {
+            "id": 176,
+            "title": "Neocron",
+            "appId": null
+      },
+      {
+            "id": 177,
+            "title": "Neocron 2: Beyond Dome of York",
+            "appId": null
+      },
+      {
+            "id": 178,
+            "title": "NeoHunter",
+            "appId": null
+      },
+      {
+            "id": 179,
+            "title": "Neon Struct",
+            "appId": 310740
+      },
+      {
+            "id": 180,
+            "title": "NeoTokyo",
+            "appId": null
+      },
+      {
+            "id": 181,
+            "title": "Netzone",
+            "appId": null
+      },
+      {
+            "id": 182,
+            "title": "Neuro",
+            "appId": null
+      },
+      {
+            "id": 183,
+            "title": "Neuro Hunter",
+            "appId": null
+      },
+      {
+            "id": 184,
+            "title": "Neuromancer",
+            "appId": null
+      },
+      {
+            "id": 185,
+            "title": "Nightlong: Union City Conspiracy",
+            "appId": null
+      },
+      {
+            "id": 186,
+            "title": "Nikopol: Secrets of the Immortals",
+            "appId": null
+      },
+      {
+            "id": 187,
+            "title": "Nine Sols",
+            "appId": null
+      },
+      {
+            "id": 188,
+            "title": "Nobody Wants to Die",
+            "appId": 1939970
+      },
+      {
+            "id": 189,
+            "title": "The Nomad Soul",
+            "appId": null
+      },
+      {
+            "id": 190,
+            "title": "Normality",
+            "appId": null
+      },
+      {
+            "id": 191,
+            "title": "Observer",
+            "appId": 514900
+      },
+      {
+            "id": 192,
+            "title": "Of the Devil",
+            "appId": null
+      },
+      {
+            "id": 193,
+            "title": "Off the Grid",
+            "appId": null
+      },
+      {
+            "id": 194,
+            "title": "Oni",
+            "appId": null
+      },
+      {
+            "id": 195,
+            "title": "Osman",
+            "appId": null
+      },
+      {
+            "id": 196,
+            "title": "Paradise Cracked",
+            "appId": null
+      },
+      {
+            "id": 197,
+            "title": "Pax Corpus",
+            "appId": null
+      },
+      {
+            "id": 198,
+            "title": "Peripeteia",
+            "appId": null
+      },
+      {
+            "id": 199,
+            "title": "Phantom 2040",
+            "appId": null
+      },
+      {
+            "id": 200,
+            "title": "Primordia",
+            "appId": 227000
+      },
+      {
+            "id": 201,
+            "title": "Project Eden",
+            "appId": null
+      },
+      {
+            "id": 202,
+            "title": "Project Snowblind",
+            "appId": 7010
+      },
+      {
+            "id": 203,
+            "title": "Psycho Patrol R",
+            "appId": null
+      },
+      {
+            "id": 204,
+            "title": "Psycho-Pass: Mandatory Happiness",
+            "appId": 522880
+      },
+      {
+            "id": 205,
+            "title": "Punishing: Gray Raven",
+            "appId": null
+      },
+      {
+            "id": 206,
+            "title": "Quadrilateral Cowboy",
+            "appId": 240440
+      },
+      {
+            "id": 207,
+            "title": "Quarantine",
+            "appId": null
+      },
+      {
+            "id": 208,
+            "title": "Quarantine II: Road Warrior",
+            "appId": null
+      },
+      {
+            "id": 209,
+            "title": "Radio the Universe",
+            "appId": null
+      },
+      {
+            "id": 210,
+            "title": "Raid 2020",
+            "appId": null
+      },
+      {
+            "id": 211,
+            "title": "ReBoot",
+            "appId": null
+      },
+      {
+            "id": 212,
+            "title": "The Red Strings Club",
+            "appId": 589780
+      },
+      {
+            "id": 213,
+            "title": "Remember Me",
+            "appId": 228300
+      },
+      {
+            "id": 214,
+            "title": "Requiem: Avenging Angel",
+            "appId": null
+      },
+      {
+            "id": 215,
+            "title": "Ripper",
+            "appId": null
+      },
+      {
+            "id": 216,
+            "title": "Rise 2: Resurrection",
+            "appId": null
+      },
+      {
+            "id": 217,
+            "title": "Rise of the Dragon",
+            "appId": null
+      },
+      {
+            "id": 218,
+            "title": "Rise of the Robots",
+            "appId": null
+      },
+      {
+            "id": 219,
+            "title": "RoboCop Versus The Terminator",
+            "appId": null
+      },
+      {
+            "id": 220,
+            "title": "RoboCop: Rogue City",
+            "appId": 1681430
+      },
+      {
+            "id": 221,
+            "title": "RoboCop: Rogue City – Unfinished Business",
+            "appId": null
+      },
+      {
+            "id": 222,
+            "title": "Ruiner",
+            "appId": 464060
+      },
+      {
+            "id": 223,
+            "title": "Sanity: Aiken’s Artifact",
+            "appId": null
+      },
+      {
+            "id": 224,
+            "title": "Satellite Reign",
+            "appId": 268870
+      },
+      {
+            "id": 225,
+            "title": "Screamer",
+            "appId": null
+      },
+      {
+            "id": 226,
+            "title": "Sense: A Cyberpunk Ghost Story",
+            "appId": null
+      },
+      {
+            "id": 227,
+            "title": "Serial Experiments Lain",
+            "appId": null
+      },
+      {
+            "id": 228,
+            "title": "Seven: The Days Long Gone",
+            "appId": 471010
+      },
+      {
+            "id": 229,
+            "title": "Shadow President",
+            "appId": null
+      },
+      {
+            "id": 230,
+            "title": "Shadowrun",
+            "appId": null
+      },
+      {
+            "id": 231,
+            "title": "Shadowrun Returns",
+            "appId": 234650
+      },
+      {
+            "id": 232,
+            "title": "Shadowrun: Dragonfall",
+            "appId": 300550
+      },
+      {
+            "id": 233,
+            "title": "Shadowrun: Hong Kong",
+            "appId": 346940
+      },
+      {
+            "id": 234,
+            "title": "Shadows of Doubt",
+            "appId": 986130
+      },
+      {
+            "id": 235,
+            "title": "Shin Megami Tensei",
+            "appId": null
+      },
+      {
+            "id": 236,
+            "title": "Shin Megami Tensei II",
+            "appId": null
+      },
+      {
+            "id": 237,
+            "title": "Shin Megami Tensei IV",
+            "appId": null
+      },
+      {
+            "id": 238,
+            "title": "Shin Megami Tensei IV: Apocalypse",
+            "appId": null
+      },
+      {
+            "id": 239,
+            "title": "Shin Megami Tensei V",
+            "appId": null
+      },
+      {
+            "id": 240,
+            "title": "Shin Megami Tensei: Devil Summoner",
+            "appId": null
+      },
+      {
+            "id": 241,
+            "title": "Shin Megami Tensei: Digital Devil Saga",
+            "appId": null
+      },
+      {
+            "id": 242,
+            "title": "Shin Megami Tensei If...",
+            "appId": null
+      },
+      {
+            "id": 243,
+            "title": "Shin Megami Tensei: Imagine",
+            "appId": null
+      },
+      {
+            "id": 244,
+            "title": "Shin Megami Tensei: Nine",
+            "appId": null
+      },
+      {
+            "id": 245,
+            "title": "Showgunners",
+            "appId": 1155330
+      },
+      {
+            "id": 246,
+            "title": "Simulman",
+            "appId": null
+      },
+      {
+            "id": 247,
+            "title": "SiN",
+            "appId": null
+      },
+      {
+            "id": 248,
+            "title": "SiN Episodes: Emergence",
+            "appId": 1300
+      },
+      {
+            "id": 249,
+            "title": "Skyhammer",
+            "appId": null
+      },
+      {
+            "id": 250,
+            "title": "Skynet",
+            "appId": null
+      },
+      {
+            "id": 251,
+            "title": "Slave Zero",
+            "appId": null
+      },
+      {
+            "id": 252,
+            "title": "Snatcher",
+            "appId": null
+      },
+      {
+            "id": 253,
+            "title": "The Space Adventure",
+            "appId": null
+      },
+      {
+            "id": 254,
+            "title": "Speed Power Gunbike",
+            "appId": null
+      },
+      {
+            "id": 255,
+            "title": "Speedball",
+            "appId": null
+      },
+      {
+            "id": 256,
+            "title": "Speedball 2 Tournament",
+            "appId": null
+      },
+      {
+            "id": 257,
+            "title": "Speedball 2: Brutal Deluxe",
+            "appId": null
+      },
+      {
+            "id": 258,
+            "title": "Spider-Man: Edge of Time",
+            "appId": null
+      },
+      {
+            "id": 259,
+            "title": "Spider-Man: Shattered Dimensions",
+            "appId": null
+      },
+      {
+            "id": 260,
+            "title": "Spine",
+            "appId": null
+      },
+      {
+            "id": 261,
+            "title": "Split Fiction",
+            "appId": null
+      },
+      {
+            "id": 262,
+            "title": "State of Mind",
+            "appId": 437630
+      },
+      {
+            "id": 263,
+            "title": "Stolen",
+            "appId": null
+      },
+      {
+            "id": 264,
+            "title": "Stray",
+            "appId": 1332010
+      },
+      {
+            "id": 265,
+            "title": "Strider",
+            "appId": null
+      },
+      {
+            "id": 266,
+            "title": "Superhot",
+            "appId": 322500
+      },
+      {
+            "id": 267,
+            "title": "Superhot: Mind Control Delete",
+            "appId": 690040
+      },
+      {
+            "id": 268,
+            "title": "Syndicate",
+            "appId": null
+      },
+      {
+            "id": 269,
+            "title": "Syndicate: American Revolt",
+            "appId": null
+      },
+      {
+            "id": 270,
+            "title": "Syndicate Wars",
+            "appId": null
+      },
+      {
+            "id": 271,
+            "title": "System Rush",
+            "appId": null
+      },
+      {
+            "id": 272,
+            "title": "System Shock",
+            "appId": 482400
+      },
+      {
+            "id": 273,
+            "title": "System Shock 2",
+            "appId": 238210
+      },
+      {
+            "id": 274,
+            "title": "System Shock Remake",
+            "appId": 482400
+      },
+      {
+            "id": 275,
+            "title": "Tales of the Neon Sea",
+            "appId": 828740
+      },
+      {
+            "id": 276,
+            "title": "Tank Universal",
+            "appId": null
+      },
+      {
+            "id": 277,
+            "title": "Technobabylon",
+            "appId": 307580
+      },
+      {
+            "id": 278,
+            "title": "The Technomancer",
+            "appId": 338390
+      },
+      {
+            "id": 279,
+            "title": "Tesla Effect: A Tex Murphy Adventure",
+            "appId": 261510
+      },
+      {
+            "id": 280,
+            "title": "Tex Murphy",
+            "appId": null
+      },
+      {
+            "id": 281,
+            "title": "Transistor",
+            "appId": 237930
+      },
+      {
+            "id": 282,
+            "title": "Tron: Catalyst",
+            "appId": null
+      },
+      {
+            "id": 283,
+            "title": "Tron: Identity",
+            "appId": 2109430
+      },
+      {
+            "id": 284,
+            "title": "Until I Have You",
+            "appId": null
+      },
+      {
+            "id": 285,
+            "title": "Uplink",
+            "appId": 1510
+      },
+      {
+            "id": 286,
+            "title": "VA-11 Hall-A",
+            "appId": 447530
+      },
+      {
+            "id": 287,
+            "title": "VirtuaVerse",
+            "appId": 1019310
+      },
+      {
+            "id": 288,
+            "title": "Volume",
+            "appId": 365770
+      },
+      {
+            "id": 289,
+            "title": "Wanted: Dead",
+            "appId": 1981610
+      },
+      {
+            "id": 290,
+            "title": "Watch Dogs",
+            "appId": 243470
+      },
+      {
+            "id": 291,
+            "title": "Watch Dogs 2",
+            "appId": 447040
+      },
+      {
+            "id": 292,
+            "title": "Watch Dogs: Legion",
+            "appId": 2239550
+      },
+      {
+            "id": 293,
+            "title": "William Shatner’s TekWar",
+            "appId": null
+      },
+      {
+            "id": 294,
+            "title": "Wirehead",
+            "appId": null
+      },
+      {
+            "id": 295,
+            "title": "X-Kaliber 2097",
+            "appId": null
+      },
+      {
+            "id": 296,
+            "title": "Zenless Zone Zero",
+            "appId": 2841600
+      },
+      {
+            "id": 297,
+            "title": "ZeroZone",
+            "appId": null
+      }
+];
+    const currencies = [
+      { code: "USD", label: "Доллары" },
+      { code: "RUB", label: "Рубли" },
+      { code: "KZT", label: "Тенге" },
+      { code: "UAH", label: "Гривны" }
+    ];
+
+    const CACHE_KEY = "cybergames-vercel-cache-v2-steam-epic";
+    const CACHE_TTL = 1000 * 60 * 60 * 6;
+
+    const gamesGrid = document.getElementById("gamesGrid");
+    const searchInput = document.getElementById("searchInput");
+    const counterValue = document.getElementById("counterValue");
+    const emptyState = document.getElementById("emptyState");
+    const loadAllBtn = document.getElementById("loadAllBtn");
+    const progress = document.getElementById("progress");
+    const progressFill = document.getElementById("progressFill");
+
+    const modal = document.getElementById("gameModal");
+    const modalClose = document.getElementById("modalClose");
+    const modalHero = document.getElementById("modalHero");
+    const modalPoster = document.getElementById("modalPoster");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalMeta = document.getElementById("modalMeta");
+    const modalDescription = document.getElementById("modalDescription");
+    const screensGrid = document.getElementById("screensGrid");
+    const priceGrid = document.getElementById("priceGrid");
+    const liveStatus = document.getElementById("liveStatus");
+    const storeLinks = document.getElementById("storeLinks");
+
+    let currentModalId = null;
+
+    function normalize(value) {
+      return String(value || "")
+        .toLowerCase()
+        .replace(/[™®©]/g, "")
+        .replace(/['’`]/g, "")
+        .replace(/[^a-zа-яё0-9]+/gi, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+    }
+
+    function createPlaceholder(title, wide = false) {
+      const safeTitle = String(title || "Cyberpunk").replace(/&/g, "&amp;").replace(/</g, "&lt;");
+      const w = wide ? 1280 : 900;
+      const h = wide ? 720 : 1200;
+
+      const svg = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}">
+          <defs>
+            <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#050509"/>
+              <stop offset="48%" stop-color="#101527"/>
+              <stop offset="100%" stop-color="#260015"/>
+            </linearGradient>
+            <filter id="glow">
+              <feGaussianBlur stdDeviation="4" result="blur"/>
+              <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+          </defs>
+          <rect width="${w}" height="${h}" fill="url(#g)"/>
+          <g opacity="0.18">
+            <path d="M0 160 H${w} M0 320 H${w} M0 480 H${w} M0 640 H${w} M0 800 H${w} M0 960 H${w}" stroke="#00f3ff" stroke-width="2"/>
+            <path d="M150 0 V${h} M300 0 V${h} M450 0 V${h} M600 0 V${h} M750 0 V${h} M900 0 V${h}" stroke="#ff0055" stroke-width="2"/>
+          </g>
+          <text x="50%" y="48%" text-anchor="middle" fill="#00f3ff" font-size="${wide ? 54 : 58}" font-family="Arial" font-weight="900" filter="url(#glow)">${safeTitle}</text>
+          <text x="50%" y="56%" text-anchor="middle" fill="#ff0055" font-size="26" font-family="Arial" font-weight="800">ОЖИДАЕТ ДАННЫЕ</text>
+        </svg>
+      `;
+
+      return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+    }
+
+    function readCache() {
+      try {
+        return JSON.parse(localStorage.getItem(CACHE_KEY) || "{}");
+      } catch {
+        return {};
+      }
+    }
+
+    function writeCache(cache) {
+      try {
+        localStorage.setItem(CACHE_KEY, JSON.stringify(cache));
+      } catch {
+        // не критично
+      }
+    }
+
+    function getCached(game) {
+      const key = game.appId ? `appid:${game.appId}` : `title:${game.title}`;
+      const cache = readCache();
+      const item = cache[key];
+
+      if (!item || Date.now() - item.time > CACHE_TTL) return null;
+      return item.data;
+    }
+
+    function setCached(game, data) {
+      const key = game.appId ? `appid:${game.appId}` : `title:${game.title}`;
+      const cache = readCache();
+      cache[key] = { time: Date.now(), data };
+      writeCache(cache);
+    }
+
+    async function fetchGame(game) {
+      if (game.status === "loading" || game.status === "done" || game.status === "failed") return game.data || null;
+
+      const cached = getCached(game);
+
+      if (cached) {
+        applyGameData(game, cached);
+        return cached;
+      }
+
+      game.status = "loading";
+      updateCard(game);
+
+      const params = new URLSearchParams();
+      params.set("title", game.title);
+      if (game.appId) params.set("appId", String(game.appId));
+
+      try {
+        const response = await fetch(`/api/steam?${params.toString()}`);
+        const data = await response.json();
+
+        if (!response.ok || !data.ok) {
+          game.status = "failed";
+          game.error = data.reason || data.error || "Steam/Epic не нашли данные";
+          game.data = data;
+          updateCard(game);
+          return data;
+        }
+
+        setCached(game, data);
+        applyGameData(game, data);
+        return data;
+      } catch (error) {
+        game.status = "failed";
+        game.error = error.message || "Ошибка API";
+        updateCard(game);
+        return null;
+      }
+    }
+
+    function applyGameData(game, data) {
+      game.status = "done";
+      game.data = data;
+      game.resolvedTitle = data.title || game.title;
+      game.searchText = normalize(`${game.title} ${data.title} ${data.description || ""} ${(data.genres || []).join(" ")}`);
+      updateCard(game);
+    }
+
+    function initialCardImage(game) {
+      if (game.appId) {
+        return `https://cdn.akamai.steamstatic.com/steam/apps/${game.appId}/header.jpg`;
+      }
+
+      return createPlaceholder(game.title, true);
+    }
+
+    function cardImage(game) {
+      if (game.data && game.data.cardImage) return game.data.cardImage;
+      if (game.data && game.data.header) return game.data.header;
+      if (game.data && game.data.cover) return game.data.cover;
+      return initialCardImage(game);
+    }
+
+    function heroImage(game) {
+      if (game.data && game.data.hero) return game.data.hero;
+      if (game.data && game.data.header) return game.data.header;
+      if (game.data && game.data.cardImage) return game.data.cardImage;
+      return createPlaceholder(game.title, true);
+    }
+
+    function posterImage(game) {
+      if (game.data && game.data.portrait) return game.data.portrait;
+      if (game.data && game.data.cover) return game.data.cover;
+      return cardImage(game);
+    }
+
+    function providerLabel(data) {
+      if (!data) return "Vercel API";
+      if (data.provider === "steam+epic") return "Steam + Epic";
+      if (data.provider === "epic") return "Epic OK";
+      if (data.provider === "steam") return "Steam OK";
+      return "API OK";
+    }
+
+    function renderCards() {
+      const fragment = document.createDocumentFragment();
+
+      games.forEach((game) => {
+        game.status = "idle";
+        game.searchText = normalize(game.title);
+
+        const card = document.createElement("button");
+        card.className = "game-card";
+        card.type = "button";
+        card.dataset.id = String(game.id);
+        card.dataset.search = game.searchText;
+
+        card.innerHTML = `
+          <div class="card-inner">
+            <div class="poster-wrap">
+              <img class="poster" src="${initialCardImage(game)}" alt="Обложка ${game.title}">
+              <span class="status-pill">Ожидает</span>
+              <span class="free-badge">Бесплатно</span>
+            </div>
+            <div class="card-content">
+              <h2 class="card-title">${game.title}</h2>
+              <div class="card-meta">
+                <span class="release">—</span>
+                <span class="type">Steam lookup</span>
+              </div>
+              <p class="card-description">Данные загрузятся через Vercel API: обложка, скриншоты, описание, цены и статус бесплатности из Steam/Epic.</p>
+              <div class="tag-row">
+                <span class="tag">Cyberpunk</span>
+                <span class="tag">Vercel API</span>
+              </div>
+            </div>
+          </div>
+        `;
+
+        card.addEventListener("click", () => openModal(game.id));
+        fragment.appendChild(card);
+      });
+
+      gamesGrid.appendChild(fragment);
+      updateCounter(games.length);
+      observeCards();
+    }
+
+    function getCard(game) {
+      return gamesGrid.querySelector(`.game-card[data-id="${game.id}"]`);
+    }
+
+    function updateCard(game) {
+      const card = getCard(game);
+      if (!card) return;
+
+      card.dataset.search = game.searchText || normalize(game.title);
+
+      const poster = card.querySelector(".poster");
+      const title = card.querySelector(".card-title");
+      const release = card.querySelector(".release");
+      const type = card.querySelector(".type");
+      const desc = card.querySelector(".card-description");
+      const status = card.querySelector(".status-pill");
+      const freeBadge = card.querySelector(".free-badge");
+      const tagRow = card.querySelector(".tag-row");
+
+      if (game.status === "loading") {
+        status.textContent = "Загрузка...";
+        status.className = "status-pill";
+      }
+
+      if (game.status === "failed") {
+        poster.src = createPlaceholder(game.title);
+        title.textContent = game.title;
+        release.textContent = "—";
+        type.textContent = "нет Steam/Epic data";
+        desc.textContent = game.error || "Steam/Epic не нашли данные. Фейковую обложку не ставлю.";
+        status.textContent = "Нет данных";
+        status.className = "status-pill fail";
+        freeBadge.classList.remove("show");
+        tagRow.innerHTML = `<span class="tag">Поиск по магазинам</span><span class="tag">Нет Steam/Epic data</span>`;
+      }
+
+      if (game.status === "done" && game.data) {
+        const data = game.data;
+        poster.src = cardImage(game);
+        poster.onerror = () => {
+          poster.onerror = null;
+          poster.src = createPlaceholder(game.title);
+        };
+
+        title.textContent = data.title || game.title;
+        release.textContent = data.releaseDate || "—";
+        type.textContent = data.type || "game";
+        desc.textContent = data.description || "Описание не найдено.";
+        status.textContent = providerLabel(data);
+        status.className = "status-pill ok";
+
+        if (data.isFree) freeBadge.classList.add("show");
+        else freeBadge.classList.remove("show");
+
+        const tags = (data.genres || []).slice(0, 3).map((tag) => `<span class="tag">${tag}</span>`).join("");
+        tagRow.innerHTML = `${data.isFree ? '<span class="tag">Бесплатно</span>' : ""}<span class="tag">${providerLabel(data)}</span>${tags}`;
+      }
+    }
+
+    function updateCounter(count) {
+      counterValue.textContent = count;
+    }
+
+    function filterGames() {
+      const query = normalize(searchInput.value);
+      let visible = 0;
+
+      document.querySelectorAll(".game-card").forEach((card) => {
+        const match = card.dataset.search.includes(query);
+        card.classList.toggle("hidden", !match);
+        if (match) visible++;
+      });
+
+      updateCounter(visible);
+      emptyState.classList.toggle("show", visible === 0);
+    }
+
+    function observeCards() {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+
+          const id = Number(entry.target.dataset.id);
+          const game = games.find((item) => item.id === id);
+
+          if (game) fetchGame(game);
+          observer.unobserve(entry.target);
+        });
+      }, {
+        rootMargin: "550px 0px"
+      });
+
+      document.querySelectorAll(".game-card").forEach((card) => observer.observe(card));
+    }
+
+    function renderScreens(game) {
+      const screens = game.data && Array.isArray(game.data.screenshots) ? game.data.screenshots : [];
+
+      if (!screens.length) {
+        screensGrid.innerHTML = `
+          <div class="screen-card message-card">
+            Скриншоты не найдены. Фейковые скриншоты не подставляю.
+          </div>
+        `;
+        return;
+      }
+
+      screensGrid.innerHTML = screens.map((url, index) => `
+        <a class="screen-card" href="${url}" target="_blank" rel="noopener noreferrer">
+          <img src="${url}" alt="Скриншот ${index + 1} из игры ${game.data.title}">
+        </a>
+      `).join("");
+    }
+
+    function renderPrices(game) {
+      const rawPrices = game.data && game.data.prices ? game.data.prices : {};
+      const providerEntries = [];
+
+      if (rawPrices.steam) providerEntries.push(["steam", "Steam", rawPrices.steam]);
+      if (rawPrices.epic) providerEntries.push(["epic", "Epic", rawPrices.epic]);
+
+      if (!providerEntries.length && rawPrices.USD) {
+        providerEntries.push(["steam", "Steam", rawPrices]);
+      }
+
+      if (!providerEntries.length) {
+        priceGrid.innerHTML = currencies.map((currency) => `
+          <div class="price-item">
+            <span class="price-currency">${currency.label} / ${currency.code}</span>
+            <span class="price-value">Нет данных</span>
+          </div>
+        `).join("");
+
+        liveStatus.textContent = "Точной цены нет: Steam/Epic не отдали карточку или игра отсутствует в этих магазинах.";
+        return;
+      }
+
+      priceGrid.innerHTML = providerEntries.map(([key, providerName, prices]) => {
+        return currencies.map((currency) => {
+          const item = prices[currency.code] || { label: "Уточнить" };
+          const discount = item.discount ? ` · скидка ${item.discount}%` : "";
+
+          return `
+            <div class="price-item">
+              <span class="price-currency">${providerName} ${currency.label} / ${currency.code}${discount}</span>
+              <span class="price-value ${item.free ? "free" : ""}">${item.free ? "Бесплатно" : item.label}</span>
+            </div>
+          `;
+        }).join("");
+      }).join("");
+
+      if (game.data && game.data.isFree) {
+        liveStatus.textContent = "Один из магазинов помечает игру как бесплатную.";
+      } else if (game.status === "done") {
+        liveStatus.textContent = "Цены загружены через Vercel API. Steam и Epic могут отличаться по регионам, скидкам и доступности.";
+      } else {
+        liveStatus.textContent = "Точной цены нет, потому что магазин не отдал карточку.";
+      }
+    }
+
+    function renderStores(game) {
+      const title = game.data?.title || game.title;
+      const stores = game.data?.stores || {
+        steam: `https://store.steampowered.com/search/?term=${encodeURIComponent(title)}`,
+        gog: `https://www.gog.com/en/games?query=${encodeURIComponent(title)}`,
+        epic: `https://store.epicgames.com/ru/browse?q=${encodeURIComponent(title)}&sortBy=relevancy&sortDir=DESC&count=40`
+      };
+
+      const hasSteamDirect = Boolean(game.data?.sources?.steam?.url || game.data?.appId);
+      const hasEpicDirect = Boolean(game.data?.sources?.epic?.url);
+
+      const links = [
+        { name: "Steam", note: hasSteamDirect ? "Прямая страница Steam" : "Поиск в Steam", url: stores.steam },
+        { name: "Epic Games Store", note: hasEpicDirect ? "Прямая страница Epic" : "Поиск в Epic", url: stores.epic },
+        { name: "GOG", note: "Поиск по названию", url: stores.gog }
+      ];
+
+      storeLinks.innerHTML = links.map((link) => `
+        <a class="store-link" href="${link.url}" target="_blank" rel="noopener noreferrer">
+          <span>
+            <span class="store-name">${link.name}</span>
+            <span class="store-note">${link.note}</span>
+          </span>
+          <span class="arrow">→</span>
+        </a>
+      `).join("");
+    }
+
+    function renderModal(game) {
+      const data = game.data || {};
+      const title = data.title || game.title;
+
+      modalHero.style.setProperty("--hero-image", `url("${heroImage(game)}")`);
+      modalPoster.src = posterImage(game);
+      modalPoster.onerror = () => {
+        modalPoster.onerror = null;
+        modalPoster.src = createPlaceholder(title);
+      };
+      modalPoster.alt = `Обложка ${title}`;
+
+      modalTitle.textContent = title;
+      modalDescription.textContent = data.description || game.error || "Данные загружаются или недоступны.";
+
+      const genres = Array.isArray(data.genres) && data.genres.length
+        ? data.genres.map((genre) => `<span class="meta-pill">${genre}</span>`).join("")
+        : '<span class="meta-pill">Cyberpunk</span>';
+
+      modalMeta.innerHTML = `
+        <span class="meta-pill cyan">${data.releaseDate || "—"}</span>
+        <span class="meta-pill magenta">${providerLabel(data)}</span>
+        ${data.isFree ? '<span class="meta-pill green">Бесплатно</span>' : ""}
+        ${genres}
+      `;
+
+      renderScreens(game);
+      renderPrices(game);
+      renderStores(game);
+    }
+
+    async function openModal(id) {
+      const game = games.find((item) => item.id === id);
+      if (!game) return;
+
+      currentModalId = id;
+      modal.classList.add("show");
+      modal.setAttribute("aria-hidden", "false");
+      document.body.classList.add("modal-open");
+
+      renderModal(game);
+
+      await fetchGame(game);
+
+      if (currentModalId === id) renderModal(game);
+    }
+
+    function closeModal() {
+      modal.classList.remove("show");
+      modal.setAttribute("aria-hidden", "true");
+      document.body.classList.remove("modal-open");
+      currentModalId = null;
+    }
+
+    async function loadAll() {
+      loadAllBtn.disabled = true;
+      loadAllBtn.textContent = "Загружаю...";
+      progress.classList.add("show");
+      progressFill.style.width = "0%";
+
+      let done = 0;
+      const queue = [...games];
+      const workers = 4;
+
+      async function worker() {
+        while (queue.length) {
+          const game = queue.shift();
+          await fetchGame(game);
+          done++;
+          progressFill.style.width = `${Math.round((done / games.length) * 100)}%`;
+        }
+      }
+
+      await Promise.all(Array.from({ length: workers }, worker));
+
+      loadAllBtn.disabled = false;
+      loadAllBtn.textContent = "Обновить все";
+      setTimeout(() => progress.classList.remove("show"), 1200);
+    }
+
+    searchInput.addEventListener("input", filterGames);
+    loadAllBtn.addEventListener("click", loadAll);
+    modalClose.addEventListener("click", closeModal);
+    modal.addEventListener("click", (event) => {
+      if (event.target === modal) closeModal();
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && modal.classList.contains("show")) closeModal();
+    });
+
+    renderCards();
+  </script>
+</body>
+</html>
