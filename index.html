@@ -773,7 +773,7 @@
 
     <p class="hint">
       <strong>Важно:</strong> сайт работает на публикации через Vercel, потому что запросы в Steam идут через
-      <b>/api/steam</b>. Главные карточки показывают широкие изображения без кривого кропа; фильтры работают по источнику, жанру/категории и цене.
+      <b>/api/steam</b>. Если игры нет ни в Steam, ни в Epic Games Store, карточка автоматически исчезает из каталога.
     </p>
 
     <div class="progress" id="progress">
@@ -788,7 +788,6 @@
           <option value="steam">Steam</option>
           <option value="epic">Epic Games Store</option>
           <option value="steam+epic">Steam + Epic</option>
-          <option value="no-data">Нет данных</option>
         </select>
       </label>
 
@@ -2364,7 +2363,7 @@
       { code: "UAH", label: "Гривны" }
     ];
 
-    const CACHE_KEY = "cybergames-vercel-cache-v3-filters";
+    const CACHE_KEY = "cybergames-vercel-cache-v4-hide-missing";
     const CACHE_TTL = 1000 * 60 * 60 * 6;
 
     const gamesGrid = document.getElementById("gamesGrid");
@@ -2491,8 +2490,7 @@
           game.status = "failed";
           game.error = data.reason || data.error || "Steam/Epic не нашли данные";
           game.data = data;
-          updateCard(game);
-          filterGames();
+          removeNoStoreGame(game);
           return data;
         }
 
@@ -2502,8 +2500,7 @@
       } catch (error) {
         game.status = "failed";
         game.error = error.message || "Ошибка API";
-        updateCard(game);
-        filterGames();
+        removeNoStoreGame(game);
         return null;
       }
     }
@@ -2605,13 +2602,10 @@
     }
 
     function sourceMatches(game, value) {
+      if (game.removed) return false;
       if (value === "all") return true;
 
       const provider = getProvider(game.data);
-
-      if (value === "no-data") {
-        return game.status === "failed" || provider === "none";
-      }
 
       if (!game.data) return false;
 
@@ -2633,7 +2627,7 @@
       if (value === "all") return true;
 
       if (value === "unavailable") {
-        if (game.status === "failed") return true;
+        if (game.removed || game.status === "failed") return false;
         const prices = getUsdPrices(game);
         return game.data && (!prices.length || prices.every((price) => price.unavailable || price.label === "Уточнить" || price.label === "Недоступно"));
       }
@@ -2748,6 +2742,20 @@
       return gamesGrid.querySelector(`.game-card[data-id="${game.id}"]`);
     }
 
+    function removeNoStoreGame(game) {
+      game.removed = true;
+
+      const card = getCard(game);
+      if (card) card.remove();
+
+      if (currentModalId === game.id) {
+        closeModal();
+      }
+
+      populateGenreFilter();
+      filterGames();
+    }
+
     function updateCard(game) {
       const card = getCard(game);
       if (!card) return;
@@ -2819,12 +2827,13 @@
         const id = Number(card.dataset.id);
         const game = games.find((item) => item.id === id);
 
+        const activeMatch = game ? !game.removed : true;
         const textMatch = card.dataset.search.includes(query);
         const sourceMatch = game ? sourceMatches(game, sourceValue) : true;
         const genreMatch = game ? genreMatches(game, genreValue) : true;
         const priceMatch = game ? priceMatches(game, priceValue) : true;
 
-        const match = textMatch && sourceMatch && genreMatch && priceMatch;
+        const match = activeMatch && textMatch && sourceMatch && genreMatch && priceMatch;
         card.classList.toggle("hidden", !match);
 
         if (match) visible++;
@@ -3006,7 +3015,8 @@
       progressFill.style.width = "0%";
 
       let done = 0;
-      const queue = [...games];
+      const queue = games.filter((game) => !game.removed);
+      const totalQueue = queue.length;
       const workers = 4;
 
       async function worker() {
@@ -3014,7 +3024,7 @@
           const game = queue.shift();
           await fetchGame(game);
           done++;
-          progressFill.style.width = `${Math.round((done / games.length) * 100)}%`;
+          progressFill.style.width = `${Math.round((done / Math.max(totalQueue, 1)) * 100)}%`;
         }
       }
 
