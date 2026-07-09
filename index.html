@@ -1990,6 +1990,403 @@
       }
     }
 
+
+
+    /* v15: новая главная шапка + отключение правого превью выбранной игры */
+    .header {
+      min-height: 585px;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      gap: 24px;
+      padding: 0 0 28px;
+      isolation: isolate;
+      border-radius: 36px;
+      border: 1px solid rgba(45, 247, 255, 0.28);
+      background:
+        radial-gradient(circle at 22% 18%, rgba(45,247,255,.22), transparent 26%),
+        radial-gradient(circle at 82% 28%, rgba(181,107,255,.24), transparent 30%),
+        radial-gradient(circle at 58% 92%, rgba(255,204,102,.12), transparent 32%),
+        linear-gradient(135deg, rgba(2,5,13,.96), rgba(8,18,36,.94) 46%, rgba(3,7,19,.98));
+    }
+
+    .header::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -2;
+      background:
+        linear-gradient(90deg, rgba(3,7,19,.92) 0%, rgba(3,7,19,.52) 42%, rgba(3,7,19,.16) 68%, rgba(3,7,19,.64) 100%),
+        linear-gradient(to bottom, rgba(3,7,19,.18), rgba(3,7,19,.88)),
+        url("./assets/arcane-cyber-hero.png");
+      background-size: cover;
+      background-position: center;
+      opacity: .82;
+      filter: saturate(1.12) contrast(1.05);
+    }
+
+    .header::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      background:
+        linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px),
+        radial-gradient(circle at 50% 50%, transparent 0 34%, rgba(45,247,255,.09) 35%, transparent 36% 100%);
+      background-size: 34px 34px, 34px 34px, 100% 100%;
+      mask-image: linear-gradient(to bottom, black 0 74%, transparent 100%);
+    }
+
+    .topbar {
+      position: relative;
+      z-index: 3;
+      width: calc(100% - 44px);
+      margin: 22px auto 0;
+      padding: 12px;
+      grid-template-columns: auto minmax(260px, 1fr) auto;
+      border-radius: 28px;
+      border: 1px solid rgba(255,255,255,.1);
+      background: linear-gradient(90deg, rgba(5,12,24,.82), rgba(8,18,36,.5));
+      backdrop-filter: blur(18px);
+      box-shadow: 0 20px 52px rgba(0,0,0,.34), inset 0 0 0 1px rgba(255,255,255,.04);
+    }
+
+    .topbar::before {
+      display: none;
+    }
+
+    .logo-wrap {
+      padding-left: 6px;
+    }
+
+    .sigil {
+      width: 40px;
+      height: 40px;
+      border-color: rgba(255,204,102,.55);
+      box-shadow: 0 0 30px rgba(255,204,102,.18), 0 0 22px rgba(45,247,255,.16);
+    }
+
+    .logo {
+      font-size: clamp(28px, 2.4vw, 42px);
+    }
+
+    .nav {
+      justify-self: center;
+      background: rgba(3,7,19,.5);
+    }
+
+    .currency-switcher {
+      background: rgba(3,7,19,.48);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      width: min(1240px, calc(100% - 84px));
+      margin: 22px auto 0;
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(320px, .95fr);
+      gap: 40px;
+      align-items: center;
+    }
+
+    .hero-copy {
+      display: grid;
+      gap: 20px;
+      max-width: 720px;
+    }
+
+    .hero-kicker {
+      width: fit-content;
+      padding: 9px 13px;
+      border-radius: 999px;
+      border: 1px solid rgba(45,247,255,.28);
+      background: rgba(45,247,255,.08);
+      color: #bffbff;
+      font-size: 12px;
+      font-weight: 950;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      box-shadow: 0 0 24px rgba(45,247,255,.14);
+    }
+
+    .hero-title {
+      font-family: var(--serif);
+      max-width: 780px;
+      font-size: clamp(38px, 5.3vw, 78px);
+      line-height: .92;
+      letter-spacing: -2.2px;
+      color: #fff;
+      text-shadow: 0 0 32px rgba(45,247,255,.2), 0 10px 40px rgba(0,0,0,.44);
+    }
+
+    .hero-title::first-letter {
+      color: #ffe3a3;
+      text-shadow: 0 0 26px rgba(255,204,102,.38);
+    }
+
+    .hero-text {
+      max-width: 620px;
+      color: #cfdbef;
+      font-size: clamp(15px, 1.3vw, 18px);
+      line-height: 1.65;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .hero-primary,
+    .hero-secondary {
+      min-height: 48px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 18px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 950;
+      transition: transform var(--speed), box-shadow var(--speed), border-color var(--speed), background var(--speed);
+    }
+
+    .hero-primary {
+      border: 1px solid rgba(45,247,255,.62);
+      background: linear-gradient(135deg, rgba(45,247,255,.28), rgba(181,107,255,.18));
+      color: #f8fdff;
+      box-shadow: 0 0 30px rgba(45,247,255,.2);
+    }
+
+    .hero-secondary {
+      border: 1px solid rgba(255,204,102,.34);
+      background: rgba(255,204,102,.08);
+      color: #ffe6ac;
+    }
+
+    .hero-primary:hover,
+    .hero-secondary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 34px rgba(45,247,255,.22);
+    }
+
+    .hero-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+    }
+
+    .hero-badges span {
+      padding: 8px 11px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.1);
+      background: rgba(255,255,255,.055);
+      color: #dfeaff;
+      font-size: 12px;
+      font-weight: 850;
+      backdrop-filter: blur(12px);
+    }
+
+    .hero-showcase {
+      min-height: 350px;
+      display: grid;
+      place-items: center;
+    }
+
+    .hero-portal {
+      position: relative;
+      width: min(430px, 86vw);
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle, rgba(45,247,255,.28) 0 4%, transparent 5% 100%),
+        conic-gradient(from 220deg, rgba(45,247,255,.04), rgba(45,247,255,.72), rgba(255,204,102,.65), rgba(181,107,255,.68), rgba(45,247,255,.04));
+      box-shadow: 0 0 70px rgba(45,247,255,.25), inset 0 0 80px rgba(3,7,19,.66);
+      animation: portalFloat 7s ease-in-out infinite;
+    }
+
+    .hero-portal::before,
+    .hero-portal::after,
+    .portal-ring,
+    .portal-core,
+    .portal-spark {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+    }
+
+    .hero-portal::before {
+      inset: 9%;
+      border: 1px solid rgba(255,204,102,.5);
+      box-shadow: inset 0 0 36px rgba(255,204,102,.08), 0 0 28px rgba(255,204,102,.16);
+    }
+
+    .hero-portal::after {
+      inset: 20%;
+      background: radial-gradient(circle, rgba(2,5,13,.1), rgba(3,7,19,.74) 72%), url("./assets/arcane-cyber-hero.png");
+      background-size: cover;
+      background-position: 62% 46%;
+      border: 1px solid rgba(45,247,255,.42);
+      box-shadow: inset 0 0 40px rgba(0,0,0,.72), 0 0 30px rgba(45,247,255,.18);
+    }
+
+    .portal-ring {
+      inset: 2%;
+      border: 1px dashed rgba(45,247,255,.5);
+      animation: portalSpin 18s linear infinite;
+    }
+
+    .ring-two {
+      inset: 14%;
+      border-color: rgba(181,107,255,.52);
+      animation-duration: 26s;
+      animation-direction: reverse;
+    }
+
+    .portal-core {
+      inset: 45%;
+      background: #2df7ff;
+      box-shadow: 0 0 22px #2df7ff, 0 0 72px rgba(181,107,255,.52);
+      z-index: 2;
+    }
+
+    .portal-spark {
+      width: 11px;
+      height: 11px;
+      background: #ffe1a3;
+      box-shadow: 0 0 20px rgba(255,204,102,.8);
+      z-index: 3;
+    }
+
+    .spark-one { left: 14%; top: 30%; }
+    .spark-two { right: 17%; top: 20%; transform: scale(.72); }
+    .spark-three { right: 23%; bottom: 18%; transform: scale(.55); }
+
+    .hero-metrics {
+      position: relative;
+      z-index: 2;
+      width: min(1240px, calc(100% - 84px));
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .hero-metric {
+      min-height: 88px;
+      padding: 16px;
+      border-radius: 22px;
+      border: 1px solid rgba(255,255,255,.1);
+      background: linear-gradient(135deg, rgba(255,255,255,.075), rgba(255,255,255,.035));
+      backdrop-filter: blur(16px);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.035), 0 16px 38px rgba(0,0,0,.24);
+    }
+
+    .hero-metric strong {
+      display: block;
+      color: #fff;
+      font-size: 20px;
+      font-weight: 950;
+      margin-bottom: 5px;
+    }
+
+    .hero-metric span {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .right-rail .detail-panel {
+      display: none !important;
+    }
+
+    @keyframes portalFloat {
+      0%, 100% { transform: translateY(0) rotate(-1deg); }
+      50% { transform: translateY(-12px) rotate(1deg); }
+    }
+
+    @keyframes portalSpin {
+      to { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 1180px) {
+      .hero-content {
+        grid-template-columns: 1fr;
+        width: min(860px, calc(100% - 44px));
+      }
+
+      .hero-showcase {
+        min-height: 260px;
+      }
+
+      .hero-portal {
+        width: min(330px, 76vw);
+      }
+
+      .hero-metrics {
+        width: min(860px, calc(100% - 44px));
+      }
+    }
+
+    @media (max-width: 760px) {
+      .header {
+        min-height: 0;
+        border-radius: 26px;
+        gap: 18px;
+        padding-bottom: 22px;
+      }
+
+      .topbar {
+        width: calc(100% - 24px);
+        margin-top: 12px;
+        grid-template-columns: 1fr;
+        gap: 14px;
+        padding: 14px;
+      }
+
+      .logo-wrap,
+      .currency-switcher {
+        justify-self: center;
+      }
+
+      .hero-content {
+        width: calc(100% - 28px);
+        margin-top: 4px;
+        gap: 20px;
+      }
+
+      .hero-copy {
+        gap: 16px;
+        text-align: left;
+      }
+
+      .hero-title {
+        font-size: clamp(34px, 11vw, 48px);
+        letter-spacing: -1.3px;
+      }
+
+      .hero-actions,
+      .hero-badges {
+        align-items: stretch;
+      }
+
+      .hero-primary,
+      .hero-secondary {
+        flex: 1 1 160px;
+      }
+
+      .hero-showcase {
+        display: none;
+      }
+
+      .hero-metrics {
+        width: calc(100% - 28px);
+        grid-template-columns: 1fr;
+      }
+    }
+
   </style>
 </head>
 
@@ -2024,10 +2421,49 @@
         </div>
       </div>
 
-      <div class="hero-ornament" aria-hidden="true">
-        <span></span>
-        <span></span>
-        <span></span>
+      <section class="hero-content" aria-label="Главная витрина CyberGames">
+        <div class="hero-copy">
+          <div class="hero-kicker">Steam · Epic Games · GGSEL · live online</div>
+          <h2 class="hero-title">Один каталог для киберпанка, фэнтези и магии</h2>
+          <p class="hero-text">Ищи игры по жанрам, смотри цены в разных валютах, проверяй онлайн игроков и открывай полную карточку без перехода по десятку вкладок.</p>
+
+          <div class="hero-actions">
+            <a class="hero-primary" href="#catalog">Открыть каталог</a>
+            <a class="hero-secondary" href="#news">Новости Steam</a>
+          </div>
+
+          <div class="hero-badges" aria-label="Возможности каталога">
+            <span>⚡ Онлайн игроков</span>
+            <span>💎 Цены ключей</span>
+            <span>📰 Новости за неделю</span>
+          </div>
+        </div>
+
+        <div class="hero-showcase" aria-hidden="true">
+          <div class="hero-portal">
+            <span class="portal-ring ring-one"></span>
+            <span class="portal-ring ring-two"></span>
+            <span class="portal-core"></span>
+            <span class="portal-spark spark-one"></span>
+            <span class="portal-spark spark-two"></span>
+            <span class="portal-spark spark-three"></span>
+          </div>
+        </div>
+      </section>
+
+      <div class="hero-metrics" aria-label="Ключевые возможности">
+        <div class="hero-metric">
+          <strong>до 200</strong>
+          <span>карточек без мусора</span>
+        </div>
+        <div class="hero-metric">
+          <strong>Steam/Epic</strong>
+          <span>проверяемые источники</span>
+        </div>
+        <div class="hero-metric">
+          <strong>4 валюты</strong>
+          <span>RUB · USD · KZT · UAH</span>
+        </div>
       </div>
     </header>
 
@@ -2086,7 +2522,7 @@
     <div class="catalog-shell">
       <section class="games-grid" id="gamesGrid"></section>
 
-      <aside class="right-rail" aria-label="Рекомендации и выбранная игра">
+      <aside class="right-rail" aria-label="Рекомендованные игры">
         <section class="recommended-panel" aria-label="Рекомендованные игры">
           <div class="recommended-inner">
             <div class="recommended-title">
@@ -2094,14 +2530,6 @@
               <small>топ-5</small>
             </div>
             <div class="recommended-list" id="recommendedList"></div>
-          </div>
-        </section>
-
-        <section class="detail-panel" id="detailPanel" aria-label="Выбранная игра">
-          <div class="detail-empty">
-            <span class="detail-empty-icon">✦</span>
-            <strong>Выберите игру</strong>
-            <p>Карточка откроется в полном окне, а здесь останется быстрый предпросмотр.</p>
           </div>
         </section>
       </aside>
@@ -5607,9 +6035,7 @@ const games = [
       renderRecommended();
       observeCards();
 
-      const featured = games.find((game) => normalize(game.title) === normalize("Cyberpunk 2077") && getCard(game));
-      const first = featured || catalog[0];
-      if (first && isDetailPanelMode()) openDetailPanel(first.id);
+      currentDetailId = null;
     }
 
     function getCard(game) {
@@ -5628,9 +6054,6 @@ const games = [
 
       if (currentDetailId === game.id) {
         currentDetailId = null;
-        const next = catalogCandidates().find((item) => getCard(item));
-        if (next) openDetailPanel(next.id);
-        else renderDetailEmpty();
       }
 
       populateGenreFilter();
@@ -5762,7 +6185,8 @@ const games = [
     }
 
     function selectGame(id) {
-      if (isDetailPanelMode()) openDetailPanel(id);
+      currentDetailId = null;
+      document.querySelectorAll(".game-card.selected").forEach((card) => card.classList.remove("selected"));
       openModal(id);
     }
 
@@ -6258,10 +6682,7 @@ const games = [
     });
 
     window.addEventListener("resize", () => {
-      if (isDetailPanelMode() && !currentDetailId) {
-        const selected = catalogCandidates().find((game) => getCard(game));
-        if (selected) openDetailPanel(selected.id);
-      }
+      currentDetailId = null;
     });
 
     renderCards();

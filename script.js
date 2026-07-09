@@ -3411,9 +3411,7 @@ const games = [
       renderRecommended();
       observeCards();
 
-      const featured = games.find((game) => normalize(game.title) === normalize("Cyberpunk 2077") && getCard(game));
-      const first = featured || catalog[0];
-      if (first && isDetailPanelMode()) openDetailPanel(first.id);
+      currentDetailId = null;
     }
 
     function getCard(game) {
@@ -3432,9 +3430,6 @@ const games = [
 
       if (currentDetailId === game.id) {
         currentDetailId = null;
-        const next = catalogCandidates().find((item) => getCard(item));
-        if (next) openDetailPanel(next.id);
-        else renderDetailEmpty();
       }
 
       populateGenreFilter();
@@ -3566,7 +3561,8 @@ const games = [
     }
 
     function selectGame(id) {
-      if (isDetailPanelMode()) openDetailPanel(id);
+      currentDetailId = null;
+      document.querySelectorAll(".game-card.selected").forEach((card) => card.classList.remove("selected"));
       openModal(id);
     }
 
@@ -4062,10 +4058,7 @@ const games = [
     });
 
     window.addEventListener("resize", () => {
-      if (isDetailPanelMode() && !currentDetailId) {
-        const selected = catalogCandidates().find((game) => getCard(game));
-        if (selected) openDetailPanel(selected.id);
-      }
+      currentDetailId = null;
     });
 
     renderCards();
