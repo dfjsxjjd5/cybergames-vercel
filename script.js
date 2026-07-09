@@ -1,1515 +1,1135 @@
-
-    const games = [
+const games = [
       {
             "id": 1,
-            "title": ".45 Parabellum Bloodhound",
-            "appId": null
+            "title": "Cyberpunk 2077",
+            "appId": 1091500,
+            "platforms": [
+                  "steam",
+                  "epic"
+            ],
+            "themes": [
+                  "cyberpunk"
+            ],
+            "keywords": "Night City, open-world RPG, cyberpunk"
       },
       {
             "id": 2,
-            "title": "868-HACK",
-            "appId": null
+            "title": "Ghostrunner",
+            "appId": 1139900,
+            "platforms": [
+                  "steam",
+                  "epic"
+            ],
+            "themes": [
+                  "cyberpunk"
+            ],
+            "keywords": "cyber ninja, parkour, neon"
       },
       {
             "id": 3,
-            "title": "2064: Read Only Memories",
-            "appId": 330820
+            "title": "Ghostrunner 2",
+            "appId": 2144740,
+            "platforms": [
+                  "steam",
+                  "epic"
+            ],
+            "themes": [
+                  "cyberpunk"
+            ],
+            "keywords": "post-apocalyptic cyberpunk future, slasher"
       },
       {
             "id": 4,
-            "title": "Ace Combat 3: Electrosphere",
-            "appId": null
+            "title": "Deus Ex: Human Revolution - Director's Cut",
+            "appId": 238010,
+            "platforms": [
+                  "steam",
+                  "epic"
+            ],
+            "themes": [
+                  "cyberpunk"
+            ],
+            "keywords": "augmentation, immersive sim, cyberpunk"
       },
       {
             "id": 5,
-            "title": "Adrenix",
-            "appId": null
+            "title": "Deus Ex: Mankind Divided",
+            "appId": 337000,
+            "platforms": [
+                  "steam",
+                  "epic"
+            ],
+            "themes": [
+                  "cyberpunk"
+            ],
+            "keywords": "augmentation, immersive sim, cyberpunk"
       },
       {
             "id": 6,
-            "title": "AdvertCity",
-            "appId": null
+            "title": "System Shock",
+            "appId": 482400,
+            "platforms": [
+                  "steam",
+                  "epic"
+            ],
+            "themes": [
+                  "cyberpunk"
+            ],
+            "keywords": "cyber horror, sci-fi, remake"
       },
       {
             "id": 7,
-            "title": "Æon Flux",
-            "appId": null
+            "title": "System Shock 2",
+            "appId": 238210,
+            "platforms": [
+                  "steam"
+            ],
+            "themes": [
+                  "cyberpunk"
+            ],
+            "keywords": "cyber horror, immersive sim"
       },
       {
             "id": 8,
-            "title": "Akira",
-            "appId": null
+            "title": "The Ascent",
+            "appId": 979690,
+            "platforms": [
+                  "steam",
+                  "epic"
+            ],
+            "themes": [
+                  "cyberpunk"
+            ],
+            "keywords": "isometric action RPG, megacorp"
       },
       {
             "id": 9,
-            "title": "Anachronox",
-            "appId": null
+            "title": "Cloudpunk",
+            "appId": 746850,
+            "platforms": [
+                  "steam",
+                  "epic"
+            ],
+            "themes": [
+                  "cyberpunk"
+            ],
+            "keywords": "neon delivery, cyberpunk city"
       },
       {
             "id": 10,
-            "title": "Angel Devoid: Face of the Enemy",
-            "appId": null
+            "title": "Observer: System Redux",
+            "appId": 1386900,
+            "platforms": [
+                  "steam",
+                  "epic"
+            ],
+            "themes": [
+                  "cyberpunk"
+            ],
+            "keywords": "cyberpunk horror, detective"
       },
       {
             "id": 11,
-            "title": "AquaNox",
-            "appId": null
+            "title": "RUINER",
+            "appId": 464060,
+            "platforms": [
+                  "steam",
+                  "epic"
+            ],
+            "themes": [
+                  "cyberpunk"
+            ],
+            "keywords": "brutal cyberpunk action"
       },
       {
             "id": 12,
-            "title": "Artery Gear: Fusion",
-            "appId": null
+            "title": "Katana ZERO",
+            "appId": 460950,
+            "platforms": [
+                  "steam"
+            ],
+            "themes": [
+                  "cyberpunk"
+            ],
+            "keywords": "neo-noir, samurai, action"
       },
       {
             "id": 13,
-            "title": "The Ascent",
-            "appId": 979690
+            "title": "Citizen Sleeper",
+            "appId": 1578650,
+            "platforms": [
+                  "steam",
+                  "epic"
+            ],
+            "themes": [
+                  "cyberpunk"
+            ],
+            "keywords": "narrative RPG, space station"
       },
       {
             "id": 14,
-            "title": "Astral Chain",
-            "appId": null
+            "title": "Stray",
+            "appId": 1332010,
+            "platforms": [
+                  "steam"
+            ],
+            "themes": [
+                  "cyberpunk"
+            ],
+            "keywords": "cat adventure, neon city"
       },
       {
             "id": 15,
-            "title": "B.A.T.",
-            "appId": null
+            "title": "ANNO: Mutationem",
+            "appId": 1368030,
+            "platforms": [
+                  "steam",
+                  "epic"
+            ],
+            "themes": [
+                  "cyberpunk"
+            ],
+            "keywords": "pixel cyberpunk action RPG"
       },
       {
             "id": 16,
-            "title": "B.A.T. II – The Koshan Conspiracy",
-            "appId": null
+            "title": "VA-11 Hall-A: Cyberpunk Bartender Action",
+            "appId": 447530,
+            "platforms": [
+                  "steam"
+            ],
+            "themes": [
+                  "cyberpunk"
+            ],
+            "keywords": "visual novel, cyberpunk bar"
       },
       {
             "id": 17,
-            "title": "Baldr Sky",
-            "appId": null
+            "title": "SIGNALIS",
+            "appId": 1262350,
+            "platforms": [
+                  "steam",
+                  "epic"
+            ],
+            "themes": [
+                  "cyberpunk"
+            ],
+            "keywords": "survival horror, dystopian sci-fi"
       },
       {
             "id": 18,
-            "title": "Batman Beyond: Return of the Joker",
-            "appId": null
+            "title": "The Red Strings Club",
+            "appId": 589780,
+            "platforms": [
+                  "steam",
+                  "epic"
+            ],
+            "themes": [
+                  "cyberpunk"
+            ],
+            "keywords": "narrative cyberpunk, bartender"
       },
       {
             "id": 19,
-            "title": "Beam Breakers",
-            "appId": null
+            "title": "Shadowrun Returns",
+            "appId": 234650,
+            "platforms": [
+                  "steam",
+                  "epic"
+            ],
+            "themes": [
+                  "cyberpunk",
+                  "fantasy",
+                  "magic"
+            ],
+            "keywords": "cyberpunk fantasy, magic, elves, tactical RPG"
       },
       {
             "id": 20,
-            "title": "Beneath a Steel Sky",
-            "appId": null
+            "title": "Shadowrun: Dragonfall - Director's Cut",
+            "appId": 300550,
+            "platforms": [
+                  "steam",
+                  "epic"
+            ],
+            "themes": [
+                  "cyberpunk",
+                  "fantasy",
+                  "magic"
+            ],
+            "keywords": "cyberpunk fantasy, magic, tactical RPG"
       },
       {
             "id": 21,
-            "title": "Beyond a Steel Sky",
-            "appId": 1146310
+            "title": "Shadowrun: Hong Kong - Extended Edition",
+            "appId": 346940,
+            "platforms": [
+                  "steam",
+                  "epic"
+            ],
+            "themes": [
+                  "cyberpunk",
+                  "fantasy",
+                  "magic"
+            ],
+            "keywords": "cyberpunk fantasy, magic, tactical RPG"
       },
       {
             "id": 22,
-            "title": "Binary Domain",
-            "appId": 203750
+            "title": "Blade Runner: Enhanced Edition",
+            "appId": 1678420,
+            "platforms": [
+                  "steam"
+            ],
+            "themes": [
+                  "cyberpunk"
+            ],
+            "keywords": "classic cyberpunk noir"
       },
       {
             "id": 23,
-            "title": "BioForge",
-            "appId": null
+            "title": "Beyond a Steel Sky",
+            "appId": 1146310,
+            "platforms": [
+                  "steam",
+                  "epic"
+            ],
+            "themes": [
+                  "cyberpunk"
+            ],
+            "keywords": "adventure, dystopian sci-fi"
       },
       {
             "id": 24,
-            "title": "Black ICE\\White Noise",
-            "appId": null
+            "title": "Dex",
+            "appId": 269650,
+            "platforms": [
+                  "steam"
+            ],
+            "themes": [
+                  "cyberpunk"
+            ],
+            "keywords": "side-scrolling cyberpunk RPG"
       },
       {
             "id": 25,
-            "title": "Blacklight: Retribution",
-            "appId": null
+            "title": "Technobabylon",
+            "appId": 307580,
+            "platforms": [
+                  "steam"
+            ],
+            "themes": [
+                  "cyberpunk"
+            ],
+            "keywords": "point and click, cyberpunk"
       },
       {
             "id": 26,
-            "title": "Blacklight: Tango Down",
-            "appId": null
+            "title": "Gunpoint",
+            "appId": 206190,
+            "platforms": [
+                  "steam"
+            ],
+            "themes": [
+                  "cyberpunk"
+            ],
+            "keywords": "hacking, stealth puzzle"
       },
       {
             "id": 27,
-            "title": "Blade Chimera",
-            "appId": null
+            "title": "Invisible, Inc.",
+            "appId": 243970,
+            "platforms": [
+                  "steam"
+            ],
+            "themes": [
+                  "cyberpunk"
+            ],
+            "keywords": "tactical stealth, cyberpunk espionage"
       },
       {
             "id": 28,
-            "title": "Blade Runner",
-            "appId": 1678420
+            "title": "Remember Me",
+            "appId": 228300,
+            "platforms": [
+                  "steam"
+            ],
+            "themes": [
+                  "cyberpunk"
+            ],
+            "keywords": "memory hacking, neo-paris"
       },
       {
             "id": 29,
-            "title": "Blazing Chrome",
-            "appId": null
+            "title": "Nobody Wants to Die",
+            "appId": 1939970,
+            "platforms": [
+                  "steam",
+                  "epic"
+            ],
+            "themes": [
+                  "cyberpunk"
+            ],
+            "keywords": "dystopian noir, New York 2329"
       },
       {
             "id": 30,
-            "title": "Blood II: The Chosen",
-            "appId": null
+            "title": "Turbo Overkill",
+            "appId": 1328350,
+            "platforms": [
+                  "steam"
+            ],
+            "themes": [
+                  "cyberpunk"
+            ],
+            "keywords": "cyberpunk FPS, retro shooter"
       },
       {
             "id": 31,
-            "title": "BloodNet",
-            "appId": null
+            "title": "MULLET MADJACK",
+            "appId": 2111190,
+            "platforms": [
+                  "steam"
+            ],
+            "themes": [
+                  "cyberpunk"
+            ],
+            "keywords": "anime cyberpunk FPS"
       },
       {
             "id": 32,
-            "title": "Bomb Rush Cyberfunk",
-            "appId": 1353230
+            "title": "Black Future '88",
+            "appId": 751820,
+            "platforms": [
+                  "steam"
+            ],
+            "themes": [
+                  "cyberpunk"
+            ],
+            "keywords": "synth-punk roguelike"
       },
       {
             "id": 33,
-            "title": "Bomberman: Act Zero",
-            "appId": null
+            "title": "Neon Abyss",
+            "appId": 788100,
+            "platforms": [
+                  "steam",
+                  "epic"
+            ],
+            "themes": [
+                  "cyberpunk"
+            ],
+            "keywords": "neon roguelike action"
       },
       {
             "id": 34,
-            "title": "The Bouncer",
-            "appId": null
+            "title": "Showgunners",
+            "appId": 1155330,
+            "platforms": [
+                  "steam"
+            ],
+            "themes": [
+                  "cyberpunk"
+            ],
+            "keywords": "dystopian tactical show"
       },
       {
             "id": 35,
-            "title": "BROK the InvestiGator",
-            "appId": null
+            "title": "Gamedec - Definitive Edition",
+            "appId": 917720,
+            "platforms": [
+                  "steam",
+                  "epic"
+            ],
+            "themes": [
+                  "cyberpunk"
+            ],
+            "keywords": "cyberpunk detective RPG"
       },
       {
             "id": 36,
-            "title": "Burn Cycle",
-            "appId": null
+            "title": "VirtuaVerse",
+            "appId": 1019310,
+            "platforms": [
+                  "steam"
+            ],
+            "themes": [
+                  "cyberpunk"
+            ],
+            "keywords": "old-school cyberpunk adventure"
       },
       {
             "id": 37,
-            "title": "Call of Duty: Advanced Warfare",
-            "appId": 209650
+            "title": "Watch Dogs",
+            "appId": 243470,
+            "platforms": [
+                  "steam",
+                  "epic"
+            ],
+            "themes": [
+                  "cyberpunk"
+            ],
+            "keywords": "hacking, open world"
       },
       {
             "id": 38,
-            "title": "Call of Duty: Black Ops III",
-            "appId": 311210
+            "title": "Watch Dogs 2",
+            "appId": 447040,
+            "platforms": [
+                  "steam",
+                  "epic"
+            ],
+            "themes": [
+                  "cyberpunk"
+            ],
+            "keywords": "hacking, open world"
       },
       {
             "id": 39,
-            "title": "Chaos Overlords",
-            "appId": null
+            "title": "Watch Dogs: Legion",
+            "appId": 2239550,
+            "platforms": [
+                  "steam",
+                  "epic"
+            ],
+            "themes": [
+                  "cyberpunk"
+            ],
+            "keywords": "near-future London, hacking"
       },
       {
             "id": 40,
-            "title": "Chaser",
-            "appId": null
+            "title": "Baldur's Gate 3",
+            "appId": 1086940,
+            "platforms": [
+                  "steam",
+                  "epic"
+            ],
+            "themes": [
+                  "fantasy",
+                  "magic"
+            ],
+            "keywords": "Dungeons & Dragons, party RPG, magic"
       },
       {
             "id": 41,
-            "title": "Chinatown Detective Agency",
-            "appId": 1172190
+            "title": "Divinity: Original Sin 2 - Definitive Edition",
+            "appId": 435150,
+            "platforms": [
+                  "steam",
+                  "epic"
+            ],
+            "themes": [
+                  "fantasy",
+                  "magic"
+            ],
+            "keywords": "party RPG, fantasy, magic"
       },
       {
             "id": 42,
-            "title": "Circuit’s Edge",
-            "appId": null
+            "title": "Elden Ring",
+            "appId": 1245620,
+            "platforms": [
+                  "steam"
+            ],
+            "themes": [
+                  "fantasy",
+                  "magic"
+            ],
+            "keywords": "dark fantasy, open world, magic"
       },
       {
             "id": 43,
-            "title": "Citizen Sleeper",
-            "appId": 1578650
+            "title": "ELDEN RING NIGHTREIGN",
+            "appId": 2622380,
+            "platforms": [
+                  "steam"
+            ],
+            "themes": [
+                  "fantasy",
+                  "magic"
+            ],
+            "keywords": "dark fantasy co-op survival action"
       },
       {
             "id": 44,
-            "title": "Citizen Sleeper 2: Starward Vector",
-            "appId": null
+            "title": "The Witcher 3: Wild Hunt",
+            "appId": 292030,
+            "platforms": [
+                  "steam",
+                  "epic"
+            ],
+            "themes": [
+                  "fantasy",
+                  "magic"
+            ],
+            "keywords": "dark fantasy, monsters, magic"
       },
       {
             "id": 45,
-            "title": "Cloudpunk",
-            "appId": 746850
+            "title": "Hogwarts Legacy",
+            "appId": 990080,
+            "platforms": [
+                  "steam",
+                  "epic"
+            ],
+            "themes": [
+                  "fantasy",
+                  "magic"
+            ],
+            "keywords": "wizarding world, magic"
       },
       {
             "id": 46,
-            "title": "Conglomerate 451",
-            "appId": 1022710
+            "title": "Hades",
+            "appId": 1145360,
+            "platforms": [
+                  "steam",
+                  "epic"
+            ],
+            "themes": [
+                  "fantasy",
+                  "magic"
+            ],
+            "keywords": "mythology, roguelike, magic"
       },
       {
             "id": 47,
-            "title": "Contra: Rogue Corps",
-            "appId": null
+            "title": "Hades II",
+            "appId": 1145350,
+            "platforms": [
+                  "steam",
+                  "epic"
+            ],
+            "themes": [
+                  "fantasy",
+                  "magic"
+            ],
+            "keywords": "witchcraft, mythology, roguelike"
       },
       {
             "id": 48,
-            "title": "Cops 2170: The Power of Law",
-            "appId": null
+            "title": "Path of Exile",
+            "appId": 238960,
+            "platforms": [
+                  "steam",
+                  "epic"
+            ],
+            "themes": [
+                  "fantasy",
+                  "magic"
+            ],
+            "keywords": "free action RPG, magic"
       },
       {
             "id": 49,
-            "title": "Core Decay",
-            "appId": null
+            "title": "The Elder Scrolls V: Skyrim Special Edition",
+            "appId": 489830,
+            "platforms": [
+                  "steam"
+            ],
+            "themes": [
+                  "fantasy",
+                  "magic"
+            ],
+            "keywords": "open-world fantasy, dragons, magic"
       },
       {
             "id": 50,
-            "title": "Corporation",
-            "appId": null
+            "title": "Dragon's Dogma 2",
+            "appId": 2054970,
+            "platforms": [
+                  "steam"
+            ],
+            "themes": [
+                  "fantasy",
+                  "magic"
+            ],
+            "keywords": "open-world fantasy action RPG"
       },
       {
             "id": 51,
-            "title": "Crash ’N Burn",
-            "appId": null
+            "title": "Dragon Age: Origins - Ultimate Edition",
+            "appId": 47810,
+            "platforms": [
+                  "steam"
+            ],
+            "themes": [
+                  "fantasy",
+                  "magic"
+            ],
+            "keywords": "classic fantasy RPG, mages"
       },
       {
             "id": 52,
-            "title": "The Creed",
-            "appId": null
+            "title": "Dragon Age™ Inquisition",
+            "appId": 1222690,
+            "platforms": [
+                  "steam",
+                  "epic"
+            ],
+            "themes": [
+                  "fantasy",
+                  "magic"
+            ],
+            "keywords": "fantasy RPG, demons, magic"
       },
       {
             "id": 53,
-            "title": "Crime Cities",
-            "appId": null
+            "title": "Dragon Age™: The Veilguard",
+            "appId": 1845910,
+            "platforms": [
+                  "steam",
+                  "epic"
+            ],
+            "themes": [
+                  "fantasy",
+                  "magic"
+            ],
+            "keywords": "single-player fantasy RPG"
       },
       {
             "id": 54,
-            "title": "Cruelty Squad",
-            "appId": 1388770
+            "title": "Metaphor: ReFantazio",
+            "appId": 2679460,
+            "platforms": [
+                  "steam"
+            ],
+            "themes": [
+                  "fantasy",
+                  "magic"
+            ],
+            "keywords": "fantasy JRPG, archetype powers"
       },
       {
             "id": 55,
-            "title": "Cy Girls",
-            "appId": null
+            "title": "Clair Obscur: Expedition 33",
+            "appId": 1903340,
+            "platforms": [
+                  "steam"
+            ],
+            "themes": [
+                  "fantasy",
+                  "magic"
+            ],
+            "keywords": "fantasy RPG, magic, expedition"
       },
       {
             "id": 56,
-            "title": "Cyber Knights: Flashpoint",
-            "appId": null
+            "title": "Witchfire",
+            "appId": 3156770,
+            "platforms": [
+                  "steam",
+                  "epic"
+            ],
+            "themes": [
+                  "fantasy",
+                  "magic"
+            ],
+            "keywords": "dark fantasy RPG shooter, witch hunter"
       },
       {
             "id": 57,
-            "title": "Cyber-Lip",
-            "appId": null
+            "title": "No Rest for the Wicked",
+            "appId": 1371980,
+            "platforms": [
+                  "steam"
+            ],
+            "themes": [
+                  "fantasy",
+                  "magic"
+            ],
+            "keywords": "dark fantasy action RPG"
       },
       {
             "id": 58,
-            "title": "Cyberbykes: Shadow Racer VR",
-            "appId": null
+            "title": "Enshrouded",
+            "appId": 1203620,
+            "platforms": [
+                  "steam"
+            ],
+            "themes": [
+                  "fantasy",
+                  "magic"
+            ],
+            "keywords": "survival action RPG, fantasy"
       },
       {
             "id": 59,
-            "title": "Cyberia",
-            "appId": null
+            "title": "Grim Dawn",
+            "appId": 219990,
+            "platforms": [
+                  "steam"
+            ],
+            "themes": [
+                  "fantasy",
+                  "magic"
+            ],
+            "keywords": "dark fantasy action RPG"
       },
       {
             "id": 60,
-            "title": "CyberJudas",
-            "appId": null
+            "title": "Last Epoch",
+            "appId": 899770,
+            "platforms": [
+                  "steam"
+            ],
+            "themes": [
+                  "fantasy",
+                  "magic"
+            ],
+            "keywords": "time travel action RPG, magic"
       },
       {
             "id": 61,
-            "title": "CyberMage: Darklight Awakening",
-            "appId": null
+            "title": "Age of Wonders 4",
+            "appId": 1669000,
+            "platforms": [
+                  "steam",
+                  "epic"
+            ],
+            "themes": [
+                  "fantasy",
+                  "magic"
+            ],
+            "keywords": "fantasy strategy, magic realms"
       },
       {
             "id": 62,
-            "title": "Cyberpunk 2077",
-            "appId": 1091500
+            "title": "SpellForce 3 Reforced",
+            "appId": 311290,
+            "platforms": [
+                  "steam"
+            ],
+            "themes": [
+                  "fantasy",
+                  "magic"
+            ],
+            "keywords": "fantasy RTS RPG, magic"
       },
       {
             "id": 63,
-            "title": "Cyberpunk 2077: Phantom Liberty",
-            "appId": 2138330
+            "title": "Trine 4: The Nightmare Prince",
+            "appId": 690640,
+            "platforms": [
+                  "steam"
+            ],
+            "themes": [
+                  "fantasy",
+                  "magic"
+            ],
+            "keywords": "co-op fantasy puzzle, wizard"
       },
       {
             "id": 64,
-            "title": "Cypher",
-            "appId": null
+            "title": "Trine 5: A Clockwork Conspiracy",
+            "appId": 1436700,
+            "platforms": [
+                  "steam"
+            ],
+            "themes": [
+                  "fantasy",
+                  "magic"
+            ],
+            "keywords": "co-op fantasy, wizard"
       },
       {
             "id": 65,
-            "title": "Cytus",
-            "appId": null
+            "title": "Forspoken",
+            "appId": 1680880,
+            "platforms": [
+                  "steam",
+                  "epic"
+            ],
+            "themes": [
+                  "fantasy",
+                  "magic"
+            ],
+            "keywords": "spellcasting, open-world fantasy"
       },
       {
             "id": 66,
-            "title": "D/Generation",
-            "appId": null
+            "title": "Pillars of Eternity",
+            "appId": 291650,
+            "platforms": [
+                  "steam",
+                  "epic"
+            ],
+            "themes": [
+                  "fantasy",
+                  "magic"
+            ],
+            "keywords": "classic fantasy RPG"
       },
       {
             "id": 67,
-            "title": "Daikatana",
-            "appId": null
+            "title": "Pillars of Eternity II: Deadfire",
+            "appId": 560130,
+            "platforms": [
+                  "steam",
+                  "epic"
+            ],
+            "themes": [
+                  "fantasy",
+                  "magic"
+            ],
+            "keywords": "isometric fantasy RPG"
       },
       {
             "id": 68,
-            "title": "Dead as Disco",
-            "appId": null
+            "title": "Solasta: Crown of the Magister",
+            "appId": 1096530,
+            "platforms": [
+                  "steam"
+            ],
+            "themes": [
+                  "fantasy",
+                  "magic"
+            ],
+            "keywords": "D&D tactical RPG, magic"
       },
       {
             "id": 69,
-            "title": "Delta V",
-            "appId": null
+            "title": "Magicka",
+            "appId": 42910,
+            "platforms": [
+                  "steam"
+            ],
+            "themes": [
+                  "fantasy",
+                  "magic"
+            ],
+            "keywords": "spellcasting co-op"
       },
       {
             "id": 70,
-            "title": "Denjin Makai",
-            "appId": null
+            "title": "Magicka 2",
+            "appId": 238370,
+            "platforms": [
+                  "steam"
+            ],
+            "themes": [
+                  "fantasy",
+                  "magic"
+            ],
+            "keywords": "spellcasting co-op"
       },
       {
             "id": 71,
-            "title": "Deus Ex",
-            "appId": 6910
+            "title": "Noita",
+            "appId": 881100,
+            "platforms": [
+                  "steam"
+            ],
+            "themes": [
+                  "fantasy",
+                  "magic"
+            ],
+            "keywords": "physics magic roguelite"
       },
       {
             "id": 72,
-            "title": "Deus Ex: Human Revolution",
-            "appId": 238010
+            "title": "Wizard of Legend",
+            "appId": 445980,
+            "platforms": [
+                  "steam",
+                  "epic"
+            ],
+            "themes": [
+                  "fantasy",
+                  "magic"
+            ],
+            "keywords": "wizard roguelike, spells"
       },
       {
             "id": 73,
-            "title": "Deus Ex: Human Revolution – The Missing Link",
-            "appId": 201280
+            "title": "Nine Parchments",
+            "appId": 471550,
+            "platforms": [
+                  "steam"
+            ],
+            "themes": [
+                  "fantasy",
+                  "magic"
+            ],
+            "keywords": "co-op spellcasting"
       },
       {
             "id": 74,
-            "title": "Deus Ex: Invisible War",
-            "appId": 6920
+            "title": "Kena: Bridge of Spirits",
+            "appId": 1954200,
+            "platforms": [
+                  "steam",
+                  "epic"
+            ],
+            "themes": [
+                  "fantasy",
+                  "magic"
+            ],
+            "keywords": "spirit magic, fantasy adventure"
       },
       {
             "id": 75,
-            "title": "Deus Ex: Mankind Divided",
-            "appId": 337000
+            "title": "Granblue Fantasy: Relink",
+            "appId": 881020,
+            "platforms": [
+                  "steam"
+            ],
+            "themes": [
+                  "fantasy",
+                  "magic"
+            ],
+            "keywords": "anime fantasy action RPG"
       },
       {
             "id": 76,
-            "title": "Deus Ex: The Fall",
-            "appId": 258180
+            "title": "VOIN",
+            "appId": 2464530,
+            "platforms": [
+                  "steam"
+            ],
+            "themes": [
+                  "fantasy",
+                  "magic"
+            ],
+            "keywords": "dark fantasy hack-and-slash"
       },
       {
             "id": 77,
-            "title": "Devil Summoner 2: Raidou Kuzunoha vs. King Abaddon",
-            "appId": null
+            "title": "SULFUR",
+            "appId": 2124120,
+            "platforms": [
+                  "steam"
+            ],
+            "themes": [
+                  "fantasy",
+                  "magic"
+            ],
+            "keywords": "powers, dungeon action-adventure"
       },
       {
             "id": 78,
-            "title": "Devil Summoner: Soul Hackers",
-            "appId": null
+            "title": "Lords of the Fallen",
+            "appId": 1501750,
+            "platforms": [
+                  "steam",
+                  "epic"
+            ],
+            "themes": [
+                  "fantasy",
+                  "magic"
+            ],
+            "keywords": "dark fantasy soulslike"
       },
       {
             "id": 79,
-            "title": "Dex",
-            "appId": 269650
+            "title": "Darkest Dungeon II",
+            "appId": 1940340,
+            "platforms": [
+                  "steam",
+                  "epic"
+            ],
+            "themes": [
+                  "fantasy",
+                  "magic"
+            ],
+            "keywords": "dark fantasy roguelike"
       },
       {
             "id": 80,
-            "title": "Digital Devil Story: Megami Tensei",
-            "appId": null
+            "title": "Genshin Impact",
+            "appId": null,
+            "platforms": [
+                  "epic"
+            ],
+            "themes": [
+                  "fantasy",
+                  "magic"
+            ],
+            "keywords": "anime open-world fantasy, elemental magic"
       },
       {
             "id": 81,
-            "title": "Digital Devil Story: Megami Tensei II",
-            "appId": null
+            "title": "Honkai: Star Rail",
+            "appId": null,
+            "platforms": [
+                  "epic"
+            ],
+            "themes": [
+                  "fantasy",
+                  "magic"
+            ],
+            "keywords": "space fantasy RPG, powers"
       },
       {
             "id": 82,
-            "title": "Dohna Dohna: Let’s Do Bad Things Together",
-            "appId": null
+            "title": "Infinity Nikki",
+            "appId": null,
+            "platforms": [
+                  "epic"
+            ],
+            "themes": [
+                  "fantasy",
+                  "magic"
+            ],
+            "keywords": "cozy open-world fantasy adventure"
       },
       {
             "id": 83,
-            "title": "Dreamfall Chapters",
-            "appId": 237850
+            "title": "Dauntless",
+            "appId": null,
+            "platforms": [
+                  "epic"
+            ],
+            "themes": [
+                  "fantasy",
+                  "magic"
+            ],
+            "keywords": "free monster hunting fantasy"
       },
       {
             "id": 84,
-            "title": "Dreamfall: The Longest Journey",
-            "appId": 6300
-      },
-      {
-            "id": 85,
-            "title": "DreamWeb",
-            "appId": null
-      },
-      {
-            "id": 86,
-            "title": "Drowned God",
-            "appId": null
-      },
-      {
-            "id": 87,
-            "title": "Dry Drowning",
-            "appId": null
-      },
-      {
-            "id": 88,
-            "title": "Due Process",
-            "appId": null
-      },
-      {
-            "id": 89,
-            "title": "Dystopia",
-            "appId": 17580
-      },
-      {
-            "id": 90,
-            "title": "Dystopika",
-            "appId": null
-      },
-      {
-            "id": 91,
-            "title": "E.Y.E.: Divine Cybermancy",
-            "appId": 91700
-      },
-      {
-            "id": 92,
-            "title": "Electrocop",
-            "appId": null
-      },
-      {
-            "id": 93,
-            "title": "Encodya",
-            "appId": 1137450
-      },
-      {
-            "id": 94,
-            "title": "Exapunks",
-            "appId": 716490
-      },
-      {
-            "id": 95,
-            "title": "Extase",
-            "appId": null
-      },
-      {
-            "id": 96,
-            "title": "Far Cry 3: Blood Dragon",
-            "appId": 233270
-      },
-      {
-            "id": 97,
-            "title": "Fear Effect",
-            "appId": null
-      },
-      {
-            "id": 98,
-            "title": "Fear Effect 2: Retro Helix",
-            "appId": null
-      },
-      {
-            "id": 99,
-            "title": "Final Fantasy VII",
-            "appId": 39140
-      },
-      {
-            "id": 100,
-            "title": "Final Fantasy VII Remake",
-            "appId": 1462040
-      },
-      {
-            "id": 101,
-            "title": "Flashback",
-            "appId": 961620
-      },
-      {
-            "id": 102,
-            "title": "Flashback 2",
-            "appId": null
-      },
-      {
-            "id": 103,
-            "title": "Frozen Synapse",
-            "appId": 98200
-      },
-      {
-            "id": 104,
-            "title": "Frozen Synapse 2",
-            "appId": 445020
-      },
-      {
-            "id": 105,
-            "title": "Future Cop: LAPD",
-            "appId": null
-      },
-      {
-            "id": 106,
-            "title": "G String",
-            "appId": 1224600
-      },
-      {
-            "id": 107,
-            "title": "G-Police",
-            "appId": null
-      },
-      {
-            "id": 108,
-            "title": "Galaxy Fight: Universal Warriors",
-            "appId": null
-      },
-      {
-            "id": 109,
-            "title": "Galerians",
-            "appId": null
-      },
-      {
-            "id": 110,
-            "title": "Galerians: Ash",
-            "appId": null
-      },
-      {
-            "id": 111,
-            "title": "Gamedec",
-            "appId": 917720
-      },
-      {
-            "id": 112,
-            "title": "Gemini Rue",
-            "appId": 80310
-      },
-      {
-            "id": 113,
-            "title": "Ghost 1.0",
-            "appId": null
-      },
-      {
-            "id": 114,
-            "title": "Ghost in the Shell",
-            "appId": null
-      },
-      {
-            "id": 115,
-            "title": "Ghostrunner",
-            "appId": 1139900
-      },
-      {
-            "id": 116,
-            "title": "Ghostrunner 2",
-            "appId": 2144740
-      },
-      {
-            "id": 117,
-            "title": "Giga Wrecker",
-            "appId": null
-      },
-      {
-            "id": 118,
-            "title": "Gori: Cuddly Carnage",
-            "appId": 1299690
-      },
-      {
-            "id": 119,
-            "title": "Gunlok",
-            "appId": null
-      },
-      {
-            "id": 120,
-            "title": "Hacker",
-            "appId": null
-      },
-      {
-            "id": 121,
-            "title": "Hagane: The Final Conflict",
-            "appId": null
-      },
-      {
-            "id": 122,
-            "title": "Hammerfist",
-            "appId": null
-      },
-      {
-            "id": 123,
-            "title": "Hard Reset",
-            "appId": 98400
-      },
-      {
-            "id": 124,
-            "title": "Hardcoded",
-            "appId": null
-      },
-      {
-            "id": 125,
-            "title": "Hardwar",
-            "appId": null
-      },
-      {
-            "id": 126,
-            "title": "Headhunter",
-            "appId": null
-      },
-      {
-            "id": 127,
-            "title": "Headhunter Redemption",
-            "appId": null
-      },
-      {
-            "id": 128,
-            "title": "Heavy Metal: Geomatrix",
-            "appId": null
-      },
-      {
-            "id": 129,
-            "title": "Hell: A Cyberpunk Thriller",
-            "appId": null
-      },
-      {
-            "id": 130,
-            "title": "Hired Guns",
-            "appId": null
-      },
-      {
-            "id": 131,
-            "title": "Huntdown",
-            "appId": 598550
-      },
-      {
-            "id": 132,
-            "title": "Hyde Run",
-            "appId": null
-      },
-      {
-            "id": 133,
-            "title": "Hyper Scape",
-            "appId": null
-      },
-      {
-            "id": 134,
-            "title": "I Have No Mouth, and I Must Scream",
-            "appId": 245390
-      },
-      {
-            "id": 135,
-            "title": "Illusion City",
-            "appId": null
-      },
-      {
-            "id": 136,
-            "title": "Immercenary",
-            "appId": null
-      },
-      {
-            "id": 137,
-            "title": "Implosion: Never Lose Hope",
-            "appId": null
-      },
-      {
-            "id": 138,
-            "title": "Interphase",
-            "appId": null
-      },
-      {
-            "id": 139,
-            "title": "Invisible, Inc.",
-            "appId": 243970
-      },
-      {
-            "id": 140,
-            "title": "Ion Fury",
-            "appId": 562860
-      },
-      {
-            "id": 141,
-            "title": "Jack Move",
-            "appId": 1099640
-      },
-      {
-            "id": 142,
-            "title": "James Cameron’s Dark Angel",
-            "appId": null
-      },
-      {
-            "id": 143,
-            "title": "Johnny Mnemonic",
-            "appId": null
-      },
-      {
-            "id": 144,
-            "title": "Judge Dredd",
-            "appId": null
-      },
-      {
-            "id": 145,
-            "title": "Judge Dredd: Dredd vs. Death",
-            "appId": null
-      },
-      {
-            "id": 146,
-            "title": "Kabuki: Quantum Fighter",
-            "appId": null
-      },
-      {
-            "id": 147,
-            "title": "Katana ZERO",
-            "appId": 460950
-      },
-      {
-            "id": 148,
-            "title": "Kikokugai: The Cyber Slayer",
-            "appId": null
-      },
-      {
-            "id": 149,
-            "title": "Kinetica",
-            "appId": null
-      },
-      {
-            "id": 150,
-            "title": "The Last Night",
-            "appId": null
-      },
-      {
-            "id": 151,
-            "title": "The Legend of Bishin",
-            "appId": null
-      },
-      {
-            "id": 152,
-            "title": "Leviathan: The Last Day of the Decade",
-            "appId": null
-      },
-      {
-            "id": 153,
-            "title": "Liberated",
-            "appId": 875310
-      },
-      {
-            "id": 154,
-            "title": "Liberation: Captive 2",
-            "appId": null
-      },
-      {
-            "id": 155,
-            "title": "Lifeforce Tenka",
-            "appId": null
-      },
-      {
-            "id": 156,
-            "title": "Love Shore",
-            "appId": 1410330
-      },
-      {
-            "id": 157,
-            "title": "Magrunner: Dark Pulse",
-            "appId": 209630
-      },
-      {
-            "id": 158,
-            "title": "Mars: War Logs",
-            "appId": 232750
-      },
-      {
-            "id": 159,
-            "title": "Mean Streets",
-            "appId": null
-      },
-      {
-            "id": 160,
-            "title": "Meat Puppet",
-            "appId": null
-      },
-      {
-            "id": 161,
-            "title": "Megami Tensei",
-            "appId": null
-      },
-      {
-            "id": 162,
-            "title": "MegaRace",
-            "appId": null
-      },
-      {
-            "id": 163,
-            "title": "Messiah",
-            "appId": null
-      },
-      {
-            "id": 164,
-            "title": "Metal Eden",
-            "appId": null
-      },
-      {
-            "id": 165,
-            "title": "Metal Gear",
-            "appId": null
-      },
-      {
-            "id": 166,
-            "title": "Metal Gear Rising: Revengeance",
-            "appId": null
-      },
-      {
-            "id": 167,
-            "title": "Metal Gear Solid 2: Sons of Liberty",
-            "appId": null
-      },
-      {
-            "id": 168,
-            "title": "Metal Gear Solid 4: Guns of the Patriots",
-            "appId": null
-      },
-      {
-            "id": 169,
-            "title": "Metal Stoker",
-            "appId": null
-      },
-      {
-            "id": 170,
-            "title": "MindJack",
-            "appId": null
-      },
-      {
-            "id": 171,
-            "title": "MTV: Club Dead",
-            "appId": null
-      },
-      {
-            "id": 172,
-            "title": "Mullet MadJack",
-            "appId": 2111190
-      },
-      {
-            "id": 173,
-            "title": "N1RV Ann-A",
-            "appId": null
-      },
-      {
-            "id": 174,
-            "title": "Neckbreak",
-            "appId": null
-      },
-      {
-            "id": 175,
-            "title": "Neo Cab",
-            "appId": 794540
-      },
-      {
-            "id": 176,
-            "title": "Neocron",
-            "appId": null
-      },
-      {
-            "id": 177,
-            "title": "Neocron 2: Beyond Dome of York",
-            "appId": null
-      },
-      {
-            "id": 178,
-            "title": "NeoHunter",
-            "appId": null
-      },
-      {
-            "id": 179,
-            "title": "Neon Struct",
-            "appId": 310740
-      },
-      {
-            "id": 180,
-            "title": "NeoTokyo",
-            "appId": null
-      },
-      {
-            "id": 181,
-            "title": "Netzone",
-            "appId": null
-      },
-      {
-            "id": 182,
-            "title": "Neuro",
-            "appId": null
-      },
-      {
-            "id": 183,
-            "title": "Neuro Hunter",
-            "appId": null
-      },
-      {
-            "id": 184,
-            "title": "Neuromancer",
-            "appId": null
-      },
-      {
-            "id": 185,
-            "title": "Nightlong: Union City Conspiracy",
-            "appId": null
-      },
-      {
-            "id": 186,
-            "title": "Nikopol: Secrets of the Immortals",
-            "appId": null
-      },
-      {
-            "id": 187,
-            "title": "Nine Sols",
-            "appId": null
-      },
-      {
-            "id": 188,
-            "title": "Nobody Wants to Die",
-            "appId": 1939970
-      },
-      {
-            "id": 189,
-            "title": "The Nomad Soul",
-            "appId": null
-      },
-      {
-            "id": 190,
-            "title": "Normality",
-            "appId": null
-      },
-      {
-            "id": 191,
-            "title": "Observer",
-            "appId": 514900
-      },
-      {
-            "id": 192,
-            "title": "Of the Devil",
-            "appId": null
-      },
-      {
-            "id": 193,
-            "title": "Off the Grid",
-            "appId": null
-      },
-      {
-            "id": 194,
-            "title": "Oni",
-            "appId": null
-      },
-      {
-            "id": 195,
-            "title": "Osman",
-            "appId": null
-      },
-      {
-            "id": 196,
-            "title": "Paradise Cracked",
-            "appId": null
-      },
-      {
-            "id": 197,
-            "title": "Pax Corpus",
-            "appId": null
-      },
-      {
-            "id": 198,
-            "title": "Peripeteia",
-            "appId": null
-      },
-      {
-            "id": 199,
-            "title": "Phantom 2040",
-            "appId": null
-      },
-      {
-            "id": 200,
-            "title": "Primordia",
-            "appId": 227000
-      },
-      {
-            "id": 201,
-            "title": "Project Eden",
-            "appId": null
-      },
-      {
-            "id": 202,
-            "title": "Project Snowblind",
-            "appId": 7010
-      },
-      {
-            "id": 203,
-            "title": "Psycho Patrol R",
-            "appId": null
-      },
-      {
-            "id": 204,
-            "title": "Psycho-Pass: Mandatory Happiness",
-            "appId": 522880
-      },
-      {
-            "id": 205,
-            "title": "Punishing: Gray Raven",
-            "appId": null
-      },
-      {
-            "id": 206,
-            "title": "Quadrilateral Cowboy",
-            "appId": 240440
-      },
-      {
-            "id": 207,
-            "title": "Quarantine",
-            "appId": null
-      },
-      {
-            "id": 208,
-            "title": "Quarantine II: Road Warrior",
-            "appId": null
-      },
-      {
-            "id": 209,
-            "title": "Radio the Universe",
-            "appId": null
-      },
-      {
-            "id": 210,
-            "title": "Raid 2020",
-            "appId": null
-      },
-      {
-            "id": 211,
-            "title": "ReBoot",
-            "appId": null
-      },
-      {
-            "id": 212,
-            "title": "The Red Strings Club",
-            "appId": 589780
-      },
-      {
-            "id": 213,
-            "title": "Remember Me",
-            "appId": 228300
-      },
-      {
-            "id": 214,
-            "title": "Requiem: Avenging Angel",
-            "appId": null
-      },
-      {
-            "id": 215,
-            "title": "Ripper",
-            "appId": null
-      },
-      {
-            "id": 216,
-            "title": "Rise 2: Resurrection",
-            "appId": null
-      },
-      {
-            "id": 217,
-            "title": "Rise of the Dragon",
-            "appId": null
-      },
-      {
-            "id": 218,
-            "title": "Rise of the Robots",
-            "appId": null
-      },
-      {
-            "id": 219,
-            "title": "RoboCop Versus The Terminator",
-            "appId": null
-      },
-      {
-            "id": 220,
-            "title": "RoboCop: Rogue City",
-            "appId": 1681430
-      },
-      {
-            "id": 221,
-            "title": "RoboCop: Rogue City – Unfinished Business",
-            "appId": null
-      },
-      {
-            "id": 222,
-            "title": "Ruiner",
-            "appId": 464060
-      },
-      {
-            "id": 223,
-            "title": "Sanity: Aiken’s Artifact",
-            "appId": null
-      },
-      {
-            "id": 224,
-            "title": "Satellite Reign",
-            "appId": 268870
-      },
-      {
-            "id": 225,
-            "title": "Screamer",
-            "appId": null
-      },
-      {
-            "id": 226,
-            "title": "Sense: A Cyberpunk Ghost Story",
-            "appId": null
-      },
-      {
-            "id": 227,
-            "title": "Serial Experiments Lain",
-            "appId": null
-      },
-      {
-            "id": 228,
-            "title": "Seven: The Days Long Gone",
-            "appId": 471010
-      },
-      {
-            "id": 229,
-            "title": "Shadow President",
-            "appId": null
-      },
-      {
-            "id": 230,
-            "title": "Shadowrun",
-            "appId": null
-      },
-      {
-            "id": 231,
-            "title": "Shadowrun Returns",
-            "appId": 234650
-      },
-      {
-            "id": 232,
-            "title": "Shadowrun: Dragonfall",
-            "appId": 300550
-      },
-      {
-            "id": 233,
-            "title": "Shadowrun: Hong Kong",
-            "appId": 346940
-      },
-      {
-            "id": 234,
-            "title": "Shadows of Doubt",
-            "appId": 986130
-      },
-      {
-            "id": 235,
-            "title": "Shin Megami Tensei",
-            "appId": null
-      },
-      {
-            "id": 236,
-            "title": "Shin Megami Tensei II",
-            "appId": null
-      },
-      {
-            "id": 237,
-            "title": "Shin Megami Tensei IV",
-            "appId": null
-      },
-      {
-            "id": 238,
-            "title": "Shin Megami Tensei IV: Apocalypse",
-            "appId": null
-      },
-      {
-            "id": 239,
-            "title": "Shin Megami Tensei V",
-            "appId": null
-      },
-      {
-            "id": 240,
-            "title": "Shin Megami Tensei: Devil Summoner",
-            "appId": null
-      },
-      {
-            "id": 241,
-            "title": "Shin Megami Tensei: Digital Devil Saga",
-            "appId": null
-      },
-      {
-            "id": 242,
-            "title": "Shin Megami Tensei If...",
-            "appId": null
-      },
-      {
-            "id": 243,
-            "title": "Shin Megami Tensei: Imagine",
-            "appId": null
-      },
-      {
-            "id": 244,
-            "title": "Shin Megami Tensei: Nine",
-            "appId": null
-      },
-      {
-            "id": 245,
-            "title": "Showgunners",
-            "appId": 1155330
-      },
-      {
-            "id": 246,
-            "title": "Simulman",
-            "appId": null
-      },
-      {
-            "id": 247,
-            "title": "SiN",
-            "appId": null
-      },
-      {
-            "id": 248,
-            "title": "SiN Episodes: Emergence",
-            "appId": 1300
-      },
-      {
-            "id": 249,
-            "title": "Skyhammer",
-            "appId": null
-      },
-      {
-            "id": 250,
-            "title": "Skynet",
-            "appId": null
-      },
-      {
-            "id": 251,
-            "title": "Slave Zero",
-            "appId": null
-      },
-      {
-            "id": 252,
-            "title": "Snatcher",
-            "appId": null
-      },
-      {
-            "id": 253,
-            "title": "The Space Adventure",
-            "appId": null
-      },
-      {
-            "id": 254,
-            "title": "Speed Power Gunbike",
-            "appId": null
-      },
-      {
-            "id": 255,
-            "title": "Speedball",
-            "appId": null
-      },
-      {
-            "id": 256,
-            "title": "Speedball 2 Tournament",
-            "appId": null
-      },
-      {
-            "id": 257,
-            "title": "Speedball 2: Brutal Deluxe",
-            "appId": null
-      },
-      {
-            "id": 258,
-            "title": "Spider-Man: Edge of Time",
-            "appId": null
-      },
-      {
-            "id": 259,
-            "title": "Spider-Man: Shattered Dimensions",
-            "appId": null
-      },
-      {
-            "id": 260,
-            "title": "Spine",
-            "appId": null
-      },
-      {
-            "id": 261,
-            "title": "Split Fiction",
-            "appId": null
-      },
-      {
-            "id": 262,
-            "title": "State of Mind",
-            "appId": 437630
-      },
-      {
-            "id": 263,
-            "title": "Stolen",
-            "appId": null
-      },
-      {
-            "id": 264,
-            "title": "Stray",
-            "appId": 1332010
-      },
-      {
-            "id": 265,
-            "title": "Strider",
-            "appId": null
-      },
-      {
-            "id": 266,
-            "title": "Superhot",
-            "appId": 322500
-      },
-      {
-            "id": 267,
-            "title": "Superhot: Mind Control Delete",
-            "appId": 690040
-      },
-      {
-            "id": 268,
-            "title": "Syndicate",
-            "appId": null
-      },
-      {
-            "id": 269,
-            "title": "Syndicate: American Revolt",
-            "appId": null
-      },
-      {
-            "id": 270,
-            "title": "Syndicate Wars",
-            "appId": null
-      },
-      {
-            "id": 271,
-            "title": "System Rush",
-            "appId": null
-      },
-      {
-            "id": 272,
-            "title": "System Shock",
-            "appId": 482400
-      },
-      {
-            "id": 273,
-            "title": "System Shock 2",
-            "appId": 238210
-      },
-      {
-            "id": 274,
-            "title": "System Shock Remake",
-            "appId": 482400
-      },
-      {
-            "id": 275,
-            "title": "Tales of the Neon Sea",
-            "appId": 828740
-      },
-      {
-            "id": 276,
-            "title": "Tank Universal",
-            "appId": null
-      },
-      {
-            "id": 277,
-            "title": "Technobabylon",
-            "appId": 307580
-      },
-      {
-            "id": 278,
-            "title": "The Technomancer",
-            "appId": 338390
-      },
-      {
-            "id": 279,
-            "title": "Tesla Effect: A Tex Murphy Adventure",
-            "appId": 261510
-      },
-      {
-            "id": 280,
-            "title": "Tex Murphy",
-            "appId": null
-      },
-      {
-            "id": 281,
-            "title": "Transistor",
-            "appId": 237930
-      },
-      {
-            "id": 282,
-            "title": "Tron: Catalyst",
-            "appId": null
-      },
-      {
-            "id": 283,
-            "title": "Tron: Identity",
-            "appId": 2109430
-      },
-      {
-            "id": 284,
-            "title": "Until I Have You",
-            "appId": null
-      },
-      {
-            "id": 285,
-            "title": "Uplink",
-            "appId": 1510
-      },
-      {
-            "id": 286,
-            "title": "VA-11 Hall-A",
-            "appId": 447530
-      },
-      {
-            "id": 287,
-            "title": "VirtuaVerse",
-            "appId": 1019310
-      },
-      {
-            "id": 288,
-            "title": "Volume",
-            "appId": 365770
-      },
-      {
-            "id": 289,
-            "title": "Wanted: Dead",
-            "appId": 1981610
-      },
-      {
-            "id": 290,
-            "title": "Watch Dogs",
-            "appId": 243470
-      },
-      {
-            "id": 291,
-            "title": "Watch Dogs 2",
-            "appId": 447040
-      },
-      {
-            "id": 292,
-            "title": "Watch Dogs: Legion",
-            "appId": 2239550
-      },
-      {
-            "id": 293,
-            "title": "William Shatner’s TekWar",
-            "appId": null
-      },
-      {
-            "id": 294,
-            "title": "Wirehead",
-            "appId": null
-      },
-      {
-            "id": 295,
-            "title": "X-Kaliber 2097",
-            "appId": null
-      },
-      {
-            "id": 296,
-            "title": "Zenless Zone Zero",
-            "appId": 2841600
-      },
-      {
-            "id": 297,
-            "title": "ZeroZone",
-            "appId": null
+            "title": "Fortnite",
+            "appId": null,
+            "platforms": [
+                  "epic"
+            ],
+            "themes": [
+                  "fantasy"
+            ],
+            "keywords": "Epic Games battle royale, fantasy events"
       }
 ];
     const currencies = [
-      { code: "USD", label: "Доллары" },
-      { code: "RUB", label: "Рубли" },
-      { code: "KZT", label: "Тенге" },
-      { code: "UAH", label: "Гривны" }
+      { code: "RUB", label: "Рубли", flag: "🇷🇺" },
+      { code: "USD", label: "Доллары", flag: "🇺🇸" },
+      { code: "KZT", label: "Тенге", flag: "🇰🇿" },
+      { code: "UAH", label: "Гривны", flag: "🇺🇦" }
     ];
 
+    const CURRENCY_STORAGE_KEY = "cybergames-selected-currency-v1";
     const CACHE_KEY = "cybergames-vercel-cache-v7-arcane-premium";
     const CACHE_TTL = 1000 * 60 * 60 * 6;
-    const WISHLIST_KEY = "cybergames-wishlist-v1";
     const FEATURED_ORDER = [
       "Cyberpunk 2077",
-      "Ghostrunner",
+      "Baldur's Gate 3",
+      "Ghostrunner 2",
+      "The Witcher 3: Wild Hunt",
       "Deus Ex: Mankind Divided",
+      "Hogwarts Legacy",
+      "Shadowrun: Dragonfall - Director's Cut",
+      "Hades II",
       "Watch Dogs 2",
-      "Stray",
       "The Ascent",
       "Cloudpunk",
-      "Observer: System Redux",
-      "Ruiner",
-      "Katana ZERO",
-      "Citizen Sleeper",
-      "Blade Runner"
+      "Elden Ring"
     ];
+
+    const THEME_LABELS = {
+      cyberpunk: "Киберпанк",
+      fantasy: "Фэнтези",
+      magic: "Магия"
+    };
 
     const gamesGrid = document.getElementById("gamesGrid");
     const searchInput = document.getElementById("searchInput");
@@ -1521,7 +1141,6 @@
     const sourceFilter = document.getElementById("sourceFilter");
     const genreFilter = document.getElementById("genreFilter");
     const priceFilter = document.getElementById("priceFilter");
-    const featuresFilter = document.getElementById("featuresFilter");
     const resetFiltersBtn = document.getElementById("resetFiltersBtn");
 
     const modal = document.getElementById("gameModal");
@@ -1537,9 +1156,90 @@
     const storeLinks = document.getElementById("storeLinks");
     const modalFeatures = document.getElementById("modalFeatures");
     const detailPanel = document.getElementById("detailPanel");
+    const navLinks = Array.from(document.querySelectorAll(".nav-link"));
+    const currencyButtons = Array.from(document.querySelectorAll(".currency-btn"));
+    const catalogTitle = document.querySelector("#catalog .section-title-main");
+    const catalogNote = document.querySelector("#catalog .section-note");
+    const newsSection = document.getElementById("news");
 
     let currentModalId = null;
     let currentDetailId = null;
+    let selectedCurrency = loadSelectedCurrency();
+
+    function loadSelectedCurrency() {
+      try {
+        const saved = localStorage.getItem(CURRENCY_STORAGE_KEY);
+        return currencies.some((currency) => currency.code === saved) ? saved : "RUB";
+      } catch {
+        return "RUB";
+      }
+    }
+
+    function saveSelectedCurrency(code) {
+      try {
+        localStorage.setItem(CURRENCY_STORAGE_KEY, code);
+      } catch {
+        // localStorage может быть недоступен в приватном режиме — просто продолжаем без сохранения.
+      }
+    }
+
+    function currencyInfo(code = selectedCurrency) {
+      return currencies.find((currency) => currency.code === code) || currencies[0];
+    }
+
+    function priceUnavailable(price) {
+      if (!price) return true;
+      const label = String(price.label || "").trim();
+      return Boolean(price.unavailable) || !label || label === "Уточнить" || label === "Недоступно";
+    }
+
+    function pickCurrencyPrice(prices) {
+      if (!prices) return null;
+
+      const selected = prices[selectedCurrency];
+      if (selected && selected.free) return { item: selected, code: selectedCurrency, fallback: false };
+      if (!priceUnavailable(selected)) return { item: selected, code: selectedCurrency, fallback: false };
+
+      const usd = prices.USD;
+      if (usd && usd.free) return { item: usd, code: "USD", fallback: selectedCurrency !== "USD" };
+      if (!priceUnavailable(usd)) return { item: usd, code: "USD", fallback: selectedCurrency !== "USD" };
+
+      const available = Object.entries(prices).find(([, price]) => price && (price.free || !priceUnavailable(price)));
+      if (available) return { item: available[1], code: available[0], fallback: available[0] !== selectedCurrency };
+
+      return selected ? { item: selected, code: selectedCurrency, fallback: false } : null;
+    }
+
+    function updateCurrencyButtons() {
+      currencyButtons.forEach((button) => {
+        button.classList.toggle("active", button.dataset.currency === selectedCurrency);
+        button.setAttribute("aria-pressed", String(button.dataset.currency === selectedCurrency));
+      });
+    }
+
+    function refreshVisiblePrices() {
+      games.forEach((game) => {
+        if (getCard(game)) updateCard(game);
+      });
+
+      if (currentDetailId) {
+        const game = games.find((item) => item.id === currentDetailId);
+        if (game) renderDetailPanel(game);
+      }
+
+      if (currentModalId) {
+        const game = games.find((item) => item.id === currentModalId);
+        if (game) renderModal(game);
+      }
+    }
+
+    function setCurrency(code) {
+      if (!currencies.some((currency) => currency.code === code) || selectedCurrency === code) return;
+      selectedCurrency = code;
+      saveSelectedCurrency(code);
+      updateCurrencyButtons();
+      refreshVisiblePrices();
+    }
 
     function normalize(value) {
       return String(value || "")
@@ -1686,17 +1386,17 @@
       return result;
     }
 
-    function gameTags(data) {
-      if (!data) return [];
+    function gameTags(data, game = null) {
       return uniqueList([
-        ...(Array.isArray(data.genres) ? data.genres : []),
-        ...(Array.isArray(data.categories) ? data.categories : [])
+        ...themeTagsForGame(game),
+        ...(Array.isArray(data?.genres) ? data.genres : []),
+        ...(Array.isArray(data?.categories) ? data.categories : [])
       ]);
     }
 
     function populateGenreFilter() {
       const selected = genreFilter.value || "all";
-      const tags = uniqueList(games.flatMap((game) => game.data ? gameTags(game.data) : []))
+      const tags = uniqueList(games.flatMap((game) => gameTags(game.data, game)))
         .sort((a, b) => a.localeCompare(b, "ru"));
 
       genreFilter.innerHTML = `<option value="all">Все жанры</option>` + tags
@@ -1706,6 +1406,35 @@
       if ([...genreFilter.options].some((option) => option.value === selected)) {
         genreFilter.value = selected;
       }
+    }
+
+    function gamePlatformValue(game) {
+      const dataProvider = game?.data?.provider;
+      if (dataProvider && dataProvider !== "none") return dataProvider;
+
+      const platforms = Array.isArray(game?.platforms) ? game.platforms : [];
+      const hasSteam = platforms.includes("steam") || Boolean(game?.appId);
+      const hasEpic = platforms.includes("epic");
+
+      if (hasSteam && hasEpic) return "steam+epic";
+      if (hasEpic) return "epic";
+      if (hasSteam) return "steam";
+      return "none";
+    }
+
+    function platformLabel(value, short = false) {
+      if (value === "steam+epic") return short ? "S+E" : "Steam + Epic";
+      if (value === "epic") return short ? "Epic" : "Epic Games";
+      if (value === "steam") return "Steam";
+      return short ? "API" : "Steam/Epic";
+    }
+
+    function gamePlatformLabel(game, short = false) {
+      return platformLabel(gamePlatformValue(game), short);
+    }
+
+    function themeTagsForGame(game) {
+      return uniqueList((game?.themes || []).map((theme) => THEME_LABELS[theme] || theme));
     }
 
     function getProvider(data) {
@@ -1767,9 +1496,7 @@
       if (game.removed) return false;
       if (value === "all") return true;
 
-      const provider = getProvider(game.data);
-
-      if (!game.data) return false;
+      const provider = gamePlatformValue(game);
 
       if (value === "steam") return provider === "steam" || provider === "steam+epic";
       if (value === "epic") return provider === "epic" || provider === "steam+epic";
@@ -1780,9 +1507,7 @@
 
     function genreMatches(game, value) {
       if (value === "all") return true;
-      if (!game.data) return false;
-
-      return gameTags(game.data).some((tag) => normalize(tag) === value);
+      return gameTags(game.data, game).some((tag) => normalize(tag) === value);
     }
 
     function priceMatches(game, value) {
@@ -1810,51 +1535,10 @@
     }
 
 
-    function getWishlist() {
-      try {
-        return new Set(JSON.parse(localStorage.getItem(WISHLIST_KEY) || "[]"));
-      } catch {
-        return new Set();
-      }
-    }
-
-    function writeWishlist(set) {
-      try {
-        localStorage.setItem(WISHLIST_KEY, JSON.stringify([...set]));
-      } catch {
-        // не критично
-      }
-    }
-
-    function isWishlisted(id) {
-      return getWishlist().has(String(id));
-    }
-
-    function toggleWishlist(id) {
-      const wishlist = getWishlist();
-      const key = String(id);
-      if (wishlist.has(key)) wishlist.delete(key);
-      else wishlist.add(key);
-      writeWishlist(wishlist);
-      updateFavoriteIcons();
-      if (currentDetailId === id) renderDetailPanel(games.find((item) => item.id === id));
-    }
-
-    function updateFavoriteIcons() {
-      document.querySelectorAll(".game-card").forEach((card) => {
-        const chip = card.querySelector(".favorite-chip");
-        if (!chip) return;
-        const active = isWishlisted(Number(card.dataset.id));
-        chip.classList.toggle("active", active);
-        chip.textContent = active ? "♥" : "♡";
-        chip.setAttribute("aria-label", active ? "Убрать из избранного" : "Добавить в избранное");
-      });
-    }
-
     function catalogCandidates() {
       const orderMap = new Map(FEATURED_ORDER.map((title, index) => [normalize(title), index]));
       return games
-        .filter((game) => Boolean(game.appId) && !game.removed)
+        .filter((game) => (Boolean(game.appId) || gamePlatformValue(game) !== "none") && !game.removed)
         .sort((a, b) => {
           const aOrder = orderMap.has(normalize(a.title)) ? orderMap.get(normalize(a.title)) : 9999;
           const bOrder = orderMap.has(normalize(b.title)) ? orderMap.get(normalize(b.title)) : 9999;
@@ -1878,7 +1562,24 @@
           label: game?.appId ? "Цена загружается" : "Проверка магазина",
           oldLabel: "",
           discount: 0,
-          provider: game?.appId ? "Steam" : "Steam/Epic"
+          provider: gamePlatformLabel(game)
+        };
+      }
+
+      for (const [key, label, prices] of providerEntries(game)) {
+        const picked = pickCurrencyPrice(prices);
+        const preferred = picked?.item;
+        if (!preferred || priceUnavailable(preferred)) continue;
+
+        const fallbackText = picked.fallback ? ` · ${picked.code}` : "";
+        return {
+          label: preferred.free ? "Бесплатно" : `${preferred.label || "Уточнить"}${fallbackText}`,
+          oldLabel: preferred.originalLabel || preferred.original_price || "",
+          discount: Number(preferred.discount) || 0,
+          provider: label,
+          key,
+          currency: picked.code,
+          fallback: picked.fallback
         };
       }
 
@@ -1887,20 +1588,9 @@
         return { label: "Бесплатно", oldLabel: "", discount: 0, provider: source?.[1] || providerLabel(game.data) };
       }
 
-      for (const [key, label, prices] of providerEntries(game)) {
-        const preferred = prices.USD || Object.values(prices || {}).find((price) => price && !price.unavailable);
-        if (!preferred || preferred.unavailable || preferred.label === "Уточнить" || preferred.label === "Недоступно") continue;
-        return {
-          label: preferred.label || "Уточнить",
-          oldLabel: preferred.originalLabel || preferred.original_price || "",
-          discount: Number(preferred.discount) || 0,
-          provider: label,
-          key
-        };
-      }
-
       return { label: "Цена уточняется", oldLabel: "", discount: 0, provider: providerLabel(game.data) };
     }
+
 
     function bestStoreLink(game) {
       const data = game?.data || {};
@@ -1975,7 +1665,7 @@
       game.status = "done";
       game.data = data;
       game.resolvedTitle = data.title || game.title;
-      game.searchText = normalize(`${game.title} ${data.title} ${data.description || ""} ${(data.genres || []).join(" ")} ${(data.categories || []).join(" ")}`);
+      game.searchText = normalize(`${game.title} ${data.title} ${data.description || ""} ${(data.genres || []).join(" ")} ${(data.categories || []).join(" ")} ${themeTagsForGame(game).join(" ")} ${game.keywords || ""}`);
       updateCard(game);
       populateGenreFilter();
       filterGames();
@@ -2010,11 +1700,11 @@
     }
 
     function providerLabel(data) {
-      if (!data) return "Vercel API";
+      if (!data) return "Steam/Epic";
       if (data.provider === "steam+epic") return "Steam + Epic";
-      if (data.provider === "epic") return "Epic OK";
-      if (data.provider === "steam") return "Steam OK";
-      return "API OK";
+      if (data.provider === "epic") return "Epic Games";
+      if (data.provider === "steam") return "Steam";
+      return data.platformLabel || "Steam/Epic";
     }
 
     function renderCards() {
@@ -2023,7 +1713,7 @@
 
       catalog.forEach((game) => {
         game.status = game.status || "idle";
-        game.searchText = normalize(game.title);
+        game.searchText = normalize(`${game.title} ${themeTagsForGame(game).join(" ")} ${game.keywords || ""}`);
 
         const card = document.createElement("button");
         card.className = "game-card";
@@ -2035,8 +1725,7 @@
           <div class="card-inner">
             <div class="poster-wrap">
               <img class="poster" src="${initialCardImage(game)}" alt="Обложка ${escapeAttr(game.title)}">
-              <span class="favorite-chip" role="button" aria-label="Добавить в избранное">♡</span>
-              <span class="store-mini">Steam</span>
+              <span class="store-mini">${escapeHtml(gamePlatformLabel(game, true))}</span>
               <span class="status-pill">Ожидает</span>
               <span class="free-badge">Бесплатно</span>
             </div>
@@ -2044,27 +1733,22 @@
               <h2 class="card-title">${escapeHtml(game.title)}</h2>
               <div class="card-meta">
                 <span class="release">—</span>
-                <span class="type">Steam lookup</span>
+                <span class="type">Steam/Epic lookup</span>
               </div>
-              <p class="card-description">Карточка проверяется через Steam/Epic API: обложка, скриншоты, описание, цены и доступность.</p>
+              <p class="card-description">Карточка подтягивается из Steam/Epic: обложка, скриншоты, описание, цены и доступность.</p>
               <div class="tag-row">
-                <span class="tag">Cyberpunk</span>
-                <span class="tag">Steam/Epic</span>
+                ${themeTagsForGame(game).slice(0, 3).map((tag) => `<span class="tag">${escapeHtml(tag)}</span>`).join("")}
+                <span class="tag">${escapeHtml(gamePlatformLabel(game))}</span>
               </div>
               <div class="card-bottom">
                 <span class="card-price">Цена загружается</span>
-                <span class="store-badge">Steam</span>
+                <span class="store-badge">${escapeHtml(gamePlatformLabel(game))}</span>
               </div>
             </div>
           </div>
         `;
 
-        card.addEventListener("click", (event) => {
-          if (event.target.closest(".favorite-chip")) {
-            event.stopPropagation();
-            toggleWishlist(game.id);
-            return;
-          }
+        card.addEventListener("click", () => {
           selectGame(game.id);
         });
 
@@ -2073,7 +1757,6 @@
 
       gamesGrid.appendChild(fragment);
       updateCounter(catalog.length);
-      updateFavoriteIcons();
       observeCards();
 
       const featured = games.find((game) => normalize(game.title) === normalize("Cyberpunk 2077") && getCard(game));
@@ -2156,21 +1839,20 @@
         release.textContent = data.releaseDate || "—";
         type.textContent = data.type || "game";
         desc.textContent = data.description || "Описание не найдено.";
-        status.textContent = providerLabel(data);
+        status.textContent = gamePlatformLabel(game);
         status.className = "status-pill ok";
 
         if (data.isFree) freeBadge.classList.add("show");
         else freeBadge.classList.remove("show");
 
-        const tags = gameTags(data).slice(0, 3).map((tag) => `<span class="tag">${escapeHtml(tag)}</span>`).join("");
-        tagRow.innerHTML = `${data.isFree ? '<span class="tag">Бесплатно</span>' : ""}<span class="tag">${escapeHtml(providerLabel(data))}</span>${tags}`;
+        const tags = gameTags(data, game).slice(0, 3).map((tag) => `<span class="tag">${escapeHtml(tag)}</span>`).join("");
+        tagRow.innerHTML = `${data.isFree ? '<span class="tag">Бесплатно</span>' : ""}<span class="tag">${escapeHtml(gamePlatformLabel(game))}</span>${tags}`;
         if (price) price.textContent = priceInfo.label;
-        if (storeBadge) storeBadge.textContent = priceInfo.provider;
-        if (storeMini) storeMini.textContent = priceInfo.provider.replace("Steam + Epic", "S+E").replace("Epic OK", "Epic").replace("Steam OK", "Steam");
+        if (storeBadge) storeBadge.textContent = priceInfo.provider || gamePlatformLabel(game);
+        if (storeMini) storeMini.textContent = gamePlatformLabel(game, true);
       }
 
       if (currentDetailId === game.id) renderDetailPanel(game);
-      updateFavoriteIcons();
     }
 
     function updateCounter(count) {
@@ -2182,8 +1864,6 @@
       const sourceValue = sourceFilter.value;
       const genreValue = genreFilter.value;
       const priceValue = priceFilter.value;
-      const featureValue = featuresFilter.value;
-
       let visible = 0;
 
       document.querySelectorAll(".game-card").forEach((card) => {
@@ -2195,9 +1875,7 @@
         const sourceMatch = game ? sourceMatches(game, sourceValue) : true;
         const genreMatch = game ? genreMatches(game, genreValue) : true;
         const priceMatch = game ? priceMatches(game, priceValue) : true;
-        const featureMatch = game ? featureMatches(game, featureValue) : true;
-
-        const match = activeMatch && textMatch && sourceMatch && genreMatch && priceMatch && featureMatch;
+        const match = activeMatch && textMatch && sourceMatch && genreMatch && priceMatch;
         card.classList.toggle("hidden", !match);
 
         if (match) visible++;
@@ -2255,8 +1933,7 @@
       const thumbs = screenshots.length
         ? screenshots.map((url, index) => `<img src="${escapeAttr(url)}" alt="Скриншот ${index + 1} из игры ${escapeAttr(title)}">`).join("")
         : `<span class="detail-thumb-placeholder">Скриншоты загрузятся после API</span><span class="detail-thumb-placeholder">Steam / Epic</span><span class="detail-thumb-placeholder">Без фейков</span>`;
-      const genre = gameTags(data)[0] || "Cyberpunk";
-      const wished = isWishlisted(game.id);
+      const genre = gameTags(data, game)[0] || "Киберпанк";
       const description = data.description || game.error || "Данные загружаются через Vercel API. Если Steam/Epic не найдут игру, карточка будет скрыта из основного каталога.";
 
       detailPanel.innerHTML = `
@@ -2280,15 +1957,11 @@
             </div>
             <div class="detail-actions">
               <a class="buy-button" href="${escapeAttr(store.url)}" target="_blank" rel="noopener noreferrer">🛒 Купить в ${escapeHtml(store.name)}</a>
-              <button class="wishlist-button ${wished ? "active" : ""}" type="button" id="detailWishlistBtn">${wished ? "♥ В списке желаний" : "♡ В список желаний"}</button>
             </div>
             <div class="detail-features">${detailFeaturesHtml(data)}</div>
           </div>
         </div>
       `;
-
-      const wishlistButton = detailPanel.querySelector("#detailWishlistBtn");
-      if (wishlistButton) wishlistButton.addEventListener("click", () => toggleWishlist(game.id));
     }
 
     async function openDetailPanel(id) {
@@ -2327,64 +2000,86 @@
 
     function renderPrices(game) {
       const rawPrices = game.data && game.data.prices ? game.data.prices : {};
-      const providerEntries = [];
+      const providerRows = [];
+      const selected = currencyInfo();
 
-      if (rawPrices.steam) providerEntries.push(["steam", "Steam", rawPrices.steam]);
-      if (rawPrices.epic) providerEntries.push(["epic", "Epic", rawPrices.epic]);
+      if (rawPrices.steam) providerRows.push(["steam", "Steam", rawPrices.steam]);
+      if (rawPrices.epic) providerRows.push(["epic", "Epic", rawPrices.epic]);
 
-      if (!providerEntries.length && rawPrices.USD) {
-        providerEntries.push(["steam", "Steam", rawPrices]);
+      if (!providerRows.length && rawPrices.USD) {
+        providerRows.push(["steam", "Steam", rawPrices]);
       }
 
-      if (!providerEntries.length) {
-        priceGrid.innerHTML = currencies.map((currency) => `
+      if (!providerRows.length) {
+        priceGrid.innerHTML = `
           <div class="price-item">
-            <span class="price-currency">${currency.label} / ${currency.code}</span>
+            <span class="price-currency">${selected.flag} ${selected.label} / ${selected.code}</span>
             <span class="price-value">Нет данных</span>
           </div>
-        `).join("");
+        `;
 
         liveStatus.textContent = "Точной цены нет: Steam/Epic не отдали карточку или игра отсутствует в этих магазинах.";
         return;
       }
 
-      priceGrid.innerHTML = providerEntries.map(([key, providerName, prices]) => {
-        return currencies.map((currency) => {
-          const item = prices[currency.code] || { label: "Уточнить" };
-          const discount = item.discount ? ` · скидка ${item.discount}%` : "";
+      priceGrid.innerHTML = providerRows.map(([key, providerName, prices]) => {
+        const picked = pickCurrencyPrice(prices);
+        const item = picked?.item || { label: "Уточнить", unavailable: true };
+        const shownCurrency = currencyInfo(picked?.code || selectedCurrency);
+        const discount = item.discount ? ` · скидка ${item.discount}%` : "";
+        const fallback = picked?.fallback ? ` · показано в ${shownCurrency.code}` : "";
+        const value = item.free ? "Бесплатно" : (item.label || "Уточнить");
 
-          return `
-            <div class="price-item">
-              <span class="price-currency">${providerName} ${currency.label} / ${currency.code}${discount}</span>
-              <span class="price-value ${item.free ? "free" : ""}">${item.free ? "Бесплатно" : item.label}</span>
-            </div>
-          `;
-        }).join("");
+        return `
+          <div class="price-item">
+            <span class="price-currency">${providerName} · ${shownCurrency.flag} ${shownCurrency.label} / ${shownCurrency.code}${discount}${fallback}</span>
+            <span class="price-value ${item.free ? "free" : ""}">${value}</span>
+          </div>
+        `;
       }).join("");
 
       if (game.data && game.data.isFree) {
         liveStatus.textContent = "Один из магазинов помечает игру как бесплатную.";
+      } else if (providerRows.some(([, , prices]) => pickCurrencyPrice(prices)?.fallback)) {
+        liveStatus.textContent = `Для ${selected.label.toLowerCase()} цена есть не у всех магазинов, поэтому сайт показывает ближайшую доступную валюту.`;
       } else if (game.status === "done") {
-        liveStatus.textContent = "Цены загружены через Vercel API. Steam и Epic могут отличаться по регионам, скидкам и доступности.";
+        liveStatus.textContent = `Цены показаны в валюте: ${selected.flag} ${selected.label}. Steam и Epic могут отличаться по регионам, скидкам и доступности.`;
       } else {
         liveStatus.textContent = "Точной цены нет, потому что магазин не отдал карточку.";
       }
     }
 
+
     function renderStores(game) {
       const title = game.data?.title || game.title;
-      const stores = game.data?.stores || {
-        steam: `https://store.steampowered.com/search/?term=${encodeURIComponent(title)}`,
-        epic: `https://store.epicgames.com/ru/browse?q=${encodeURIComponent(title)}&sortBy=relevancy&sortDir=DESC&count=40`
-      };
-
-      const hasSteamDirect = Boolean(game.data?.sources?.steam?.url || game.data?.appId);
+      const stores = game.data?.stores || {};
+      const hasSteamDirect = Boolean(game.data?.sources?.steam?.url || game.data?.appId || game.appId);
       const hasEpicDirect = Boolean(game.data?.sources?.epic?.url);
+      const hinted = Array.isArray(game.platforms) ? game.platforms : [];
+      const provider = gamePlatformValue(game);
 
-      const links = [
-        { name: "Steam", note: hasSteamDirect ? "Прямая страница Steam" : "Поиск в Steam", url: stores.steam },
-        { name: "Epic Games Store", note: hasEpicDirect ? "Прямая страница Epic" : "Поиск в Epic", url: stores.epic }
-      ];
+      const links = [];
+      if (hasSteamDirect || provider === "steam" || provider === "steam+epic" || hinted.includes("steam")) {
+        const appId = game.data?.sources?.steam?.appId || game.data?.appId || game.appId;
+        links.push({
+          name: "Steam",
+          note: hasSteamDirect ? "Прямая страница Steam" : "Поиск в Steam",
+          url: stores.steam || (appId ? `https://store.steampowered.com/app/${appId}/` : `https://store.steampowered.com/search/?term=${encodeURIComponent(title)}`)
+        });
+      }
+
+      if (hasEpicDirect || provider === "epic" || provider === "steam+epic" || hinted.includes("epic")) {
+        links.push({
+          name: "Epic Games Store",
+          note: hasEpicDirect ? "Прямая страница Epic" : "Поиск в Epic",
+          url: stores.epic || `https://store.epicgames.com/ru/browse?q=${encodeURIComponent(title)}&sortBy=relevancy&sortDir=DESC&count=40`
+        });
+      }
+
+      if (!links.length) {
+        links.push({ name: "Steam", note: "Поиск в Steam", url: `https://store.steampowered.com/search/?term=${encodeURIComponent(title)}` });
+        links.push({ name: "Epic Games Store", note: "Поиск в Epic", url: `https://store.epicgames.com/ru/browse?q=${encodeURIComponent(title)}&sortBy=relevancy&sortDir=DESC&count=40` });
+      }
 
       storeLinks.innerHTML = links.map((link) => `
         <a class="store-link" href="${link.url}" target="_blank" rel="noopener noreferrer">
@@ -2412,9 +2107,10 @@
       modalTitle.textContent = title;
       modalDescription.textContent = data.description || game.error || "Данные загружаются или недоступны.";
 
-      const genres = gameTags(data).length
-        ? gameTags(data).slice(0, 12).map((genre) => `<span class="meta-pill">${genre}</span>`).join("")
-        : '<span class="meta-pill">Cyberpunk</span>';
+      const tags = gameTags(data, game);
+      const genres = tags.length
+        ? tags.slice(0, 12).map((genre) => `<span class="meta-pill">${genre}</span>`).join("")
+        : '<span class="meta-pill">Киберпанк</span>';
 
       modalMeta.innerHTML = `
         <span class="meta-pill cyan">${data.releaseDate || "—"}</span>
@@ -2479,19 +2175,82 @@
       setTimeout(() => progress.classList.remove("show"), 1200);
     }
 
-    searchInput.addEventListener("input", filterGames);
-    sourceFilter.addEventListener("change", filterGames);
-    genreFilter.addEventListener("change", filterGames);
-    priceFilter.addEventListener("change", filterGames);
-    featuresFilter.addEventListener("change", filterGames);
-    resetFiltersBtn.addEventListener("click", () => {
+    function setActiveNav(target) {
+      navLinks.forEach((link) => {
+        link.classList.toggle("active", link.dataset.nav === target);
+      });
+    }
+
+    function setCatalogHeading(title, note) {
+      if (catalogTitle) catalogTitle.textContent = title;
+      if (catalogNote) catalogNote.textContent = note;
+    }
+
+    function setEmptyMessage(title, note) {
+      const strong = emptyState.querySelector("strong");
+      const span = emptyState.querySelector("span");
+      if (strong) strong.textContent = title;
+      if (span) span.textContent = note;
+    }
+
+    function scrollToBlock(target) {
+      if (!target) return;
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function resetCatalogView() {
       searchInput.value = "";
       sourceFilter.value = "all";
       genreFilter.value = "all";
       priceFilter.value = "all";
-      featuresFilter.value = "all";
+      setActiveNav("catalog");
+      setCatalogHeading("Киберпанк, фэнтези и магия", "Карточки обновляются по мере загрузки данных из Steam и Epic Games Store.");
+      setEmptyMessage("Игры с таким названием не найдены", "Попробуйте другое название или серию.");
       filterGames();
+    }
+
+    function showDealsView() {
+      priceFilter.value = "sale";
+      setActiveNav("deals");
+      setCatalogHeading("Игры со скидкой", "Показываем карточки, где Steam или Epic отдали активную скидку. Если пусто — нажмите «Загрузить каталог».");
+      setEmptyMessage("Скидки пока не найдены", "Загрузите каталог или проверьте позже: скидки зависят от ответа Steam/Epic.");
+      filterGames();
+    }
+
+    updateCurrencyButtons();
+    currencyButtons.forEach((button) => {
+      button.addEventListener("click", () => setCurrency(button.dataset.currency));
     });
+
+    navLinks.forEach((link) => {
+      link.addEventListener("click", (event) => {
+        event.preventDefault();
+        const target = link.dataset.nav;
+
+        if (target === "catalog") {
+          resetCatalogView();
+          scrollToBlock(document.getElementById("catalog"));
+          return;
+        }
+
+        if (target === "deals") {
+          showDealsView();
+          scrollToBlock(document.getElementById("catalog"));
+          return;
+        }
+
+        if (target === "news") {
+          setActiveNav("news");
+          scrollToBlock(newsSection);
+        }
+      });
+    });
+
+    searchInput.addEventListener("input", filterGames);
+    sourceFilter.addEventListener("change", filterGames);
+    genreFilter.addEventListener("change", filterGames);
+    priceFilter.addEventListener("change", filterGames);
+    resetFiltersBtn.addEventListener("click", resetCatalogView);
     loadAllBtn.addEventListener("click", loadAll);
     modalClose.addEventListener("click", closeModal);
     modal.addEventListener("click", (event) => {
@@ -2510,4 +2269,3 @@
     });
 
     renderCards();
-  

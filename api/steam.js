@@ -537,10 +537,16 @@ function mergeGames(originalTitle, steamGame, epicGame, appId) {
     ...(epicGame?.categories || [])
   ]).slice(0, 16);
 
+  const provider = steamGame && epicGame ? "steam+epic" : primary.provider;
+  const platforms = Object.keys(sources);
+  const platformLabel = provider === "steam+epic" ? "Steam + Epic" : provider === "epic" ? "Epic Games" : "Steam";
+
   return {
     ok: true,
     status: "found",
-    provider: steamGame && epicGame ? "steam+epic" : primary.provider,
+    provider,
+    platforms,
+    platformLabel,
     primarySource: primary.provider,
     sources,
     originalTitle,
@@ -551,6 +557,8 @@ function mergeGames(originalTitle, steamGame, epicGame, appId) {
     isFree: Boolean(steamGame?.isFree || epicGame?.isFree),
     releaseDate: primary.releaseDate || "—",
     description: primary.description || "Описание не найдено.",
+    developer: primary.developer || steamGame?.developer || epicGame?.developer || "",
+    publisher: primary.publisher || steamGame?.publisher || epicGame?.publisher || "",
     cover: primary.cover || "",
     cardImage: steamGame?.cardImage || epicGame?.cardImage || primary.cardImage || primary.header || primary.cover || "",
     header: steamGame?.header || epicGame?.header || primary.header || "",
