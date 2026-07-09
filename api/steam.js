@@ -133,7 +133,8 @@ async function fetchSteamPrices(appId) {
           label: price.final_formatted,
           free: false,
           unavailable: false,
-          discount: price.discount_percent || 0
+          discount: price.discount_percent || 0,
+          originalLabel: price.initial_formatted || ""
         };
         return;
       }
@@ -145,6 +146,203 @@ async function fetchSteamPrices(appId) {
   }));
 
   return result;
+}
+
+async function fetchSteamPlayerCount(appId) {
+  if (!appId) return null;
+
+  try {
+    const url = `https://api.steampowered.com/ISteamUserStats/GetNumberOfCurrentPlayers/v1/?appid=${encodeURIComponent(appId)}&format=json`;
+    const data = await fetchJson(url);
+    const value = Number(data?.response?.player_count);
+    return Number.isFinite(value) && value >= 0 ? value : null;
+  } catch {
+    return null;
+  }
+}
+
+function priceIsUnavailable(price) {
+  if (!price) return true;
+  const label = String(price.label || "").trim().toLowerCase();
+  return Boolean(price.unavailable) || !label || label === "уточнить" || label === "недоступно";
+}
+
+function hasRubOfficialPrice(game) {
+  const priceGroups = [];
+  if (game?.prices?.steam) priceGroups.push(game.prices.steam);
+  if (game?.prices?.epic) priceGroups.push(game.prices.epic);
+  if (!priceGroups.length && game?.prices?.RUB) priceGroups.push(game.prices);
+
+  return priceGroups.some((prices) => {
+    const rub = prices?.RUB;
+    return rub && (rub.free || !priceIsUnavailable(rub));
+  });
+}
+
+function slugifyGgsel(title) {
+  return String(title || "")
+    .toLowerCase()
+    .replace(/[™®©:’'`]/g, "")
+    .replace(/&/g, " and ")
+    .replace(/[^a-z0-9а-яё]+/gi, "-")
+    .replace(/^-+|-+$/g, "")
+    .replace(/-{2,}/g, "-");
+}
+
+function decodeEntities(text) {
+  return String(text || "")
+    .replace(/&quot;/g, '"')
+    .replace(/&#039;/g, "'")
+    .replace(/&amp;/g, "&")
+    .replace(/&nbsp;/g, " ")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function parsePriceUsd(value) {
+  const cleaned = String(value || "")
+    .replace(/\s/g, "")
+    .replace(",", ".");
+  const match = cleaned.match(/(\d+(?:\.\d+)?)\s*\$/) || cleaned.match(/\$\s*(\d+(?:\.\d+)?)/);
+  if (!match) return null;
+  const amount = Number(match[1]);
+  return Number.isFinite(amount) && amount > 0 ? amount : null;
+}
+
+function looksLikeBaseGameOffer(name, title) {
+  const n = normalizeTitle(name);
+  const t = normalizeTitle(title);
+  if (!n || !t) return false;
+
+  const titleWords = t.split(" ").filter((word) => word.length > 2);
+  const hits = titleWords.filter((word) => n.includes(word)).length;
+  const similarity = titleWords.length ? hits / titleWords.length : 0;
+  if (similarity < 0.62) return false;
+
+  const banned = [
+    "account", "аккаунт", "offline", "оффлайн", "аренда", "rent", "shared", "family share",
+    "dlc", "phantom liberty", "subscription", "подписка", "random", "случай", "skin", "currency",
+    "boost", "top up", "пополнение", "ps4", "ps5", "xbox", "nintendo", "switch"
+  ];
+  if (banned.some((word) => n.includes(normalizeTitle(word)))) return false;
+
+  const good = ["steam", "key", "gift", "ключ", "гифт", "global", "ru", "cis", "ua", "kz", "gog", "epic"];
+  return good.some((word) => n.includes(normalizeTitle(word)));
+}
+
+function ggselCandidateUrls(title) {
+  const slug = slugifyGgsel(title);
+  if (!slug) return [];
+  return [
+    `https://ggsel.net/en/catalog/${slug}-keys`,
+    `https://ggsel.net/en/catalog/${slug}-steam`,
+    `https://ggsel.net/en/catalog/${slug}`,
+    `https://ggsel.net/ru/catalog/${slug}-keys`,
+    `https://ggsel.net/ru/catalog/${slug}-steam`,
+    `https://ggsel.net/ru/catalog/${slug}`
+  ];
+}
+
+function parseGgselOffers(html, title) {
+  const text = decodeEntities(stripHtml(html));
+  const lines = text.split(/(?=\d+(?:[,.]\d+)?\s*\$|\$\s*\d)/).map((line) => line.trim()).filter(Boolean);
+  const offers = [];
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    const price = parsePriceUsd(line);
+    if (!price) continue;
+
+    const before = lines.slice(Math.max(0, i - 8), i).join(" ");
+    const after = lines.slice(i + 1, Math.min(lines.length, i + 5)).join(" ");
+    const context = `${before} ${after}`.trim();
+    if (!looksLikeBaseGameOffer(context, title)) continue;
+
+    offers.push({ title: context.slice(0, 180), priceUsd: price });
+  }
+
+  const unique = [];
+  const seen = new Set();
+  for (const offer of offers) {
+    const key = `${Math.round(offer.priceUsd * 100)}:${normalizeTitle(offer.title).slice(0, 80)}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    unique.push(offer);
+  }
+
+  return unique;
+}
+
+async function fetchGgselKeyPrices(title) {
+  const urls = ggselCandidateUrls(title);
+  const controller = typeof AbortController !== "undefined" ? new AbortController() : null;
+  const timer = controller ? setTimeout(() => controller.abort(), 5500) : null;
+  let bestUrl = urls[0] || `https://ggsel.net/en/catalog/${slugifyGgsel(title)}`;
+
+  try {
+    let allOffers = [];
+
+    for (const url of urls) {
+      try {
+        const response = await fetch(url, {
+          signal: controller?.signal,
+          headers: {
+            "User-Agent": "Mozilla/5.0 CyberGames GGSEL price probe",
+            "Accept": "text/html,application/xhtml+xml"
+          }
+        });
+        if (!response.ok) continue;
+        const html = await response.text();
+        const offers = parseGgselOffers(html, title);
+        if (offers.length) {
+          bestUrl = url;
+          allOffers = allOffers.concat(offers);
+          if (allOffers.length >= 8) break;
+        }
+      } catch {
+        // GGSEL публичная выдача может менять HTML. Тогда просто отдаём fallback без падения карточки.
+      }
+    }
+
+    const prices = allOffers
+      .map((offer) => offer.priceUsd)
+      .filter((price) => Number.isFinite(price) && price > 0)
+      .sort((a, b) => a - b);
+
+    if (!prices.length) {
+      return {
+        available: false,
+        source: "ggsel",
+        title,
+        url: bestUrl,
+        label: "Цена ключей недоступна",
+        note: "GGSEL не отдал подходящие предложения ключей без аккаунтов, DLC и офлайн-активаций."
+      };
+    }
+
+    const trim = prices.length > 4 ? prices.slice(0, Math.ceil(prices.length * 0.75)) : prices;
+    const minUsd = trim[0];
+    const avgUsd = trim.reduce((sum, price) => sum + price, 0) / trim.length;
+    const medianUsd = trim[Math.floor(trim.length / 2)];
+
+    return {
+      available: true,
+      source: "ggsel",
+      title,
+      url: bestUrl,
+      offers: allOffers.slice(0, 8),
+      offersCount: trim.length,
+      minUsd: Number(minUsd.toFixed(2)),
+      avgUsd: Number(avgUsd.toFixed(2)),
+      medianUsd: Number(medianUsd.toFixed(2)),
+      label: `GGSEL от ${minUsd.toFixed(2)} $`,
+      note: "Ориентир по маркетплейсу ключей, не официальная цена Steam/Epic."
+    };
+  } finally {
+    if (timer) clearTimeout(timer);
+  }
 }
 
 function steamPortrait(appId) {
@@ -159,7 +357,7 @@ function steamHeader(appId) {
   return `https://cdn.akamai.steamstatic.com/steam/apps/${appId}/header.jpg`;
 }
 
-function normalizeSteamGame(originalTitle, appId, details, prices) {
+function normalizeSteamGame(originalTitle, appId, details, prices, playerCount = null) {
   const title = details.name || originalTitle;
   const screenshots = Array.isArray(details.screenshots)
     ? details.screenshots.map((screen) => screen.path_full || screen.path_thumbnail).filter(Boolean).slice(0, 8)
@@ -192,7 +390,9 @@ function normalizeSteamGame(originalTitle, appId, details, prices) {
     prices,
     storeUrl: `https://store.steampowered.com/app/${appId}/`,
     developer: Array.isArray(details.developers) ? details.developers.join(", ") : "",
-    publisher: Array.isArray(details.publishers) ? details.publishers.join(", ") : ""
+    publisher: Array.isArray(details.publishers) ? details.publishers.join(", ") : "",
+    playerCount: Number.isFinite(Number(playerCount)) ? Number(playerCount) : null,
+    playerCountSource: "steam"
   };
 }
 
@@ -568,6 +768,11 @@ function mergeGames(originalTitle, steamGame, epicGame, appId) {
     genres,
     categories,
     prices,
+    playerCount: Number.isFinite(Number(steamGame?.playerCount)) ? Number(steamGame.playerCount) : null,
+    playerCountSource: steamGame?.playerCountSource || (steamGame ? "steam" : "none"),
+    playerCountUpdatedAt: steamGame ? Date.now() : null,
+    ruUnavailable: !hasRubOfficialPrice({ prices }),
+    keyPrices: null,
     stores: {
       steam: steamGame?.storeUrl || `https://store.steampowered.com/search/?term=${encodeURIComponent(originalTitle)}`,
       epic: epicGame?.storeUrl || `https://store.epicgames.com/ru/browse?q=${encodeURIComponent(originalTitle)}&sortBy=relevancy&sortDir=DESC&count=40`
@@ -589,8 +794,11 @@ async function getSteamGame(title, appIdFromQuery) {
     const details = await fetchSteamDetails(appId, "us");
     if (!details) return null;
 
-    const prices = await fetchSteamPrices(appId);
-    return normalizeSteamGame(title, appId, details, prices);
+    const [prices, playerCount] = await Promise.all([
+      fetchSteamPrices(appId),
+      fetchSteamPlayerCount(appId)
+    ]);
+    return normalizeSteamGame(title, appId, details, prices, playerCount);
   } catch {
     return null;
   }
@@ -636,6 +844,10 @@ module.exports = async function handler(req, res) {
     ]);
 
     const merged = mergeGames(originalTitle, steamGame, epicGame, appIdFromQuery);
+
+    if (merged && merged.ruUnavailable) {
+      merged.keyPrices = await fetchGgselKeyPrices(merged.title || originalTitle);
+    }
 
     if (!merged) {
       res.status(404).json({

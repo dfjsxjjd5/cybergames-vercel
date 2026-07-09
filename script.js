@@ -2673,7 +2673,7 @@ const games = [
     ];
 
     const CURRENCY_STORAGE_KEY = "cybergames-selected-currency-v1";
-    const CACHE_KEY = "cybergames-vercel-cache-v7-arcane-premium";
+    const CACHE_KEY = "cybergames-vercel-cache-v8-live-news-ggsel";
     const CACHE_TTL = 1000 * 60 * 60 * 6;
     const FEATURED_ORDER = [
       "Cyberpunk 2077",
@@ -2732,6 +2732,8 @@ const games = [
     const catalogTitle = document.querySelector("#catalog .section-title-main");
     const catalogNote = document.querySelector("#catalog .section-note");
     const newsSection = document.getElementById("news");
+    const newsGrid = document.getElementById("newsGrid");
+    const recommendedList = document.getElementById("recommendedList");
 
     let currentModalId = null;
     let currentDetailId = null;
@@ -2835,6 +2837,52 @@ const games = [
       return escapeHtml(value).replace(/`/g, "&#096;");
     }
 
+    function formatNumber(value) {
+      const number = Number(value);
+      if (!Number.isFinite(number)) return "—";
+      return number.toLocaleString("ru-RU");
+    }
+
+    const GGSEL_RATE = { USD: 1, RUB: 90, KZT: 520, UAH: 42 };
+    const GGSEL_SYMBOL = { USD: "$", RUB: "₽", KZT: "₸", UAH: "₴" };
+
+    function convertGgselUsd(value, code = selectedCurrency) {
+      const number = Number(value);
+      if (!Number.isFinite(number)) return null;
+      const rate = GGSEL_RATE[code] || 1;
+      const converted = number * rate;
+      if (code === "USD") return `${converted.toFixed(2)} $`;
+      return `≈ ${Math.round(converted).toLocaleString("ru-RU")} ${GGSEL_SYMBOL[code] || code}`;
+    }
+
+    function officialRubUnavailable(game) {
+      return Boolean(game?.data?.ruUnavailable);
+    }
+
+    function ggselAvailable(game) {
+      return Boolean(game?.data?.keyPrices?.available);
+    }
+
+    function ggselPriceLabel(game, kind = "min") {
+      const info = game?.data?.keyPrices;
+      if (!info || !info.available) return "Цена ключей недоступна";
+      const value = kind === "avg" ? info.avgUsd : kind === "median" ? info.medianUsd : info.minUsd;
+      const converted = convertGgselUsd(value);
+      const dollar = Number.isFinite(Number(value)) ? `${Number(value).toFixed(2)} $` : "—";
+      return selectedCurrency === "USD" ? dollar : `${converted} / ${dollar}`;
+    }
+
+    function playerText(game, compact = false) {
+      const data = game?.data || {};
+      if (Number.isFinite(Number(data.playerCount))) {
+        return compact ? `${formatNumber(data.playerCount)} онлайн` : `Сейчас играет: ${formatNumber(data.playerCount)}`;
+      }
+      if (game?.appId || data?.appId || data?.sources?.steam?.appId) {
+        return compact ? "Онлайн Steam загружается" : "Онлайн Steam загружается";
+      }
+      return compact ? "Онлайн недоступен" : "Онлайн недоступен для Epic-only игр";
+    }
+
     function createPlaceholder(title, wide = false) {
       const safeTitle = String(title || "Cyberpunk").replace(/&/g, "&amp;").replace(/</g, "&lt;");
       const w = wide ? 1280 : 900;
@@ -2923,6 +2971,7 @@ const games = [
           game.status = "failed";
           game.error = data.reason || data.error || "Steam/Epic не нашли данные";
           game.data = data;
+          if (currentModalId === game.id) renderModal(game);
           removeNoStoreGame(game);
           return data;
         }
@@ -2933,6 +2982,7 @@ const games = [
       } catch (error) {
         game.status = "failed";
         game.error = error.message || "Ошибка API";
+        if (currentModalId === game.id) renderModal(game);
         removeNoStoreGame(game);
         return null;
       }
@@ -2960,9 +3010,14 @@ const games = [
     function gameTags(data, game = null) {
       return uniqueList([
         ...themeTagsForGame(game),
-        ...(Array.isArray(data?.genres) ? data.genres : []),
-        ...(Array.isArray(data?.categories) ? data.categories : [])
+        ...(Array.isArray(data?.genres) ? data.genres : [])
       ]);
+    }
+
+    function gameFeatureList(data) {
+      return uniqueList(Array.isArray(data?.categories) ? data.categories : [])
+        .filter((item) => !/^игры$/i.test(String(item)))
+        .slice(0, 18);
     }
 
     function populateGenreFilter() {
@@ -3143,6 +3198,16 @@ const games = [
         };
       }
 
+      if (selectedCurrency === "RUB" && officialRubUnavailable(game) && ggselAvailable(game)) {
+        return {
+          label: `GGSEL от ${ggselPriceLabel(game)}`,
+          oldLabel: "",
+          discount: 0,
+          provider: "GGSEL",
+          key: "ggsel"
+        };
+      }
+
       for (const [key, label, prices] of providerEntries(game)) {
         const picked = pickCurrencyPrice(prices);
         const preferred = picked?.item;
@@ -3165,7 +3230,17 @@ const games = [
         return { label: "Бесплатно", oldLabel: "", discount: 0, provider: source?.[1] || providerLabel(game.data) };
       }
 
-      return { label: "Цена уточняется", oldLabel: "", discount: 0, provider: providerLabel(game.data) };
+      if (ggselAvailable(game)) {
+        return {
+          label: `GGSEL от ${ggselPriceLabel(game)}`,
+          oldLabel: "",
+          discount: 0,
+          provider: "GGSEL",
+          key: "ggsel"
+        };
+      }
+
+      return { label: officialRubUnavailable(game) ? "Недоступно в РФ" : "Цена уточняется", oldLabel: "", discount: 0, provider: providerLabel(game.data) };
     }
 
 
@@ -3182,6 +3257,9 @@ const games = [
       if (data.sources?.epic?.url || data.stores?.epic) {
         return { name: "Epic", url: data.sources?.epic?.url || data.stores.epic };
       }
+      if (data.keyPrices?.url) {
+        return { name: "GGSEL", url: data.keyPrices.url };
+      }
       return {
         name: "Steam",
         url: `https://store.steampowered.com/search/?term=${encodeURIComponent(title)}`
@@ -3189,7 +3267,7 @@ const games = [
     }
 
     function categoryText(data) {
-      return normalize(`${(data?.genres || []).join(" ")} ${(data?.categories || []).join(" ")}`);
+      return normalize(`${(data?.categories || []).join(" ")}`);
     }
 
     function hasGameFeature(data, value) {
@@ -3210,20 +3288,13 @@ const games = [
     }
 
     function detailFeaturesHtml(data) {
-      const items = [
-        ["single", "Одиночная игра"],
-        ["achievements", "Достижения Steam"],
-        ["cloud", "Облачные сохранения"],
-        ["controller", "Контроллер"],
-        ["family", "Семейный доступ"],
-        ["steamdeck", "Steam Deck"]
-      ];
-      const text = categoryText(data);
-      return items.map(([key, label]) => {
-        const active = key === "steamdeck"
-          ? (text.includes("steam deck") || text.includes("deck"))
-          : hasGameFeature(data, key);
-        return `<span class="detail-feature ${active ? "active" : ""}"><span class="feature-dot"></span>${label}</span>`;
+      const features = gameFeatureList(data);
+      if (!features.length) {
+        return `<span class="detail-feature"><span class="feature-dot"></span>Особенности загрузятся из Steam/Epic</span>`;
+      }
+
+      return features.map((label) => {
+        return `<span class="detail-feature active"><span class="feature-dot"></span>${escapeHtml(label)}</span>`;
       }).join("");
     }
 
@@ -3244,6 +3315,8 @@ const games = [
       game.resolvedTitle = data.title || game.title;
       game.searchText = normalize(`${game.title} ${data.title} ${data.description || ""} ${(data.genres || []).join(" ")} ${(data.categories || []).join(" ")} ${themeTagsForGame(game).join(" ")} ${game.keywords || ""}`);
       updateCard(game);
+      if (currentModalId === game.id) renderModal(game);
+      if (currentDetailId === game.id) renderDetailPanel(game);
       populateGenreFilter();
       filterGames();
     }
@@ -3303,6 +3376,7 @@ const games = [
             <div class="poster-wrap">
               <img class="poster" src="${initialCardImage(game)}" alt="Обложка ${escapeAttr(game.title)}">
               <span class="store-mini">${escapeHtml(gamePlatformLabel(game, true))}</span>
+              <span class="players-pill">${escapeHtml(playerText(game, true))}</span>
               <span class="status-pill">Ожидает</span>
               <span class="free-badge">Бесплатно</span>
             </div>
@@ -3334,6 +3408,7 @@ const games = [
 
       gamesGrid.appendChild(fragment);
       updateCounter(catalog.length);
+      renderRecommended();
       observeCards();
 
       const featured = games.find((game) => normalize(game.title) === normalize("Cyberpunk 2077") && getCard(game));
@@ -3383,11 +3458,13 @@ const games = [
       const price = card.querySelector(".card-price");
       const storeBadge = card.querySelector(".store-badge");
       const storeMini = card.querySelector(".store-mini");
+      const players = card.querySelector(".players-pill");
 
       if (game.status === "loading") {
         status.textContent = "Загрузка...";
         status.className = "status-pill";
         if (price) price.textContent = "Цена загружается";
+        if (players) players.textContent = playerText(game, true);
       }
 
       if (game.status === "failed") {
@@ -3401,6 +3478,7 @@ const games = [
         freeBadge.classList.remove("show");
         tagRow.innerHTML = `<span class="tag">Скрыто</span><span class="tag">Нет Steam/Epic data</span>`;
         if (price) price.textContent = "Нет цены";
+        if (players) players.textContent = "Онлайн недоступен";
       }
 
       if (game.status === "done" && game.data) {
@@ -3425,11 +3503,14 @@ const games = [
         const tags = gameTags(data, game).slice(0, 3).map((tag) => `<span class="tag">${escapeHtml(tag)}</span>`).join("");
         tagRow.innerHTML = `${data.isFree ? '<span class="tag">Бесплатно</span>' : ""}<span class="tag">${escapeHtml(gamePlatformLabel(game))}</span>${tags}`;
         if (price) price.textContent = priceInfo.label;
+        if (price) price.classList.toggle("key-price", priceInfo.key === "ggsel");
         if (storeBadge) storeBadge.textContent = priceInfo.provider || gamePlatformLabel(game);
         if (storeMini) storeMini.textContent = gamePlatformLabel(game, true);
+        if (players) players.textContent = playerText(game, true);
       }
 
       if (currentDetailId === game.id) renderDetailPanel(game);
+      renderRecommended();
     }
 
     function updateCounter(count) {
@@ -3486,7 +3567,7 @@ const games = [
 
     function selectGame(id) {
       if (isDetailPanelMode()) openDetailPanel(id);
-      else openModal(id);
+      openModal(id);
     }
 
     function renderDetailEmpty() {
@@ -3527,11 +3608,16 @@ const games = [
             </div>
             <p class="detail-description">${escapeHtml(description)}</p>
             <div class="detail-thumbs">${thumbs}</div>
+            <div class="detail-live-row">
+              <span class="live-chip">${escapeHtml(playerText(game))}</span>
+              ${officialRubUnavailable(game) ? `<span class="live-chip warn">Недоступно в РФ</span>` : ""}
+            </div>
             <div class="detail-price-row">
               <span class="detail-price">${escapeHtml(priceInfo.label)}</span>
               ${priceInfo.oldLabel ? `<span class="detail-old-price">${escapeHtml(priceInfo.oldLabel)}</span>` : ""}
               ${priceInfo.discount ? `<span class="detail-discount">-${priceInfo.discount}%</span>` : ""}
             </div>
+            ${ggselAvailable(game) ? `<div class="detail-key-price">Ключи GGSEL: минимум ${escapeHtml(ggselPriceLabel(game))}, средняя ${escapeHtml(ggselPriceLabel(game, "avg"))}</div>` : ""}
             <div class="detail-actions">
               <a class="buy-button" href="${escapeAttr(store.url)}" target="_blank" rel="noopener noreferrer">🛒 Купить в ${escapeHtml(store.name)}</a>
             </div>
@@ -3587,19 +3673,7 @@ const games = [
         providerRows.push(["steam", "Steam", rawPrices]);
       }
 
-      if (!providerRows.length) {
-        priceGrid.innerHTML = `
-          <div class="price-item">
-            <span class="price-currency">${selected.flag} ${selected.label} / ${selected.code}</span>
-            <span class="price-value">Нет данных</span>
-          </div>
-        `;
-
-        liveStatus.textContent = "Точной цены нет: Steam/Epic не отдали карточку или игра отсутствует в этих магазинах.";
-        return;
-      }
-
-      priceGrid.innerHTML = providerRows.map(([key, providerName, prices]) => {
+      const rowsHtml = providerRows.map(([key, providerName, prices]) => {
         const picked = pickCurrencyPrice(prices);
         const item = picked?.item || { label: "Уточнить", unavailable: true };
         const shownCurrency = currencyInfo(picked?.code || selectedCurrency);
@@ -3610,20 +3684,40 @@ const games = [
         return `
           <div class="price-item">
             <span class="price-currency">${providerName} · ${shownCurrency.flag} ${shownCurrency.label} / ${shownCurrency.code}${discount}${fallback}</span>
-            <span class="price-value ${item.free ? "free" : ""}">${value}</span>
+            <span class="price-value ${item.free ? "free" : ""}">${escapeHtml(value)}</span>
           </div>
         `;
       }).join("");
 
-      if (game.data && game.data.isFree) {
-        liveStatus.textContent = "Один из магазинов помечает игру как бесплатную.";
-      } else if (providerRows.some(([, , prices]) => pickCurrencyPrice(prices)?.fallback)) {
-        liveStatus.textContent = `Для ${selected.label.toLowerCase()} цена есть не у всех магазинов, поэтому сайт показывает ближайшую доступную валюту.`;
-      } else if (game.status === "done") {
-        liveStatus.textContent = `Цены показаны в валюте: ${selected.flag} ${selected.label}. Steam и Epic могут отличаться по регионам, скидкам и доступности.`;
-      } else {
-        liveStatus.textContent = "Точной цены нет, потому что магазин не отдал карточку.";
+      const ggselHtml = game.data?.keyPrices ? `
+        <div class="price-item ggsel-price-item">
+          <span class="price-currency">GGSEL · ключи маркетплейса${game.data.keyPrices.available ? ` · ${game.data.keyPrices.offersCount || 0} предлож.` : ""}</span>
+          <span class="price-value ${game.data.keyPrices.available ? "key" : ""}">${escapeHtml(game.data.keyPrices.available ? ggselPriceLabel(game) : "Недоступно")}</span>
+          <small>${escapeHtml(game.data.keyPrices.note || "Неофициальный ориентир по ключам.")}</small>
+        </div>
+      ` : "";
+
+      if (!providerRows.length && !ggselHtml) {
+        priceGrid.innerHTML = `
+          <div class="price-item">
+            <span class="price-currency">${selected.flag} ${selected.label} / ${selected.code}</span>
+            <span class="price-value">Нет данных</span>
+          </div>
+        `;
+
+        liveStatus.textContent = `${playerText(game)}. Точной цены нет: Steam/Epic не отдали карточку или игра отсутствует в этих магазинах.`;
+        return;
       }
+
+      priceGrid.innerHTML = rowsHtml + ggselHtml;
+
+      const parts = [playerText(game)];
+      if (game.data?.ruUnavailable) parts.push("Для РФ официальная цена не найдена, поэтому добавлен отдельный ориентир по ключам GGSEL.");
+      if (game.data && game.data.isFree) parts.push("Один из магазинов помечает игру как бесплатную.");
+      else if (providerRows.some(([, , prices]) => pickCurrencyPrice(prices)?.fallback)) parts.push(`Для ${selected.label.toLowerCase()} цена есть не у всех магазинов, поэтому сайт показывает ближайшую доступную валюту.`);
+      else if (game.status === "done") parts.push(`Цены показаны в валюте: ${selected.flag} ${selected.label}. Steam и Epic могут отличаться по регионам, скидкам и доступности.`);
+
+      liveStatus.textContent = parts.join(" ");
     }
 
 
@@ -3650,6 +3744,14 @@ const games = [
           name: "Epic Games Store",
           note: hasEpicDirect ? "Прямая страница Epic" : "Поиск в Epic",
           url: stores.epic || `https://store.epicgames.com/ru/browse?q=${encodeURIComponent(title)}&sortBy=relevancy&sortDir=DESC&count=40`
+        });
+      }
+
+      if (game.data?.keyPrices?.url) {
+        links.push({
+          name: "GGSEL",
+          note: game.data.keyPrices.available ? "Ключи и подарки маркетплейса" : "Поиск ключей на GGSEL",
+          url: game.data.keyPrices.url
         });
       }
 
@@ -3692,6 +3794,8 @@ const games = [
       modalMeta.innerHTML = `
         <span class="meta-pill cyan">${data.releaseDate || "—"}</span>
         <span class="meta-pill magenta">${providerLabel(data)}</span>
+        <span class="meta-pill green">${escapeHtml(playerText(game, true))}</span>
+        ${data.ruUnavailable ? '<span class="meta-pill">Недоступно в РФ</span>' : ""}
         ${data.isFree ? '<span class="meta-pill green">Бесплатно</span>' : ""}
         ${genres}
       `;
@@ -3750,6 +3854,124 @@ const games = [
       loadAllBtn.disabled = false;
       loadAllBtn.textContent = "Обновить каталог";
       setTimeout(() => progress.classList.remove("show"), 1200);
+    }
+
+    function recommendedGames() {
+      const orderMap = new Map(FEATURED_ORDER.map((title, index) => [normalize(title), index]));
+      return catalogCandidates()
+        .slice()
+        .sort((a, b) => {
+          const aPlayers = Number(a.data?.playerCount) || 0;
+          const bPlayers = Number(b.data?.playerCount) || 0;
+          const aOrder = orderMap.has(normalize(a.title)) ? orderMap.get(normalize(a.title)) : 9999;
+          const bOrder = orderMap.has(normalize(b.title)) ? orderMap.get(normalize(b.title)) : 9999;
+          if (bPlayers !== aPlayers && (aPlayers || bPlayers)) return bPlayers - aPlayers;
+          if (aOrder !== bOrder) return aOrder - bOrder;
+          return a.title.localeCompare(b.title, "ru");
+        })
+        .slice(0, 5);
+    }
+
+    function renderRecommended() {
+      if (!recommendedList) return;
+      const items = recommendedGames();
+      recommendedList.innerHTML = items.map((game, index) => {
+        const title = game.data?.title || game.title;
+        const price = bestPriceInfo(game);
+        return `
+          <button class="recommended-card" type="button" data-id="${game.id}">
+            <span class="recommended-rank">${index + 1}</span>
+            <img src="${escapeAttr(cardImage(game))}" alt="${escapeAttr(title)}" loading="lazy">
+            <span class="recommended-info">
+              <strong>${escapeHtml(title)}</strong>
+              <small>${escapeHtml(playerText(game, true))} · ${escapeHtml(price.label)}</small>
+            </span>
+          </button>
+        `;
+      }).join("");
+
+      recommendedList.querySelectorAll(".recommended-card").forEach((button) => {
+        button.addEventListener("click", () => {
+          const id = Number(button.dataset.id);
+          const game = games.find((item) => item.id === id);
+          if (game) fetchGame(game);
+          selectGame(id);
+        });
+      });
+    }
+
+    function steamNewsAppIds() {
+      const ids = [];
+      const preferred = recommendedGames();
+      [...preferred, ...catalogCandidates()].forEach((game) => {
+        const appId = game.data?.sources?.steam?.appId || game.data?.appId || game.appId;
+        if (appId && !ids.includes(Number(appId))) ids.push(Number(appId));
+      });
+      return ids.slice(0, 60);
+    }
+
+    function formatNewsDate(timestamp) {
+      const date = new Date(Number(timestamp) * 1000);
+      if (Number.isNaN(date.getTime())) return "Steam News";
+      return date.toLocaleDateString("ru-RU", { day: "2-digit", month: "short" });
+    }
+
+    let newsLoaded = false;
+    let newsLoading = false;
+
+    async function loadSteamNews(force = false) {
+      if (!newsGrid || (newsLoaded && !force) || newsLoading) return;
+      const appIds = steamNewsAppIds();
+      if (!appIds.length) return;
+
+      newsLoading = true;
+      newsGrid.innerHTML = `
+        <article class="news-card news-loading">
+          <span class="news-date">Steam</span>
+          <h3>Загружаю новости за неделю</h3>
+          <p>Собираю свежие посты Steam News Hub по играм из каталога.</p>
+        </article>
+      `;
+
+      try {
+        const response = await fetch(`/api/news?appIds=${encodeURIComponent(appIds.join(","))}`);
+        const data = await response.json();
+        if (!response.ok || !data.ok) throw new Error(data.error || "Steam News API недоступен");
+        newsLoaded = true;
+
+        if (!data.items || !data.items.length) {
+          newsGrid.innerHTML = `
+            <article class="news-card news-loading">
+              <span class="news-date">7 дней</span>
+              <h3>За прошедшую неделю новостей нет</h3>
+              <p>Steam News Hub не отдал свежие новости по выбранным играм. Старые посты специально не показываю.</p>
+            </article>
+          `;
+          return;
+        }
+
+        newsGrid.innerHTML = data.items.map((item) => {
+          const game = games.find((candidate) => Number(candidate.appId) === Number(item.appId));
+          const gameTitle = game?.data?.title || game?.title || `App ${item.appId}`;
+          return `
+            <article class="news-card steam-news-card">
+              <span class="news-date">${escapeHtml(formatNewsDate(item.date))} · ${escapeHtml(gameTitle)}</span>
+              <h3><a href="${escapeAttr(item.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(item.title)}</a></h3>
+              <p>${escapeHtml(item.contents || "Открыть новость в Steam News Hub.")}</p>
+            </article>
+          `;
+        }).join("");
+      } catch (error) {
+        newsGrid.innerHTML = `
+          <article class="news-card news-loading">
+            <span class="news-date">Ошибка</span>
+            <h3>Новости пока не загрузились</h3>
+            <p>${escapeHtml(error.message || "Steam News API временно недоступен.")}</p>
+          </article>
+        `;
+      } finally {
+        newsLoading = false;
+      }
     }
 
     function setActiveNav(target) {
@@ -3818,6 +4040,7 @@ const games = [
 
         if (target === "news") {
           setActiveNav("news");
+          loadSteamNews(true);
           scrollToBlock(newsSection);
         }
       });
@@ -3846,3 +4069,4 @@ const games = [
     });
 
     renderCards();
+    loadSteamNews();

@@ -2,6 +2,9 @@
   "functions": {
     "api/steam.js": {
       "maxDuration": 20
+    },
+    "api/news.js": {
+      "maxDuration": 20
     }
   },
   "headers": [
